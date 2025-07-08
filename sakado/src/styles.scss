@@ -1,4 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 /* src/styles.css */
 @import "tailwindcss";
- 
+/* Define primary color variable */
+:root {
+  --primary-color: #86b817;
+}
+
+/* Apply to all heading elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; /* Semi-bold by default */
+  color: #2C3E50; /* Default dark color */
+}
+
+/* Create text color utility */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Create background color utility */
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #74a014;
+  border-color: #689212;
+}
+
+/* Form elements */
+input:focus, 
+textarea:focus, 
+select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(134, 184, 23, 0.25);
+}
