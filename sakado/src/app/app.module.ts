@@ -14,20 +14,31 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { AuthService } from './services/auth.service';
 @NgModule({
-  declarations: [   
-     AppComponent,
+  declarations: [
+    AppComponent,
     HeaderComponent,
     FooterComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-     LayoutComponent,
-     AboutComponent,
-     ContactComponent,
-     ],
-  imports: [BrowserModule, AppRoutingModule, ],
-  providers: [provideClientHydration(withEventReplay())],
+    LayoutComponent,
+    AboutComponent,
+    ContactComponent,
+  ],
+  imports: [BrowserModule, AppRoutingModule],
+  providers: [
+    provideClientHydration(withEventReplay()),
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true, // Indique que c'est un intercepteur multiple
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

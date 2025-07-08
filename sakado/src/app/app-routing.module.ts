@@ -6,6 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
         title: 'Touriste - Accueil',
+        canActivate: [AuthGuard]
       },
       {
         path: 'about',
