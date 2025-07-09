@@ -14,9 +14,11 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AuthService } from './services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,9 +31,10 @@ import { AuthService } from './services/auth.service';
     AboutComponent,
     ContactComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule, HttpClientModule],
   providers: [
     provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch()),
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

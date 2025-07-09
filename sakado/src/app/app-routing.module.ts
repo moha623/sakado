@@ -66,7 +66,7 @@ const routes: Routes = [
       { path: 'register', component: RegisterComponent },
     ],
   },
-  { path: '**', redirectTo: '' }, // Fallback route
+  { path: '**', redirectTo: '' }, 
 ];
 
 @NgModule({

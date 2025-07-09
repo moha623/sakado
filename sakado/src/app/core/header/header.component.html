@@ -6,8 +6,9 @@
   <!-- ... mobile navigation items with routerLinks ... -->
 </div>
 <!-- Navigation -->
-<div class="w-full relative">
+<div class="w-full relative" >
   <nav
+ 
     class="flex items-center justify-between px-4 py-3 lg:px-8 lg:py-0 bg-white shadow-sm"
   >
     <!-- Logo -->
@@ -26,82 +27,52 @@
       <i class="fas fa-bars text-2xl"></i>
     </button>
 
-    <!-- Desktop Navigation -->
-    <div class="hidden lg:flex items-center space-x-8">
-      <div class="flex items-center space-x-6">
-        <a
-          routerLink="/"
-          class="text-primary font-medium border-b-2 border-primary py-6"
-          >Home</a
-        >
-        <a
-          routerLink="/about"
-          class="text-gray-600 hover:text-[#86b817] transition py-6"
-          >About</a
-        >
-        <a
-          routerLink="/features"
-          class="text-gray-600 hover:text-[#86b817] transition py-6"
-          >Features</a
-        >
-        <a
-          routerLink="/package"
-          class="text-gray-600 hover:text-[#86b817] transition py-6"
-          >Packages</a
-        >
+<!-- Desktop Navigation -->
+<div class="hidden lg:flex items-center space-x-8"  >
 
-        <!-- Dropdown -->
-        <div class="dropdown relative">
-          <a
-            href="#"
-            class="text-gray-600 hover:text-[#86b817] transition py-6 flex items-center"
-          >
-            Pages <i class="fas fa-chevron-down ml-1 text-xs"></i>
-          </a>
-          <div
-            class="dropdown-menu absolute left-0 mt-1 w-48 bg-white shadow-lg rounded-md py-2 hidden z-50"
-          >
-            <a
-              
-              class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]"
-              >Destination</a
-            >
-            <a
-              
-              class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]"
-              >Booking</a
-            >
-            <a
-             
-              class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]"
-              >Travel Guides</a
-            >
-            <a
-             
-              class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]"
-              >Testimonial</a
-            >
-            <a
-              href="404.html"
-              class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]"
-              >404 Page</a
-            >
-          </div>
-        </div>
+  <!-- Navigation links shown only when NOT logged in -->
+  <div class="flex items-center space-x-6" *ngIf=" isLoggedIn" >
+    <a routerLink="/" class="text-primary font-medium border-b-2 border-primary py-6">Home</a>
+    <a routerLink="/about" class="text-gray-600 hover:text-[#86b817] transition py-6">About</a>
+    <a routerLink="/features" class="text-gray-600 hover:text-[#86b817] transition py-6">Features</a>
+    <a routerLink="/package" class="text-gray-600 hover:text-[#86b817] transition py-6">Packages</a>
 
-        <a
-          routerLink="/contact"
-          class="text-gray-600 hover:text-[#86b817] transition py-6"
-          >Contact</a
-        >
-      </div>
-      <a
-        routerLink="/auth/register"
-        class="ml-4 bg-[#86b817] hover:bg-secondary text-white font-medium py-2 px-6 rounded-full transition"
-      >
-        Register
+    <!-- Dropdown -->
+    <div class="dropdown relative">
+      <a href="#" class="text-gray-600 hover:text-[#86b817] transition py-6 flex items-center">
+        Pages <i class="fas fa-chevron-down ml-1 text-xs"></i>
       </a>
+      <div class="dropdown-menu absolute left-0 mt-1 w-48 bg-white shadow-lg rounded-md py-2 hidden z-50">
+        <a class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]">Destination</a>
+        <a class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]">Booking</a>
+        <a class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]">Travel Guides</a>
+        <a class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]">Testimonial</a>
+        <a href="404.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-[#86b817]">404 Page</a>
+      </div>
     </div>
+
+    <a routerLink="/contact" class="text-gray-600 hover:text-[#86b817] transition py-6">Contact</a>
+  </div>
+
+ <a
+ *ngIf="!isLoggedIn"
+  routerLink="/auth/register"
+  class="ml-4 bg-[#86b817] hover:bg-secondary text-white font-medium py-2 px-6 rounded-full transition"
+>
+  Register
+</a>
+
+<!-- Show Logout button only if logged in -->
+<a
+  *ngIf="isLoggedIn"
+  (click)="logout()"
+  class="ml-4 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-6 rounded-full transition cursor-pointer"
+>
+  Logout
+</a>
+
+</div>
+
   </nav>
 
   <!-- Mobile Menu -->
