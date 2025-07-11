@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تواصل معنا - ساكادو للسياحة</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-</head>
-<body>
     <div class="contact-container" dir="rtl">
         <!-- Floating background elements -->
         <div class="floating-element floating-1"></div>
@@ -126,45 +116,4 @@
         </div>
     </div>
     
-    <script>
-        // Animation for contact cards
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactCards = document.querySelectorAll('.animate-card');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animationDelay = entry.target.style.animationDelay || "0.2s";
-                        entry.target.style.opacity = 1;
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            
-            contactCards.forEach(card => {
-                card.style.opacity = 0;
-                observer.observe(card);
-            });
-            
-            // Hover effect for cards
-            contactCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    if (card.classList.contains('contact-info')) {
-                        card.style.transform = 'translateY(-10px)';
-                    } else if (card.classList.contains('map-container')) {
-                        card.style.transform = 'translateY(-10px)';
-                    } else if (card.classList.contains('contact-form')) {
-                        card.style.transform = 'translateY(-10px)';
-                    }
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0)';
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+ 

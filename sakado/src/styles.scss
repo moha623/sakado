@@ -1,11 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
 /* src/styles.css */
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
 /* Define primary color variable */
 :root {
-  --primary-color: #86b817;
+  --primary: #2c6e49;
+            --primary-light: #4c956c;
+            --secondary: #fefee3;
+            --accent: #ff9e00;
+            --dark: #1b4332;
+            --light: #d8f3dc;
+            --gray: #f8f9fa;
+            --text: #2d3a3a;
+            --success: #38b000;
+            --warning: #ff9e00;
+            --danger: #e5383b;
+            --border: #e0e0e0;
 }
-
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
 /* Apply to all heading elements */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;

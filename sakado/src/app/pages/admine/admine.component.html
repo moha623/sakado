@@ -1,0 +1,320 @@
+ 
+<body dir="rtl">
+    <!-- Sidebar -->
+    <div class="sidebar" dir="rtl">
+        <div class="logo">
+            <h1>ساكادو <span>للرحلات</span></h1>
+        </div>
+        
+        <div class="nav-links">
+            <div class="nav-item active">
+                <i class="fas fa-chart-line"></i>
+                <span class="nav-text">لوحة التحكم</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <span class="nav-text">إدارة الرحلات</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-calendar-check"></i>
+                <span class="nav-text">إدارة الحجوزات</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-users"></i>
+                <span class="nav-text">إدارة المستخدمين</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-tags"></i>
+                <span class="nav-text">التصنيفات</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-chart-pie"></i>
+                <span class="nav-text">التقارير</span>
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span class="nav-text">الإعدادات</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content" dir="rtl">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">لوحة تحكم ساكادو</div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="بحث...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">م</div>
+                    <div>محمد أحمد</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dashboard Content -->
+        <div class="content" id="dashboardContent">
+            <!-- KPI Cards -->
+            <div class="kpi-container">
+                <div class="kpi-card">
+                    <div class="kpi-title">المستخدمون المسجلون</div>
+                    <div class="kpi-value">1,248</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+24 هذا الأسبوع</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">الرحلات النشطة</div>
+                    <div class="kpi-value">24</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>3 رحلات جديدة</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">الحجوزات (هذا الشهر)</div>
+                    <div class="kpi-value">142</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-chart-line"></i>
+                        <span>+42% عن الشهر الماضي</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">المشاركون</div>
+                    <div class="kpi-value">1,842</div>
+                    <div class="kpi-trend">
+                        <i class="fas fa-users"></i>
+                        <span>142 مشارك نشط</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">الإيرادات</div>
+                    <div class="kpi-value">$24,842</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>+$2,421 هذا الشهر</span>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">مستخدمون جدد (24 ساعة)</div>
+                    <div class="kpi-value">24</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-user-plus"></i>
+                        <span>+8 منذ البارحة</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts and Activity -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <div class="card-title">إحصائيات الحجوزات</div>
+                        <div>
+                            <select class="form-control" style="width: auto;">
+                                <option>آخر 7 أيام</option>
+                                <option>آخر 30 يومًا</option>
+                                <option>هذا الشهر</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="bookingsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="card-header">
+                        <div class="card-title">شعبية الرحلات</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="popularityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Feed -->
+            <div class="activity-feed">
+                <div class="card-header">
+                    <div class="card-title">النشاطات الأخيرة</div>
+                    <button class="btn btn-outline">عرض الكل</button>
+                </div>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">حجز جديد</div>
+                            <div class="activity-desc">قام أحمد محمد بحجز رحلة استكشاف الصحراء</div>
+                            <div class="activity-time">منذ 5 دقائق</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">مستخدم جديد</div>
+                            <div class="activity-desc">لين عبد الله قامت بالتسجيل في الموقع</div>
+                            <div class="activity-time">منذ 30 دقيقة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">تحديث رحلة</div>
+                            <div class="activity-desc">تم تحديث رحلة استكشاف الجبال</div>
+                            <div class="activity-time">منذ ساعة</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">استفسار جديد</div>
+                            <div class="activity-desc">محمد علي أرسل استفسارًا عن رحلة الساحل</div>
+                            <div class="activity-time">منذ ساعتين</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="action-title">إضافة رحلة جديدة</div>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div class="action-title">عرض جميع الحجوزات</div>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <div class="action-title">إدارة المستخدمين</div>
+                </div>
+                
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="action-title">إضافة مشرف جديد</div>
+                </div>
+            </div>
+        </div>
+        
+   
+        
+     
+    </div>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bookings over time chart
+            const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
+            const bookingsChart = new Chart(bookingsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1 نوف', '2 نوف', '3 نوف', '4 نوف', '5 نوف', '6 نوف', '7 نوف'],
+                    datasets: [{
+                        label: 'الحجوزات',
+                        data: [12, 19, 8, 15, 24, 18, 22],
+                        borderColor: '#2c6e49',
+                        backgroundColor: 'rgba(44, 110, 73, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Package popularity chart
+            const popularityCtx = document.getElementById('popularityChart').getContext('2d');
+            const popularityChart = new Chart(popularityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['استكشاف الصحراء', 'مغامرة الغابات', 'اكتشاف الجبال', 'رحلة السواحل', 'المدن المخفية'],
+                    datasets: [{
+                        label: 'عدد الحجوزات',
+                        data: [24, 18, 8, 5, 12],
+                        backgroundColor: [
+                            'rgba(44, 110, 73, 0.7)',
+                            'rgba(76, 149, 108, 0.7)',
+                            'rgba(255, 158, 0, 0.7)',
+                            'rgba(27, 67, 50, 0.7)',
+                            'rgba(216, 243, 220, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Navigation functionality
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentSections = document.querySelectorAll('.content');
+            
+            navItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    // Remove active class from all nav items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    item.classList.add('active');
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show corresponding content section
+                    if(index === 0) {
+                        document.getElementById('dashboardContent').style.display = 'block';
+                    } else if(index === 1) {
+                        document.getElementById('packageManagement').style.display = 'block';
+                    } else if(index === 2) {
+                        document.getElementById('bookingManagement').style.display = 'block';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+ 

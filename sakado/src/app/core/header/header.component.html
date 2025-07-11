@@ -4,22 +4,23 @@
     <div class="flex justify-between items-center py-4">
       <div class="flex items-center">
         <div
+          routerLink="/"
           class="bg-primary w-10 h-10 rounded-full flex items-center justify-center"
         >
           <i class="fas fa-plane-departure text-white text-xl"></i>
         </div>
-        <span class="text-xl font-bold text-primary mr-2">ساكادو</span>
+        <span routerLink="/" class="text-xl font-bold text-primary mr-2"
+          >ساكادو</span
+        >
       </div>
 
       <div class="hidden md:flex space-x-8" *ngIf="isLoggedIn">
         <a routerLink="/" class="text-primary font-medium">الرئيسية</a>
         <a routerLink="/about" class="hover:text-primary transition">من نحن</a>
-        <a routerLink="/services" class="hover:text-primary transition"
-          >خدماتنا</a
-        >
-        <a routerLink="/destinations" class="hover:text-primary transition"
-          >الوجهات</a
-        >
+        <a routerLink="/gallery" class="hover:text-primary transition"
+          >المعرض
+        </a>
+
         <a routerLink="/booking" class="hover:text-primary transition"
           >الباقات</a
         >
@@ -33,14 +34,14 @@
           routerLink="/auth/register"
           class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-full transition"
           *ngIf="!isLoggedIn"
-          
         >
           انضم إلينا
         </button>
         <button
           routerLink="/auth/register"
           class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-full transition"
-          *ngIf="isLoggedIn" (click)="onLogout()"
+          *ngIf="isLoggedIn"
+          (click)="onLogout()"
         >
           logout
         </button>
@@ -111,19 +112,20 @@
         <div class="flex flex-wrap justify-center gap-2">
           <span
             class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
-            >دبي</span
+            >𝐂𝐫𝐢𝐪𝐮𝐞 𝐞𝐥 𝐌𝐢𝐝𝐞𝐧𝐢 -𝐛𝐢𝐳𝐞𝐫𝐭𝐞</span
           >
           <span
             class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
-            >تركيا</span
+            >Ras angela 𝐵𝑖𝑧𝑒𝑟𝑡𝑒</span
           >
           <span
             class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
-            >ماليزيا</span
+          >
+            𝐵𝑒𝑛𝑖 𝑀𝑡𝑖𝑟, 𝐴𝑖𝑛 𝐷𝑟𝑎ℎ𝑒𝑚</span
           >
           <span
             class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
-            >المالديف</span
+            >𝐒𝐚𝐡𝐚𝐫𝐚, 𝐒𝐚𝐛𝐫𝐲𝐚 𝐂𝐚𝐦𝐩</span
           >
         </div>
       </div>

@@ -20,6 +20,11 @@ import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookingComponent } from './core/booking/booking.component';
+import { MoreDetailsComponent } from './pages/more-details/more-details.component';
+import { GalleryComponent } from './core/gallery/gallery.component';
+import { AdmineComponent } from './pages/admine/admine.component';
+import { PackageManagementComponent } from './pages/admine/package-management/package-management.component';
+import { BookingManagementComponent } from './pages/admine/booking-management/booking-management.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +37,11 @@ import { BookingComponent } from './core/booking/booking.component';
     AboutComponent,
     ContactComponent,
     BookingComponent,
+    MoreDetailsComponent,
+    GalleryComponent,
+    AdmineComponent,
+    PackageManagementComponent,
+    BookingManagementComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule, HttpClientModule],
   providers: [

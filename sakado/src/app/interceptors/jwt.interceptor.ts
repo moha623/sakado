@@ -15,7 +15,7 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService 
+    const token = this.authService.getToken(); // Assurez-vous que cette méthode existe dans AuthService
 
     if (token) {
       request = request.clone({

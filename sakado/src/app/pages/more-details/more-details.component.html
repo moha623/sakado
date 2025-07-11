@@ -1,0 +1,797 @@
+
+<body class="relative" ng-app="travelApp" ng-controller="TravelController" dir="rtl">
+  <!-- Back Button -->
+  <a href="#" class="back-btn bg-white rounded-full p-3 shadow-lg text-gray-700 hover:bg-gray-100 transition">
+    <i class="fas fa-arrow-left"></i>
+  </a>
+  
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="h-full w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');"></div>
+    <div class="hero-overlay">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-wrap items-end justify-between">
+          <div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">سانتوريني، اليونان</h1>
+            <div class="flex items-center text-yellow-400 mb-4">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <span class="text-white ml-2">(842 تقييم)</span>
+            </div>
+            <div class="flex flex-wrap gap-3 mb-4">
+              <span class="bg-white/20 text-white px-3 py-1 rounded-full">شاطئ</span>
+              <span class="bg-white/20 text-white px-3 py-1 rounded-full">رومانسي</span>
+              <span class="bg-white/20 text-white px-3 py-1 rounded-full">فاخر</span>
+              <span class="bg-white/20 text-white px-3 py-1 rounded-full">مناسب للأزواج</span>
+            </div>
+          </div>
+          <div class="text-white text-3xl font-bold">
+            <span class="text-2xl">يبدأ السعر من</span>
+            <div class="text-accent">$1,299</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Tabs Navigation -->
+    <div class="flex overflow-x-auto mb-8 pb-2">
+      <button ng-repeat="tab in tabs" 
+              ng-click="currentTab = tab.id" 
+              class="tab-btn px-5 py-3 rounded-lg whitespace-nowrap mx-1"
+              ng-class="{'active': currentTab === tab.id}">
+        <i class="  mr-2"></i>
+       
+      </button>
+    </div>
+    
+    <!-- Tab Content -->
+    <div ng-switch="currentTab">
+      <!-- Overview Tab -->
+      <div ng-switch-when="overview">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold m-4">الوصف</h2>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+              سانتوريني، جوهرة بحر إيجة، هي جزيرة يونانية ساحرة تشتهر بمبانيها البيضاء المتلألئة المعلقة على منحدرات صخرية عالية تطل على المياه الزرقاء العميقة. هذه الجزيرة البركانية هي أحد أكثر الوجهات رومانسية في العالم، حيث تقدم إطلالات خلابة للغروب التي تعتبر من أجمل غروب الشمس على كوكب الأرض.
+            </p>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+              ستجد في سانتوريني مزيجاً فريداً من الجمال الطبيعي والتراث الثقافي الغني. تجول في شوارع فيرا الضيقة المرصوفة بالحصى، استمتع بالمأكولات البحرية الطازجة في أحد المطاعم المطلة على كالديرا، أو استرخي على الشواطئ البركانية ذات الرمال السوداء والحمراء الفريدة. كل زاوية في سانتوريني هي لوحة فنية طبيعية تخطف الأنفاس.
+            </p>
+            
+            <h2 class="text-2xl font-bold m-4 mt-10">أبرز المعالم</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex p-4 bg-white rounded-lg shadow-sm">
+                <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-2">
+                  <i class="fas fa-umbrella-beach text-blue-500 text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold">شاطئ كاماري</h3>
+                  <p class="text-gray-600 text-sm">شاطئ من الحصى البركاني الأسود مع مياه زرقاء صافية</p>
+                </div>
+              </div>
+              <div class="flex p-4 bg-white rounded-lg shadow-sm">
+                <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mx-2">
+                  <i class="fas fa-church text-orange-500 text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold">كنائس القباب الزرقاء</h3>
+                  <p class="text-gray-600 text-sm">الرمز الأيقوني لسانتوريني في أويا</p>
+                </div>
+              </div>
+              <div class="flex p-4 bg-white rounded-lg shadow-sm">
+                <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-2">
+                  <i class="fas fa-volcano text-purple-500 text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold">جزيرة البركان</h3>
+                  <p class="text-gray-600 text-sm">رحلة إلى مركز البركان التاريخي</p>
+                </div>
+              </div>
+              <div class="flex p-4 bg-white rounded-lg shadow-sm">
+                <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-2">
+                  <i class="fas fa-wine-glass-alt text-red-500 text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold">تذوق النبيذ</h3>
+                  <p class="text-gray-600 text-sm">تجربة تذوق نبيذ في كروم العنب البركانية</p>
+                </div>
+              </div>
+            </div>
+            
+            <h2 class="text-2xl font-bold m-4 mt-10">المعرض</h2>
+            <div class="gallery-grid">
+              <div class="gallery-main rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover">
+              </div>
+              <div class="rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover">
+              </div>
+              <div class="rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1533992194461-507d1dd42c6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover">
+              </div>
+              <div class="rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1554998171-89445e31c52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover">
+              </div>
+              <div class="rounded-xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1598880940080-ff9a29891b85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" class="w-full h-full object-cover">
+              </div>
+            </div>
+          </div>
+              <div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4">معلومات مفيدة</h3>
+              
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">اللغة</h4>
+                  <p class="text-gray-700">اليونانية، الإنجليزية منتشرة في المناطق السياحية</p>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">العملة</h4>
+                  <p class="text-gray-700">يورو (€) - 1 يورو ≈ 4.08 درهم إماراتي</p>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">التيار الكهربائي</h4>
+                  <p class="text-gray-700">230V - مقابس نوع C و F</p>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">المناخ</h4>
+                  <p class="text-gray-700">متوسطي - صيف حار جاف (25-35°م) شتاء معتدل (10-15°م)</p>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">الفرق الزمني</h4>
+                  <p class="text-gray-700">توقيت اليونان (UTC+2) - يسبق الإمارات بساعة</p>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">المواصلات</h4>
+                  <p class="text-gray-700">حافلات محلية، سيارات أجرة، تأجير سيارات أو دراجات</p>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+          <!-- <div>
+            <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+              <h3 class="text-xl font-bold mb-4">احجز رحلتك الآن</h3>
+              
+              <div class="mb-6">
+                <label class="block text-gray-700 mb-2">تاريخ المغادرة</label>
+                <div class="relative">
+                  <input type="date" class="w-full p-3 border border-gray-300 rounded-lg">
+                  <i class="fas fa-calendar absolute left-3 top-3.5 text-gray-400"></i>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <label class="block text-gray-700 mb-2">المدة</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="py-2 border border-gray-300 rounded-lg hover:border-primary">5 أيام</button>
+                  <button class="py-2 border border-primary bg-blue-50 text-primary rounded-lg font-bold">7 أيام</button>
+                  <button class="py-2 border border-gray-300 rounded-lg hover:border-primary">10 أيام</button>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <label class="block text-gray-700 mb-2">المسافرون</label>
+                <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+                  <button class="px-4 py-3 bg-gray-100 border-r border-gray-300">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <input type="text" value="2 بالغون" class="flex-1 px-4 text-center border-none">
+                  <button class="px-4 py-3 bg-gray-100 border-l border-gray-300">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <div class="flex justify-between mb-2">
+                  <span class="text-gray-700">الإقامة</span>
+                  <span class="font-bold">الفندق الأزرق</span>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                  <div class="flex justify-between mb-2">
+                    <span>غرفة ديلوكس</span>
+                    <span class="font-bold">+$200</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>إطلالة على البحر</span>
+                    <span class="font-bold">+$150</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="flex justify-between items-center mb-6">
+                <div>
+                  <div class="text-gray-600">السعر الإجمالي</div>
+                  <div class="text-2xl font-bold text-accent">$1,649</div>
+                </div>
+                <button class="bg-primary hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-bold">
+                  تأكيد الحجز
+                </button>
+              </div>
+              
+              <div class="text-center text-gray-600">
+                <i class="fas fa-shield-alt text-primary mr-2"></i>
+                حجز آمن | استرداد كامل المبلغ عند الإلغاء قبل 30 يومًا
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      
+      <!-- Itinerary Tab -->
+      <div ng-switch-when="itinerary">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold m-6">برنامج الرحلة (7 أيام)</h2>
+            
+            <div class="space-y-10">
+              <div class="itinerary-day">
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                  <div class="flex items-center mb-3">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">1</div>
+                    <h3 class="mr-3 font-bold text-xl">اليوم الأول: الوصول إلى سانتوريني</h3>
+                  </div>
+                  <div class="pl-13">
+                    <ul class="list-disc text-gray-700 space-y-2 pl-5">
+                      <li>استقبال في مطار سانتوريني ونقل إلى الفندق</li>
+                      <li>الاستقرار في الفندق والاستراحة</li>
+                      <li>جولة استكشافية في المساء في فيرا</li>
+                      <li>عشاء ترحيبي في مطعم محلي</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">النقل</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">الإفطار</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">العشاء</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="itinerary-day">
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                  <div class="flex items-center mb-3">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">2</div>
+                    <h3 class="mr-3 font-bold text-xl">اليوم الثاني: اكتشاف فيرا وأويا</h3>
+                  </div>
+                  <div class="pl-13">
+                    <ul class="list-disc text-gray-700 space-y-2 pl-5">
+                      <li>جولة صباحية في عاصمة الجزيرة فيرا</li>
+                      <li>زيارة المتحف الأثري ومتحف ما قبل التاريخ</li>
+                      <li>تناول الغداء في مطعم محلي مع إطلالة على الكالديرا</li>
+                      <li>التوجه إلى قرية أويا لمشاهدة أجمل غروب في العالم</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">مرشد سياحي</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">الإفطار</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">الغداء</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="itinerary-day">
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                  <div class="flex items-center mb-3">
+                    <div class="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">3</div>
+                    <h3 class="mr-3 font-bold text-xl">اليوم الثالث: جولة بحرية وجزيرة البركان</h3>
+                  </div>
+                  <div class="pl-13">
+                    <ul class="list-disc text-gray-700 space-y-2 pl-5">
+                      <li>رحلة بحرية على متن يخت فاخر</li>
+                      <li>زيارة جزيرة البركان والتجول على فوهته</li>
+                      <li>السباحة في الينابيع الساخنة</li>
+                      <li>تناول غداء بحري طازج على متن اليخت</li>
+                      <li>وقت حر في المساء</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">اليخت</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">الغداء</span>
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">السباحة</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Additional days would go here -->
+              
+            </div>
+          </div>
+                   <div>
+            <div class="bg-white rounded-xl shadow-lg p-6">
+              <h3 class="text-xl font-bold mb-4">ملاحظات الرحلة</h3>
+              
+              <div class="space-y-4">
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">المتضمن في الرحلة</h4>
+                  <ul class="list-disc text-gray-700 space-y-1 pl-5">
+                    <li>الإقامة 6 ليالي في فندق 4 نجوم</li>
+                    <li>وجبات الإفطار اليومية</li>
+                    <li>النقل من المطار وإليه</li>
+                    <li>جولة بحرية كاملة مع الغداء</li>
+                    <li>مرشد سياحي ناطق بالعربية</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">غير متضمن</h4>
+                  <ul class="list-disc text-gray-700 space-y-1 pl-5">
+                    <li>تأشيرة الدخول إلى اليونان</li>
+                    <li>الوجبات غير المذكورة</li>
+                    <li>المصاريف الشخصية</li>
+                    <li>التأمين الطبي</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 class="font-bold text-gray-800 mb-2">نصائح السفر</h4>
+                  <ul class="list-disc text-gray-700 space-y-1 pl-5">
+                    <li>أفضل وقت للزيارة: مايو إلى أكتوبر</li>
+                    <li>المدة الموصى بها: 7 أيام</li>
+                    <li>الملابس: ملابس صيفية مع سترة خفيفة للمساء</li>
+                    <li>التيار الكهربائي: 230V، مقبس نوع C/F</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+      </div>
+      
+      <!-- Pricing Tab -->
+      <div ng-switch-when="pricing">
+        <h2 class="text-2xl font-bold m-6">باقات الإقامة</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Package 1 -->
+          <div class="price-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">الباقة الأساسية</h3>
+              <div class="flex items-end mb-4">
+                <span class="text-3xl font-bold text-primary">$1,299</span>
+                <span class="text-gray-500 ml-2">للفرد</span>
+              </div>
+              
+              <ul class="space-y-3 mb-6">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>6 ليالي في فندق 3 نجوم</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>الإفطار اليومي</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>النقل من المطار وإليه</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>جولة في فيرا وأويا</span>
+                </li>
+                <li class="flex items-start text-gray-400">
+                  <i class="fas fa-times-circle mt-1 mr-2"></i>
+                  <span>جولة بحرية</span>
+                </li>
+                <li class="flex items-start text-gray-400">
+                  <i class="fas fa-times-circle mt-1 mr-2"></i>
+                  <span>مرشد سياحي</span>
+                </li>
+              </ul>
+              
+              <button class="w-full py-3 border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-white transition">
+                اختر هذه الباقة
+              </button>
+            </div>
+          </div>
+          
+          <!-- Package 2 -->
+          <div class="price-card featured bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">الباقة المميزة</h3>
+              <div class="flex items-end mb-4">
+                <span class="text-3xl font-bold text-accent">$1,649</span>
+                <span class="text-gray-500 ml-2">للفرد</span>
+              </div>
+              
+              <ul class="space-y-3 mb-6">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>6 ليالي في فندق 4 نجوم</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>الإفطار اليومي</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>النقل من المطار وإليه</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>جولة في فيرا وأويا</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>جولة بحرية مع الغداء</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>مرشد سياحي ناطق بالعربية</span>
+                </li>
+              </ul>
+              
+              <button class="w-full py-3 bg-accent hover:bg-orange-600 text-white rounded-lg font-bold transition">
+                اختر هذه الباقة
+              </button>
+            </div>
+          </div>
+          
+          <!-- Package 3 -->
+          <div class="price-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">الباقة الفاخرة</h3>
+              <div class="flex items-end mb-4">
+                <span class="text-3xl font-bold text-primary">$2,199</span>
+                <span class="text-gray-500 ml-2">للفرد</span>
+              </div>
+              
+              <ul class="space-y-3 mb-6">
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>6 ليالي في فندق 5 نجوم</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>الإفطار والعشاء اليومي</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>نقل خاص من المطار وإليه</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>جولات خاصة مع مرشد سياحي</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>جولة بحرية خاصة مع الغداء</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                  <span>تذوق نبيذ في كروم العنب</span>
+                </li>
+              </ul>
+              
+              <button class="w-full py-3 border border-primary text-primary rounded-lg font-bold hover:bg-primary hover:text-white transition">
+                اختر هذه الباقة
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <h2 class="text-2xl font-bold my-8 m-4">الخدمات الإضافية</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-white p-4 rounded-lg shadow-sm flex items-start">
+            <div class="bg-blue-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-car text-blue-500"></i>
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">تأجير سيارة</h3>
+              <p class="text-gray-600 text-sm">سيارة صغيرة لمدة 3 أيام</p>
+              <div class="text-primary font-bold mt-2">$45/يوم</div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg shadow-sm flex items-start">
+            <div class="bg-green-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-camera text-green-500"></i>
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">جلسة تصوير</h3>
+              <p class="text-gray-600 text-sm">جلسة احترافية في أجمل المواقع</p>
+              <div class="text-primary font-bold mt-2">$120</div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg shadow-sm flex items-start">
+            <div class="bg-purple-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-ship text-purple-500"></i>
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">رحلة غروب خاصة</h3>
+              <p class="text-gray-600 text-sm">يخت خاص لمشاهدة الغروب في أويا</p>
+              <div class="text-primary font-bold mt-2">$299</div>
+            </div>
+          </div>
+          
+          <div class="bg-white p-4 rounded-lg shadow-sm flex items-start">
+            <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+              <i class="fas fa-wine-bottle text-yellow-500"></i>
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">تذوق نبيذ خاص</h3>
+              <p class="text-gray-600 text-sm">زيارة خاصة لمصنع نبيذ مع تذوق</p>
+              <div class="text-primary font-bold mt-2">$75</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reviews Tab -->
+      <div ng-switch-when="reviews">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold m-6">آراء المسافرين</h2>
+            
+            <div class="flex items-center mb-8">
+              <div class="text-center p-4 bg-white rounded-xl shadow-sm m-6">
+                <div class="text-4xl font-bold text-accent">4.8</div>
+                <div class="flex justify-center text-yellow-400 my-2">
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="text-gray-600">842 تقييم</div>
+              </div>
+              
+              <div class="flex-1">
+                <div class="flex items-center mb-2">
+                  <span class="w-16">5 نجوم</span>
+                  <div class="h-2 bg-gray-200 rounded-full flex-1 mx-3">
+                    <div class="h-full bg-yellow-400 rounded-full" style="width: 85%"></div>
+                  </div>
+                  <span>715</span>
+                </div>
+                <div class="flex items-center mb-2">
+                  <span class="w-16">4 نجوم</span>
+                  <div class="h-2 bg-gray-200 rounded-full flex-1 mx-3">
+                    <div class="h-full bg-yellow-400 rounded-full" style="width: 12%"></div>
+                  </div>
+                  <span>101</span>
+                </div>
+                <div class="flex items-center mb-2">
+                  <span class="w-16">3 نجوم</span>
+                  <div class="h-2 bg-gray-200 rounded-full flex-1 mx-3">
+                    <div class="h-full bg-yellow-400 rounded-full" style="width: 2%"></div>
+                  </div>
+                  <span>17</span>
+                </div>
+                <div class="flex items-center mb-2">
+                  <span class="w-16">2 نجوم</span>
+                  <div class="h-2 bg-gray-200 rounded-full flex-1 mx-3">
+                    <div class="h-full bg-yellow-400 rounded-full" style="width: 1%"></div>
+                  </div>
+                  <span>8</span>
+                </div>
+                <div class="flex items-center">
+                  <span class="w-16">1 نجمة</span>
+                  <div class="h-2 bg-gray-200 rounded-full flex-1 mx-3">
+                    <div class="h-full bg-yellow-400 rounded-full" style="width: 0.5%"></div>
+                  </div>
+                  <span>1</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="space-y-6">
+              <div class="review-card bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-start mb-4">
+                  <img src="https://randomuser.me/api/portraits/women/32.jpg" class="w-12 h-12 rounded-full mr-4">
+                  <div>
+                    <h3 class="font-bold">سارة محمد</h3>
+                    <div class="flex text-yellow-400">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <div class="text-gray-500 text-sm mr-auto">منذ أسبوعين</div>
+                </div>
+                <h4 class="font-bold text-lg mb-2">تجربة لا تنسى!</h4>
+                <p class="text-gray-700 mb-4">
+                  سانتوريني كانت أكثر من رائعة! الغروب في أويا كان ساحرًا حقًا. الفندق كان نظيفًا وموقعه ممتاز. الجولة البحرية كانت من أبرز الأنشطة، خاصة السباحة في الينابيع الساخنة. أنصح الجميع بزيارة هذه الجزيرة الساحرة.
+                </p>
+                <div class="flex gap-3">
+                  <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-20 h-20 rounded-lg object-cover">
+                  <img src="https://images.unsplash.com/photo-1598880940080-ff9a29891b85?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="w-20 h-20 rounded-lg object-cover">
+                </div>
+              </div>
+              
+              <div class="review-card bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-start mb-4">
+                  <img src="https://randomuser.me/api/portraits/men/54.jpg" class="w-12 h-12 rounded-full mr-4">
+                  <div>
+                    <h3 class="font-bold">خالد عبدالله</h3>
+                    <div class="flex text-yellow-400">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  <div class="text-gray-500 text-sm mr-auto">منذ شهر</div>
+                </div>
+                <h4 class="font-bold text-lg mb-2">أجمل رحلة في حياتي</h4>
+                <p class="text-gray-700 mb-4">
+                  زرت سانتوريني مع زوجتي في شهر العسل وكانت اختيارًا ممتازًا. المباني البيضاء مع القباب الزرقاء كانت ساحرة. جربنا المأكولات البحرية في مطاعم الميناء وكانت لذيذة. النصيحة: احجزوا مطعمًا مسبقًا لمشاهدة الغروب لأن الأماكن تمتلئ بسرعة.
+                </p>
+              </div>
+              
+              <!-- More reviews would go here -->
+              
+            </div>
+          </div>
+          
+          <div>
+            <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
+              <h3 class="text-xl font-bold mb-4">اكتب تقييمك</h3>
+              
+              <div class="mb-4">
+                <label class="block text-gray-700 mb-2">تقييمك</label>
+                <div class="flex text-2xl text-gray-300">
+                  <i class="fas fa-star hover:text-yellow-400 cursor-pointer" ng-repeat="i in [1,2,3,4,5]" ng-click="rating = i" ng-class="{'text-yellow-400': i <= rating}"></i>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label class="block text-gray-700 mb-2">عنوان التقييم</label>
+                <input type="text" class="w-full p-3 border border-gray-300 rounded-lg">
+              </div>
+              
+              <div class="mb-4">
+                <label class="block text-gray-700 mb-2">التقييم</label>
+                <textarea class="w-full p-3 border border-gray-300 rounded-lg" rows="4"></textarea>
+              </div>
+              
+              <div class="mb-6">
+                <label class="block text-gray-700 mb-2">الصور (اختياري)</label>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                  <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3"></i>
+                  <p class="text-gray-500">اسحب الصور هنا أو انقر للتحميل</p>
+                </div>
+              </div>
+              
+              <button class="w-full py-3 bg-primary hover:bg-blue-600 text-white rounded-lg font-bold">
+                نشر التقييم
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Location Tab -->
+      <div ng-switch-when="location">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold m-6">الموقع والخرائط</h2>
+            
+            <div class="map-container bg-gray-200 mb-8">
+              <!-- Map would go here -->
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <div class="text-center">
+                  <i class="fas fa-map-marked-alt text-5xl text-gray-400 mb-4"></i>
+                  <p class="text-gray-600">خريطة تفاعلية لموقع سانتوريني</p>
+                </div>
+              </div>
+            </div>
+    
+            
+            <!-- <h2 class="text-2xl font-bold m-4">الأماكن القريبة</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="w-24 h-24 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="p-4">
+                  <h3 class="font-bold">أويا</h3>
+                  <p class="text-gray-600 text-sm">قرية الصيادين الشهيرة بأجمل غروب في العالم</p>
+                  <div class="text-gray-500 text-sm mt-2"><i class="fas fa-car mr-1"></i> 12 كم</div>
+                </div>
+              </div>
+              <div class="flex bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="w-24 h-24 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="p-4">
+                  <h3 class="font-bold">شاطئ بيريسا</h3>
+                  <p class="text-gray-600 text-sm">شاطئ من الرمال البركانية السوداء</p>
+                  <div class="text-gray-500 text-sm mt-2"><i class="fas fa-car mr-1"></i> 8 كم</div>
+                </div>
+              </div>
+              <div class="flex bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="w-24 h-24 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1554998171-89445e31c52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="p-4">
+                  <h3 class="font-bold">أكروتيري</h3>
+                  <p class="text-gray-600 text-sm">موقع أثري يعود إلى العصر البرونزي</p>
+                  <div class="text-gray-500 text-sm mt-2"><i class="fas fa-car mr-1"></i> 15 كم</div>
+                </div>
+              </div>
+              <div class="flex bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="w-24 h-24 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1591105279646-42e9cffcbc6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="p-4">
+                  <h3 class="font-bold">متحف ما قبل التاريخ</h3>
+                  <p class="text-gray-600 text-sm">يضم آثاراً من مدينة أكروتيري القديمة</p>
+                  <div class="text-gray-500 text-sm mt-2"><i class="fas fa-car mr-1"></i> 0.5 كم</div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          
+      
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sticky Booking Bar -->
+  <div class="sticky-booking-bar" ng-class="{'active': showStickyBar}">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between">
+      <div>
+        <h3 class="font-bold text-lg">سانتوريني، اليونان</h3>
+        <div class="flex items-center">
+          <div class="flex text-yellow-400">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <span class="text-gray-600 ml-2">(842 تقييم)</span>
+        </div>
+      </div>
+      
+      <div class="flex items-center">
+        <div class="mr-6">
+          <span class="text-gray-600">يبدأ من</span>
+          <div class="text-primary font-bold text-xl">$1,299</div>
+        </div>
+        <button class="bg-primary hover:bg-blue-600 text-white py-2 px-8 rounded-full font-bold">
+          احجز الآن
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script>
+    angular.module('travelApp', [])
+      .controller('TravelController', function($scope, $window) {
+        // Tabs configuration
+        $scope.tabs = [
+          { id: 'overview', name: 'نظرة عامة', icon: 'fas fa-info-circle' },
+          { id: 'itinerary', name: 'برنامج الرحلة', icon: 'fas fa-calendar-alt' },
+          { id: 'pricing', name: 'الأسعار', icon: 'fas fa-tag' },
+          { id: 'reviews', name: 'التقييمات', icon: 'fas fa-star' },
+          { id: 'location', name: 'الموقع', icon: 'fas fa-map-marker-alt' }
+        ];
+        
+        $scope.currentTab = 'overview';
+        $scope.rating = 5;
+        
+        // Show sticky bar on scroll
+        $scope.showStickyBar = false;
+        angular.element($window).bind('scroll', function() {
+          $scope.showStickyBar = this.pageYOffset > 300;
+          $scope.$apply();
+        });
+      });
+  </script> -->
+</body>
+ 
