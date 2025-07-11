@@ -62,7 +62,7 @@
               class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder=" password  "
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
@@ -70,16 +70,17 @@
               [(ngModel)]="loginObj.password"
             />
           </div>
-
+<!-- emilyspass
+emilys -->
           <div class="relative mb-6">
             <i
               class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
-              type="email"
-              name="email"
-              [(ngModel)]="loginObj.email"
-              placeholder="  email"
+              type="text"
+              name="username"
+              [(ngModel)]="loginObj.username"
+              placeholder="  username"
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               required
             />

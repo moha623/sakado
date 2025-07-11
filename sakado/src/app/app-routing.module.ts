@@ -7,6 +7,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
 import { AuthGuard } from './guards/auth.guard';
+import { BookingComponent } from './core/booking/booking.component';
 
 const routes: Routes = [
   {
@@ -31,27 +32,14 @@ const routes: Routes = [
         component: ContactComponent,
          title: 'Touriste - Contact'
       },
-
-      // {
-      //   path: 'services',
-      //   loadChildren: () => import('./features/services/services.module').then(m => m.ServicesModule),
-      //   title: 'Touriste - Services'
-      // },
-      // {
-      //   path: 'packages',
-      //   loadChildren: () => import('./features/packages/packages.module').then(m => m.PackagesModule),
-      //   title: 'Touriste - Forfaits'
-      // },
-      // {
-      //   path: 'pages', // Pour des pages génériques comme FAQ, Politique de confidentialité
-      //   loadChildren: () => import('./features/pages/pages.module').then(m => m.PagesModule),
-      //   title: 'Touriste - Pages'
-      // },
-      // {
-      //   path: 'contact',
-      //   loadChildren: () => import('./features/contact/contact.module').then(m => m.ContactModule),
-      //   title: 'Touriste - Contact'
-      // },
+         {
+        path: 'booking',
+        component: BookingComponent,
+        title: 'Touriste - Forfaits'
+      },
+ 
+   
+ 
       // {
       //   path: '**', // Route wildcard pour les pages non trouvées (404)
       //   loadChildren: () => import('./shared/components/not-found/not-found.module').then(m => m.NotFoundModule), // Ou un composant direct si simple

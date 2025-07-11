@@ -13,13 +13,13 @@ export class LoginComponent {
 
   signupUsers: any[] = [];
   loginObj: any = {
-    email: '',
+    username: '',
     password: '',
   };
 
   login() {
     console.log('Login object:', this.loginObj);
-    if (!this.loginObj.email || !this.loginObj.password) {
+    if (!this.loginObj.username || !this.loginObj.password) {
       console.error('Both username and password are required');
       return;
     }
@@ -30,7 +30,7 @@ export class LoginComponent {
       },
       (error) => {
         console.error('Login failed', error);
-        // Display user-friendly error message
+        
       }
     );
   }
@@ -38,6 +38,4 @@ export class LoginComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-
 }

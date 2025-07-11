@@ -13,24 +13,26 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   mobileMenuOpen: boolean = false;
-  isLoggedIn = false;
-  private authSubscription!: Subscription;
+   isLoggedIn = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.authSubscription = this.authService.isLoggedIn$.subscribe(status => {
+
+      this.authService.loggedIn$.subscribe(status => {
+              console.log(status)
       this.isLoggedIn = status;
+      console.log(status)
     });
   }
 
-  logout() {
+  
+  onLogout() {
     this.authService.logout();
-    this.router.navigate(['/auth/login']);
+      this.router.navigate(['/auth/login']);
   }
-
   ngOnDestroy() {
-    this.authSubscription.unsubscribe();  // prevent memory leaks
+
   }
 }
 

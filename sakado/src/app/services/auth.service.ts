@@ -7,51 +7,63 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
- 
-
 export class AuthService {
   private readonly API_URL = 'https://dummyjson.com/auth/login';
 
-  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
+  private tokenKey = 'token';
+  private loggedIn: BehaviorSubject<boolean>;
+  loggedIn$: Observable<boolean>;
 
-  constructor(private http: HttpClient) {}
-
-  // Expose login status as Observable
-  get isLoggedIn$(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+  constructor(private http: HttpClient) {
+    const isLogged = this.hasToken();
+    this.loggedIn = new BehaviorSubject<boolean>(isLogged);
+    this.loggedIn$ = this.loggedIn.asObservable();
   }
+
+  // login(credentials: any): Observable<any> {
+  //   return this.http.post(`${this.API_URL}`, credentials).pipe(
+  //     map((response: any) => {
+  //       if (typeof window !== 'undefined' && response && response.accessToken) {
+  //         localStorage.setItem(this.tokenKey, response.accessToken);
+  //         this.loggedIn.next(true);
+  //       }
+
+  //       return response;
+  //     })
+  //   );
+  // }
+login(credentials: any): Observable<any> {
+  return this.http.post(`${this.API_URL}`, credentials).pipe(
+    map((response: any) => {
+      console.log('Login response:', response);
+      if (typeof window !== 'undefined' && response && response.accessToken) {
+        localStorage.setItem(this.tokenKey, response.accessToken);
+        console.log('Token stored in localStorage:', localStorage.getItem(this.tokenKey));
+        this.loggedIn.next(true);
+      } else {
+        console.warn('No accessToken found in response');
+      }
+      return response;
+    })
+  );
+}
 
   private hasToken(): boolean {
-    return typeof window !== 'undefined' && !!localStorage.getItem('jwt_token');
-  }
-
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${this.API_URL}`, credentials).pipe(
-      map((response: any) => {
-        if (typeof window !== 'undefined' && response && response.token) {
-
-          localStorage.setItem('jwt_token', response.token);
-          this.loggedIn.next(true);  // notify login success
-        }
-        return response;
-      })
+    return (
+      typeof window !== 'undefined' && !!localStorage.getItem(this.tokenKey)
     );
   }
 
-  logout(): void {
+  logout() {
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('jwt_token');
-      this.loggedIn.next(false);  // notify logout
+      localStorage.removeItem(this.tokenKey);
     }
+    this.loggedIn.next(false);
   }
 
   getToken(): string | null {
-    return typeof window !== 'undefined' ? localStorage.getItem('jwt_token') : null;
-  }
-
-  // Optional synchronous check
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+    return typeof window !== 'undefined'
+      ? localStorage.getItem(this.tokenKey)
+      : null;
   }
 }
-

@@ -19,6 +19,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BookingComponent } from './core/booking/booking.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { FormsModule } from '@angular/forms';
     LayoutComponent,
     AboutComponent,
     ContactComponent,
+    BookingComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule, HttpClientModule],
   providers: [

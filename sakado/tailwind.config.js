@@ -4,11 +4,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#86b817',
+        primary: "#0ea5e9",
+        secondary: "#06b6d4",
+        accent: "#f59e0b",
+        dark: "#0f172a",
       },
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
-      }
-    }
-  }
+        sans: ["Tajawal", "sans-serif"],
+      },
+    },
+  },
 }
