@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly API_URL = 'https://dummyjson.com/auth/login';
+  private readonly API_URL = 'https://dummyjson.com/auth/';
 
   private tokenKey = 'token';
   private loggedIn: BehaviorSubject<boolean>;
@@ -20,33 +20,41 @@ export class AuthService {
     this.loggedIn$ = this.loggedIn.asObservable();
   }
 
-  // login(credentials: any): Observable<any> {
-  //   return this.http.post(`${this.API_URL}`, credentials).pipe(
-  //     map((response: any) => {
-  //       if (typeof window !== 'undefined' && response && response.accessToken) {
-  //         localStorage.setItem(this.tokenKey, response.accessToken);
-  //         this.loggedIn.next(true);
-  //       }
-
-  //       return response;
-  //     })
-  //   );
-  // }
-login(credentials: any): Observable<any> {
-  return this.http.post(`${this.API_URL}`, credentials).pipe(
-    map((response: any) => {
-      console.log('Login response:', response);
-      if (typeof window !== 'undefined' && response && response.accessToken) {
-        localStorage.setItem(this.tokenKey, response.accessToken);
-        console.log('Token stored in localStorage:', localStorage.getItem(this.tokenKey));
-        this.loggedIn.next(true);
-      } else {
-        console.warn('No accessToken found in response');
-      }
-      return response;
-    })
-  );
-}
+  register(
+    username: string,
+    email: string,
+    password: string,
+    lastname: string,
+    number: number,
+    confirmpassword: string
+  ): Observable<any> {
+    return this.http.post(this.API_URL + 'signup', {
+      username,
+      lastname,
+      email,
+      password,
+      number,
+      confirmpassword,
+    });
+  }
+  login(credentials: any): Observable<any> {
+    return this.http.post(`${this.API_URL + 'login'}`, credentials).pipe(
+      map((response: any) => {
+        console.log('Login response:', response);
+        if (typeof window !== 'undefined' && response && response.accessToken) {
+          localStorage.setItem(this.tokenKey, response.accessToken);
+          console.log(
+            'Token stored in localStorage:',
+            localStorage.getItem(this.tokenKey)
+          );
+          this.loggedIn.next(true);
+        } else {
+          console.warn('No accessToken found in response');
+        }
+        return response;
+      })
+    );
+  }
 
   private hasToken(): boolean {
     return (

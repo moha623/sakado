@@ -22,9 +22,13 @@ import { FormsModule } from '@angular/forms';
 import { BookingComponent } from './core/booking/booking.component';
 import { MoreDetailsComponent } from './pages/more-details/more-details.component';
 import { GalleryComponent } from './core/gallery/gallery.component';
-import { AdmineComponent } from './pages/admine/admine.component';
-import { PackageManagementComponent } from './pages/admine/package-management/package-management.component';
-import { BookingManagementComponent } from './pages/admine/booking-management/booking-management.component';
+import { AdmineComponent } from './admine/admine.component';
+import { PackageManagementComponent } from './admine/package-management/package-management.component';
+import { BookingManagementComponent } from './admine/booking-management/booking-management.component';
+import { DashboardComponent } from './admine/dashboard/dashboard.component';
+import { FilterBookingsPipe } from './pipes/filter-bookings.pipe';
+import { BookingService } from './services/booking.service';
+import { TripService } from './services/trip.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,8 +46,16 @@ import { BookingManagementComponent } from './pages/admine/booking-management/bo
     AdmineComponent,
     PackageManagementComponent,
     BookingManagementComponent,
+    DashboardComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, CommonModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    FilterBookingsPipe
+  ],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
@@ -53,6 +65,8 @@ import { BookingManagementComponent } from './pages/admine/booking-management/bo
       useClass: JwtInterceptor,
       multi: true, // Indique que c'est un intercepteur multiple
     },
+    BookingService,
+    TripService,
   ],
   bootstrap: [AppComponent],
 })

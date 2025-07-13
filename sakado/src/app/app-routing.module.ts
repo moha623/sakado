@@ -10,9 +10,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { BookingComponent } from './core/booking/booking.component';
 import { MoreDetailsComponent } from './pages/more-details/more-details.component';
 import { GalleryComponent } from './core/gallery/gallery.component';
-import { AdmineComponent } from './pages/admine/admine.component';
-import { PackageManagementComponent } from './pages/admine/package-management/package-management.component';
-import { BookingManagementComponent } from './pages/admine/booking-management/booking-management.component';
+import { AdmineComponent } from './admine/admine.component';
+import { PackageManagementComponent } from './admine/package-management/package-management.component';
+import { BookingManagementComponent } from './admine/booking-management/booking-management.component';
+import { DashboardComponent } from './admine/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -68,15 +69,15 @@ const routes: Routes = [
   {
     path: 'admine',
     component: AdmineComponent,
-    title: 'Touriste - Gallery',
-    canActivate: [AuthGuard],
-        children: [
-      { path: 'admine', redirectTo: 'admine', pathMatch: 'full' },  // default child route
+    title: 'Touriste - Admine',
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // default child route
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'PackageManagement', component: PackageManagementComponent },
       { path: 'BookingManagement', component: BookingManagementComponent },
-       
-    ]
+    ],
   },
+
   {
     path: 'auth',
     children: [

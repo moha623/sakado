@@ -1,0 +1,178 @@
+<!-- Main Content -->
+<div class="main-content" dir="rtl">
+  <!-- Header -->
+
+  <!-- Dashboard Content -->
+  <div class="content" id="dashboardContent">
+    <!-- KPI Cards -->
+    <div class="kpi-container">
+      <div class="kpi-card">
+        <div class="kpi-title">المستخدمون المسجلون</div>
+        <div class="kpi-value">1,248</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-arrow-up"></i>
+          <span>+24 هذا الأسبوع</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الرحلات النشطة</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-plus-circle"></i>
+          <span>3 رحلات جديدة</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الحجوزات (هذا الشهر)</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-chart-line"></i>
+          <span>+42% عن الشهر الماضي</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">المشاركون</div>
+        <div class="kpi-value">1,842</div>
+        <div class="kpi-trend">
+          <i class="fas fa-users"></i>
+          <span>142 مشارك نشط</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الإيرادات</div>
+        <div class="kpi-value">$24,842</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-dollar-sign"></i>
+          <span>+$2,421 هذا الشهر</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">مستخدمون جدد (24 ساعة)</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-user-plus"></i>
+          <span>+8 منذ البارحة</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts and Activity -->
+    <div class="charts-container">
+      <div class="chart-card">
+        <div class="card-header">
+          <div class="card-title">إحصائيات الحجوزات</div>
+          <div>
+            <select class="form-control" style="width: auto">
+              <option>آخر 7 أيام</option>
+              <option>آخر 30 يومًا</option>
+              <option>هذا الشهر</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="bookingsChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="card-header">
+          <div class="card-title">شعبية الرحلات</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="popularityChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="activity-feed">
+      <div class="card-header">
+        <div class="card-title">النشاطات الأخيرة</div>
+        <button class="btn btn-outline">عرض الكل</button>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">حجز جديد</div>
+            <div class="activity-desc">
+              قام أحمد محمد بحجز رحلة استكشاف الصحراء
+            </div>
+            <div class="activity-time">منذ 5 دقائق</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">مستخدم جديد</div>
+            <div class="activity-desc">
+              لين عبد الله قامت بالتسجيل في الموقع
+            </div>
+            <div class="activity-time">منذ 30 دقيقة</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">تحديث رحلة</div>
+            <div class="activity-desc">تم تحديث رحلة استكشاف الجبال</div>
+            <div class="activity-time">منذ ساعة</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">
+            <i class="fas fa-comment"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">استفسار جديد</div>
+            <div class="activity-desc">
+              محمد علي أرسل استفسارًا عن رحلة الساحل
+            </div>
+            <div class="activity-time">منذ ساعتين</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <div class="action-card"  routerLink=" PackageManagement">
+        <div class="action-icon">
+          <i class="fas fa-plus"></i>
+        </div>
+        <div class="action-title" >إضافة رحلة جديدة</div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-list"></i>
+        </div>
+        <div class="action-title">عرض جميع الحجوزات</div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-users-cog"></i>
+        </div>
+        <div class="action-title" routerLink=" BookingManagement">إدارة المستخدمين</div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="action-title">إضافة مشرف جديد</div>
+      </div>
+    </div>
+  </div>
+</div>

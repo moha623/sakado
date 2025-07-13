@@ -1,0 +1,198 @@
+<!-- booking-management.component.html -->
+<div class="main-content" dir="rtl">
+  <div class="content" id="bookingManagement">
+    <div class="table-container">
+      <div class="table-header">
+        <div class="card-title">إدارة الحجوزات</div>
+        <div class="table-actions">
+          <div>
+            <select class="form-control" style="width: auto; display: inline-block;" 
+                    [(ngModel)]="statusFilter">
+              <option value="all">حالة الحجز</option>
+              <option value="confirmed">مؤكدة</option>
+              <option value="pending">في الانتظار</option>
+              <option value="cancelled">ملغاة</option>
+            </select>
+            <select class="form-control" style="width: auto; display: inline-block; margin-right: 10px;" 
+                    [(ngModel)]="tripFilter">
+              <option value="all">الرحلات</option>
+              <option *ngFor="let trip of availableTrips" [value]="trip">{{ trip }}</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" (click)="addNewBooking()">
+            <i class="fas fa-plus"></i>
+            حجز جديد
+          </button>
+        </div>
+      </div>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>رقم الحجز</th>
+            <th>الرحلة</th>
+            <th>المشارك</th>
+            <th>تاريخ الحجز</th>
+            <th>المبلغ</th>
+            <th>الحالة</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="!loading; else loadingIndicator">
+            <tr *ngFor="let booking of bookings | filterBookings: statusFilter: tripFilter"
+                [class.active]="selectedBooking?.id === booking.id"
+                (click)="selectBooking(booking)">
+              <td>{{ booking.id }}</td>
+              <td>{{ booking.trip }}</td>
+              <td>{{ booking.participant }}</td>
+              <td>{{ booking.date }}</td>
+              <td>${{ booking.amount }}</td>
+              <td>
+                <span [ngClass]="getStatusClass(booking.status)">
+                  {{ getStatusText(booking.status) }}
+                </span>
+              </td>
+              <td class="action-cell">
+                <div class="action-btn view-btn">
+                  <i class="fas fa-eye"></i>
+                </div>
+                <div class="action-btn edit-btn">
+                  <i class="fas fa-edit"></i>
+                </div>
+                <div class="action-btn delete-btn">
+                  <i class="fas fa-trash"></i>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          
+          <ng-template #loadingIndicator>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div class="loading-indicator">
+                  <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Booking Details -->
+    <div class="booking-container" *ngIf="bookingDetails && selectedBooking">
+      <div class="booking-header">
+        <div class="card-title">تفاصيل الحجز {{ selectedBooking.id }}</div>
+        <div>
+          <button class="btn btn-outline">
+            <i class="fas fa-print"></i>
+            طباعة
+          </button>
+          <button class="btn btn-primary">
+            <i class="fas fa-envelope"></i>
+            إرسال بالبريد
+          </button>
+          <button class="btn btn-outline" (click)="downloadPDF()">
+            <i class="fas fa-file-pdf"></i>
+            تحميل PDF
+          </button>
+        </div>
+      </div>
+      
+      <div class="booking-summary">
+        <div class="summary-card">
+          <div class="summary-title">اسم الرحلة</div>
+          <div class="summary-value">{{ bookingDetails.tripName }}</div>
+        </div>
+        
+        <div class="summary-card">
+          <div class="summary-title">تاريخ الرحلة</div>
+          <div class="summary-value">{{ bookingDetails.tripDate }}</div>
+        </div>
+        
+        <div class="summary-card">
+          <div class="summary-title">حالة الحجز</div>
+          <div class="summary-value">{{ getStatusText(selectedBooking.status) }}</div>
+        </div>
+        
+        <div class="summary-card">
+          <div class="summary-title">المبلغ الإجمالي</div>
+          <div class="summary-value">${{ bookingDetails.totalAmount.toFixed(2) }}</div>
+          <div class="payment-status paid">{{ bookingDetails.paymentStatus }}</div>
+        </div>
+        
+        <div class="summary-card">
+          <div class="summary-title">تاريخ الحجز</div>
+          <div class="summary-value">{{ bookingDetails.bookingDate }}</div>
+        </div>
+        
+        <div class="summary-card">
+          <div class="summary-title">آخر تحديث</div>
+          <div class="summary-value">{{ bookingDetails.lastUpdate }}</div>
+        </div>
+      </div>
+      
+      <div class="card-title">معلومات المشارك</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" class="form-control" [value]="bookingDetails.participantInfo.fullName" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" class="form-control" [value]="bookingDetails.participantInfo.email" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>رقم الهاتف</label>
+          <input type="text" class="form-control" [value]="bookingDetails.participantInfo.phone" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>رقم الهوية</label>
+          <input type="text" class="form-control" [value]="bookingDetails.participantInfo.idNumber" readonly>
+        </div>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label>جهة الاتصال في حالة الطوارئ</label>
+          <input type="text" class="form-control" [value]="bookingDetails.participantInfo.emergencyContact" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>هاتف الطوارئ</label>
+          <input type="text" class="form-control" [value]="bookingDetails.participantInfo.emergencyPhone" readonly>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>ملاحظات طبية / طلبات خاصة</label>
+        <textarea class="form-control" rows="3" readonly>{{ bookingDetails.participantInfo.medicalNotes }}</textarea>
+      </div>
+      
+      <div class="participant-list">
+        <div class="card-title">المشاركون في هذه الرحلة ({{ bookingDetails.participants.length }}/30)</div>
+        
+        <div class="participant-card" *ngFor="let participant of bookingDetails.participants">
+          <div class="participant-header">
+            <div class="participant-name">{{ participant.name }}</div>
+            <div class="participant-status" 
+                 [class.checked-in]="participant.status === 'تم التسجيل'"
+                 [class.not-checked-in]="participant.status === 'لم يسجل بعد'">
+              {{ participant.status }}
+            </div>
+          </div>
+          <div>{{ participant.email }} | {{ participant.phone }}</div>
+        </div>
+      </div>
+      
+      <div class="form-footer">
+        <button class="btn btn-outline">تغيير الحالة</button>
+        <button class="btn btn-primary">حفظ التغييرات</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<body
+<div
   class="bg-gradient-to-br from-blue-50 to-cyan-100 h-screen font-[Tajawal] overflow-hidden [direction:rtl]"
 >
   <div class="flex items-center justify-center [direction:rtl]">
@@ -50,18 +50,20 @@
       <!-- Left Side - Form -->
       <div class="w-full md:w-3/5 md:p-10">
         <div class="text-center">
-          <!-- <div class="flex justify-center mb-4">
-            <div class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center text-cyan-400">
+          <div class="flex justify-center mb-4">
+            <div
+              class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center text-cyan-400"
+            >
               <i class="fas fa-user-plus text-3xl"></i>
             </div>
-          </div> -->
+          </div>
           <h1 class="text-5xl md:text-5xl font-bold text-blue-900 mb-2">
             إنشاء حساب جديد
           </h1>
           <p class="text-gray-600">انضم لمجتمع السفر وابدأ رحلتك السياحية</p>
         </div>
 
-        <form class="space-y-4">
+        <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm"  >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="relative mb-6">
               <i
@@ -69,20 +71,55 @@
               ></i>
               <input
                 type="text"
+                name="username"
+                [(ngModel)]="form.username"
+                required
+                minlength="3"
+                maxlength="20"
+                #username="ngModel"
                 placeholder="الاسم الأول"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
-
+            <div *ngIf="username.errors && f.submitted">
+              <small *ngIf="username.errors['required']"
+                >Username is required</small
+              >
+              <small *ngIf="username.errors['minlength']"
+                >Username must be at least 3 characters</small
+              >
+              <small *ngIf="username.errors['maxlength']"
+                >Username must be at most 20 characters</small
+              >
+            </div>
             <div class="relative mb-6">
               <i
                 class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
               <input
                 type="text"
+                name="lastname"
+                [(ngModel)]="form.lastname"
+                required
+                minlength="3"
+                maxlength="20"
+                #lastname="ngModel"
+                I
+                type="text"
                 placeholder="اسم العائلة"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
+            </div>
+            <div *ngIf="lastname.errors && f.submitted">
+              <small *ngIf="lastname.errors['required']"
+                >Lastname is required</small
+              >
+              <small *ngIf="lastname.errors['minlength']"
+                >Lastname must be at least 3 characters</small
+              >
+              <small *ngIf="lastname.errors['maxlength']"
+                >Lastname must be at most 20 characters</small
+              >
             </div>
           </div>
           <div class="relative mb-6">
@@ -90,6 +127,11 @@
               class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
+              name="number"
+              [(ngModel)]="form.number"
+              required
+              minlength="6"
+              #password="ngModel"
               type="tel"
               placeholder="رقم الهاتف"
               dir="rtl"
@@ -102,6 +144,11 @@
               class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
+              name="email"
+              [(ngModel)]="form.email"
+              required
+              email
+              #email="ngModel"
               type="email"
               placeholder="البريد الإلكتروني"
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
@@ -114,18 +161,35 @@
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
               <input
+                name="password"
+                [(ngModel)]="form.password"
+                required
+                minlength="6"
+                #password="ngModel"
                 type="password"
                 placeholder="كلمة المرور"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
-
+            <div *ngIf="password.errors && f.submitted">
+              <small *ngIf="password.errors['required']"
+                >Password is required</small
+              >
+              <small *ngIf="password.errors['minlength']"
+                >Password must be at least 6 characters</small
+              >
+            </div>
             <div class="relative mb-6">
               <i
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
               <input
-                type="password"
+                name="confirmpassword"
+                [(ngModel)]="form.confirmpassword"
+                required
+                minlength="6"
+                #confirmpassword="ngModel"
+                type="confirmpassword"
                 placeholder="تأكيد كلمة المرور"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
@@ -150,9 +214,11 @@
             type="submit"
             class="w-full py-2 text-xl rounded-xl bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold tracking-wide shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
           >
-            إنشاء حساب <i class="fas fa-arrow-left mr-2"></i>
+            إنشاء حساب 
+            <i class="fas fa-arrow-left mr-2"></i>
           </button>
-
+          <div *ngIf="isSignUpFailed">Signup failed: {{ errorMessage }}</div>
+          <div *ngIf="isSuccessful">Registration successful!</div>
           <div class="text-center mt-6">
             <p class="text-gray-600">أو سجل باستخدام</p>
             <div class="flex gap-4 mt-4">
@@ -186,7 +252,6 @@
             </p>
           </div>
         </form>
-        
       </div>
     </div>
   </div>
@@ -199,4 +264,4 @@
     href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css"
     rel="stylesheet"
   />
-</body>
+</div>

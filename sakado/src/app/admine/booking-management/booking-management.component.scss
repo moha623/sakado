@@ -2,7 +2,39 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
  
-  
+//   :root {
+//   --primary: #2c6e49;
+//             --primary-light: #4c956c;
+//             --secondary: #fefee3;
+//             --accent: #ff9e00;
+//             --dark: #1b4332;
+//             --light: #d8f3dc;
+//             --gray: #f8f9fa;
+//             --text: #2d3a3a;
+//             --success: #38b000;
+//             --warning: #ff9e00;
+//             --danger: #e5383b;
+//             --border: #e0e0e0;
+// }
+      
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+              --primary: #2c6e49;
+            --primary-light: #4c956c;
+            --secondary: #fefee3;
+            --accent: #ff9e00;
+            --dark: #1b4332;
+            --light: #d8f3dc;
+            --gray: #f8f9fa;
+            --text: #2d3a3a;
+            --success: #38b000;
+            --warning: #ff9e00;
+            --danger: #e5383b;
+            --border: #e0e0e0;
+        }
         
         body {
             background-color: #f0f2f5;
