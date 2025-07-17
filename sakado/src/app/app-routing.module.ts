@@ -6,7 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import { AuthGuard } from './guards/auth.guard';
+import { authGuard } from './guards/auth.guard';
 import { BookingComponent } from './core/booking/booking.component';
 import { MoreDetailsComponent } from './pages/more-details/more-details.component';
 import { GalleryComponent } from './core/gallery/gallery.component';
@@ -26,25 +26,25 @@ const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
         title: 'Touriste - Accueil',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
       },
       {
         path: 'about',
         component: AboutComponent,
         title: 'Touriste - À Propos',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
       },
       {
         path: 'contact',
         component: ContactComponent,
         title: 'Touriste - Contact',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
       },
       {
         path: 'booking',
         component: BookingComponent,
         title: 'Touriste - Forfaits',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
       },
 
       // {
@@ -58,13 +58,13 @@ const routes: Routes = [
     path: 'details',
     component: MoreDetailsComponent,
     title: 'Touriste - Détails',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'gallery',
     component: GalleryComponent,
     title: 'Touriste - Gallery',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'admine',

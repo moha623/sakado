@@ -9,33 +9,47 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+ 
 
-  signupUsers: any[] = [];
-  loginObj: any = {
-    username: '',
-    password: '',
-  };
+  // signupUsers: any[] = [];
+  // loginObj: any = {
+  //   username: '',
+  //   password: '',
+  // };
 
-  login() {
-    console.log('Login object:', this.loginObj);
-    if (!this.loginObj.username || !this.loginObj.password) {
-      console.error('Both username and password are required');
-      return;
-    }
-    this.authService.login(this.loginObj).subscribe(
-      (response) => {
-        console.log('Login successful', response);
-        this.router.navigate(['/']);
-      },
-      (error) => {
-        console.error('Login failed', error);
-        
-      }
-    );
-  }
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  // login() {
+  //   console.log('Login object:', this.loginObj);
+  //   if (!this.loginObj.username || !this.loginObj.password) {
+  //     console.error('Both username and password are required');
+  //     return;
+  //   }
+  //   this.authService.login(this.loginObj).subscribe(
+  //     (response) => {
+  //       console.log('Login successful', response);
+  //       this.router.navigate(['/']);
+  //     },
+  //     (error) => {
+  //       console.error('Login failed', error);
+  //     }
+  //   );
+  // }
+  // logout() {
+  //   this.authService.logout();
+  //   this.router.navigate(['/login']);
+  // }
+  email: string = '';
+  password: string = '';
+  error: string = '';
+
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {}
+
+  onSubmit() {
+    this.auth.login(this.email, this.password).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (err) => console.error('Login failed', err)
+    });
   }
 }

@@ -1,6 +1,6 @@
 // booking-filter.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
-import { Booking } from './booking.model';
+import { Booking } from '../models/booking.model';
 
 @Pipe({
   name: 'filterBookings'

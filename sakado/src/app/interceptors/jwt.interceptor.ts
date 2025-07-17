@@ -1,4 +1,4 @@
-// src/app/interceptors/jwt.interceptor.ts
+// interceptors/token.interceptor.ts
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -7,24 +7,31 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service'; // Assurez-vous que le chemin est correct
+import { AuthService } from '../services/auth.service';
+import { switchMap, take } from 'rxjs/operators';
 
-@Injectable( )
-export class JwtInterceptor implements HttpInterceptor {
+@Injectable()
+export class TokenInterceptor implements HttpInterceptor {
+  constructor(private auth: AuthService) {}
 
-  constructor(private authService: AuthService) {}
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    // Skip for auth requests
+    if (request.url.includes('/auth/')) return next.handle(request);
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken(); // Assurez-vous que cette méthode existe dans AuthService
-
-    if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`
+    return this.auth.currentToken$.pipe(
+      take(1),
+      switchMap(token => {
+        if (token) {
+          request = request.clone({
+            setHeaders: { Authorization: `Bearer ${token}` }
+          });
         }
-      });
-    }
-
-    return next.handle(request);
+        return next.handle(request);
+      })
+    );
   }
+  
 }

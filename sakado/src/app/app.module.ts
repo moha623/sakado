@@ -14,8 +14,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
-import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
+ 
 import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +34,18 @@ import { DashboardComponent } from './admine/dashboard/dashboard.component';
 import { FilterBookingsPipe } from './pipes/filter-bookings.pipe';
 import { BookingService } from './services/booking.service';
 import { TripService } from './services/trip.service';
+import { FirebaseModule } from './firebase/firebase.module';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth } from '@angular/fire/auth';
+import { getAuth } from 'firebase/auth';
+
+ 
+import {   initializeApp } from '@angular/fire/app';
+import { TokenInterceptor } from './interceptors/jwt.interceptor';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { environment } from '../environments/environment';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,15 +63,17 @@ import { TripService } from './services/trip.service';
     AdmineComponent,
     PackageManagementComponent,
     BookingManagementComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
+    FirebaseModule, // Import FirebaseModule to initialize Firebase
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    FilterBookingsPipe
+    FilterBookingsPipe,
+ 
   ],
   providers: [
     provideClientHydration(withEventReplay()),
@@ -62,8 +81,8 @@ import { TripService } from './services/trip.service';
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
-      multi: true, // Indique que c'est un intercepteur multiple
+      useClass: TokenInterceptor,
+      multi: true,
     },
     BookingService,
     TripService,

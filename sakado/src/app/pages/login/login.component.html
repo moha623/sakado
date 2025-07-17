@@ -57,6 +57,7 @@
         </div>
 
         <form class="space-y-4">
+          <div *ngIf="error" class="error">{{ error }}</div>
           <div class="relative mb-6">
             <i
               class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
@@ -67,20 +68,20 @@
               placeholder=" password  "
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               required
-              [(ngModel)]="loginObj.password"
+              [(ngModel)]="password"
             />
           </div>
-<!-- emilyspass
+          <!-- emilyspass
 emilys -->
           <div class="relative mb-6">
             <i
               class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
-              type="text"
-              name="username"
-              [(ngModel)]="loginObj.username"
-              placeholder="  username"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              placeholder="  E-mail"
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               required
             />
@@ -102,7 +103,7 @@ emilys -->
           <button
             type="submit"
             class="w-full py-2 text-xl rounded-xl bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold tracking-wide shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
-            (click)="login()"
+            (click)="onSubmit()"
           >
             تسجيل الدخول
           </button>

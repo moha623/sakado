@@ -63,7 +63,8 @@
           <p class="text-gray-600">انضم لمجتمع السفر وابدأ رحلتك السياحية</p>
         </div>
 
-        <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm"  >
+        <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm">
+          <div *ngIf="error" class="error">{{ error }}</div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="relative mb-6">
               <i
@@ -72,7 +73,7 @@
               <input
                 type="text"
                 name="username"
-                [(ngModel)]="form.username"
+                [(ngModel)]="username"
                 required
                 minlength="3"
                 maxlength="20"
@@ -99,7 +100,7 @@
               <input
                 type="text"
                 name="lastname"
-                [(ngModel)]="form.lastname"
+                [(ngModel)]="lastname"
                 required
                 minlength="3"
                 maxlength="20"
@@ -128,7 +129,7 @@
             ></i>
             <input
               name="number"
-              [(ngModel)]="form.number"
+              [(ngModel)]="number"
               required
               minlength="6"
               #password="ngModel"
@@ -145,7 +146,7 @@
             ></i>
             <input
               name="email"
-              [(ngModel)]="form.email"
+              [(ngModel)]="email"
               required
               email
               #email="ngModel"
@@ -162,7 +163,7 @@
               ></i>
               <input
                 name="password"
-                [(ngModel)]="form.password"
+                [(ngModel)]="password"
                 required
                 minlength="6"
                 #password="ngModel"
@@ -179,13 +180,13 @@
                 >Password must be at least 6 characters</small
               >
             </div>
-            <div class="relative mb-6">
+            <!-- <div class="relative mb-6">
               <i
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
               <input
                 name="confirmpassword"
-                [(ngModel)]="form.confirmpassword"
+                [(ngModel)]=" confirmpassword"
                 required
                 minlength="6"
                 #confirmpassword="ngModel"
@@ -193,7 +194,7 @@
                 placeholder="تأكيد كلمة المرور"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
-            </div>
+            </div> -->
           </div>
 
           <div class="flex items-center mb-4">
@@ -214,11 +215,9 @@
             type="submit"
             class="w-full py-2 text-xl rounded-xl bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold tracking-wide shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
           >
-            إنشاء حساب 
+            إنشاء حساب
             <i class="fas fa-arrow-left mr-2"></i>
           </button>
-          <div *ngIf="isSignUpFailed">Signup failed: {{ errorMessage }}</div>
-          <div *ngIf="isSuccessful">Registration successful!</div>
           <div class="text-center mt-6">
             <p class="text-gray-600">أو سجل باستخدام</p>
             <div class="flex gap-4 mt-4">
