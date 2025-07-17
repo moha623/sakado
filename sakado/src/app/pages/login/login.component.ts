@@ -9,8 +9,6 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
- 
-
   // signupUsers: any[] = [];
   // loginObj: any = {
   //   username: '',
@@ -41,15 +39,31 @@ export class LoginComponent {
   password: string = '';
   error: string = '';
 
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   onSubmit() {
     this.auth.login(this.email, this.password).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: (err) => console.error('Login failed', err)
+      next: (response) => {
+        console.log('Login successful', response);
+        this.router.navigate(['/']);
+      },
+
+      error: (err) => console.error('Login failed', err),
     });
   }
+logout() {
+  this.auth.logout().subscribe({
+    next: () => {
+      console.log('User logged out');
+      this.router.navigate(['/login']);
+    },
+    error: (e) => {
+      console.error('Logout failed:', e);
+      
+      localStorage.removeItem('authToken');
+      this.router.navigate(['/login']);
+    }
+  });
+}
+
 }

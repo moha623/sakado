@@ -71,28 +71,18 @@
                 class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
               <input
-                type="text"
+          
                 name="username"
                 [(ngModel)]="username"
                 required
                 minlength="3"
                 maxlength="20"
-                #username="ngModel"
+          
                 placeholder="الاسم الأول"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
-            <div *ngIf="username.errors && f.submitted">
-              <small *ngIf="username.errors['required']"
-                >Username is required</small
-              >
-              <small *ngIf="username.errors['minlength']"
-                >Username must be at least 3 characters</small
-              >
-              <small *ngIf="username.errors['maxlength']"
-                >Username must be at most 20 characters</small
-              >
-            </div>
+   
             <div class="relative mb-6">
               <i
                 class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
@@ -104,24 +94,14 @@
                 required
                 minlength="3"
                 maxlength="20"
-                #lastname="ngModel"
+              
                 I
-                type="text"
+               
                 placeholder="اسم العائلة"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
-            <div *ngIf="lastname.errors && f.submitted">
-              <small *ngIf="lastname.errors['required']"
-                >Lastname is required</small
-              >
-              <small *ngIf="lastname.errors['minlength']"
-                >Lastname must be at least 3 characters</small
-              >
-              <small *ngIf="lastname.errors['maxlength']"
-                >Lastname must be at most 20 characters</small
-              >
-            </div>
+     
           </div>
           <div class="relative mb-6">
             <i
@@ -132,8 +112,8 @@
               [(ngModel)]="number"
               required
               minlength="6"
-              #password="ngModel"
-              type="tel"
+           
+      
               placeholder="رقم الهاتف"
               dir="rtl"
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800 text-right"
@@ -145,12 +125,7 @@
               class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
             ></i>
             <input
-              name="email"
-              [(ngModel)]="email"
-              required
-              email
-              #email="ngModel"
-              type="email"
+            [(ngModel)]="email" name="email"  
               placeholder="البريد الإلكتروني"
               class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
             />
@@ -166,20 +141,13 @@
                 [(ngModel)]="password"
                 required
                 minlength="6"
-                #password="ngModel"
+      
                 type="password"
                 placeholder="كلمة المرور"
                 class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
-            <div *ngIf="password.errors && f.submitted">
-              <small *ngIf="password.errors['required']"
-                >Password is required</small
-              >
-              <small *ngIf="password.errors['minlength']"
-                >Password must be at least 6 characters</small
-              >
-            </div>
+ 
             <!-- <div class="relative mb-6">
               <i
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { response } from 'express';
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -46,18 +47,31 @@ export class RegisterComponent {
   error: string = '';
   username: string = '';
   lastname: string = '';
-  number: number = 0;
+  number: any;
 
   async onSubmit() {
     this.error = '';
     try {
-      await this.authService.register(this.email, this.password);
-      this.router.navigate(['/dashboard']);
-    } catch(error:any) {
+      this.authService.register(this.email, this.password).subscribe({
+        next: (response) => {
+          console.log('Email:', this.email, 'Password:', this.password);
+          console.log(
+            'Username:',
+            this.username,
+            'Lastname:',
+            this.lastname,
+            'Number:',
+            this.number
+          );
+          this.router.navigate(['/login']);
+          alert('Registration successful! Please log in.');
+        },
+      });
+    } catch (error: any) {
       this.error = this.getErrorMessage(error.code);
     }
   }
-    private getErrorMessage(code: string): string {
+  private getErrorMessage(code: string): string {
     switch (code) {
       case 'auth/email-already-in-use':
         return 'Email already exists';

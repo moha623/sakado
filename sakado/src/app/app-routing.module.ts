@@ -73,7 +73,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // default child route
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'PackageManagement', component: PackageManagementComponent },
+      { path: 'PackageManagement', component: PackageManagementComponent, },
       { path: 'BookingManagement', component: BookingManagementComponent },
     ],
   },

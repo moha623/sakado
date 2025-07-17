@@ -1,17 +1,15 @@
-// trip.model.ts
 export interface Trip {
-  id: number;
+  id?: string;
   name: string;
   category: string;
   destination: string;
   price: number;
-  status: 'active' | 'draft' | 'archived' | 'completed';
-  participants: string; // e.g. "24/30"
-  startDate?: Date;
-  endDate?: Date;
-  maxParticipants?: number;
-  description?: string;
-  itinerary?: string;
+  status: string;
+  participants: number;
+  maxParticipants: number;
   discountPrice?: number;
-  image?: string;
+  description: string;
+  itinerary: string;
+  startDate: Date | string;
+  endDate: Date | string;
 }

@@ -65,8 +65,12 @@
       <div class="form-grid">
         <div class="form-group">
           <label>اسم الرحلة</label>
-          <input type="text" class="form-control" placeholder="أدخل اسم الرحلة" 
-                 [(ngModel)]="newTrip.name" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="أدخل اسم الرحلة"
+            [(ngModel)]="newTrip.name"
+          />
         </div>
 
         <div class="form-group">
@@ -81,14 +85,21 @@
 
         <div class="form-group">
           <label>الوجهة / المكان</label>
-          <input type="text" class="form-control" placeholder="أدخل اسم الوجهة" 
-                 [(ngModel)]="newTrip.destination" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="أدخل اسم الوجهة"
+            [(ngModel)]="newTrip.destination"
+          />
         </div>
 
         <div class="form-group">
           <label>الحالة</label>
           <select class="form-control" [(ngModel)]="newTrip.status">
-            <option *ngFor="let status of statusOptions" [value]="getStatusValue(status)">
+            <option
+              *ngFor="let status of statusOptions"
+              [value]="getStatusValue(status)"
+            >
               {{ status }}
             </option>
           </select>
@@ -98,64 +109,84 @@
       <div class="form-row">
         <div class="form-group">
           <label>تاريخ البدء</label>
-          <input type="date" class="form-control" 
-                 [value]="newTrip.startDate | date:'yyyy-MM-dd'"
-                   />
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="newTrip.startDate"
+            [ngModel]="newTrip.startDate | date : 'yyyy-MM-dd'"
+            (ngModelChange)="newTrip.startDate = $event"
+          />
         </div>
 
         <div class="form-group">
           <label>تاريخ الانتهاء</label>
-          <input type="date" class="form-control" 
-                 [value]="newTrip.endDate | date:'yyyy-MM-dd'"
-                   />
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="newTrip.endDate"
+            [ngModel]="newTrip.endDate | date : 'yyyy-MM-dd'"
+            (ngModelChange)="newTrip.endDate = $event"
+          />
         </div>
 
         <div class="form-group">
           <label>عدد المشاركين الأقصى</label>
-          <input type="number" class="form-control" value="20" 
-                 [(ngModel)]="newTrip.maxParticipants" />
+          <input
+            type="number"
+            class="form-control"
+            value="20"
+            [(ngModel)]="newTrip.maxParticipants"
+          />
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>السعر الأساسي</label>
-          <input type="number" class="form-control" placeholder="$0.00" 
-                 [(ngModel)]="newTrip.price" />
+          <input
+            type="number"
+            class="form-control"
+            placeholder="$0.00"
+            [(ngModel)]="newTrip.price"
+          />
         </div>
 
         <div class="form-group">
           <label>سعر التخفيض (اختياري)</label>
-          <input type="number" class="form-control" placeholder="$0.00" 
-                 [(ngModel)]="newTrip.discountPrice" />
+          <input
+            type="number"
+            class="form-control"
+            placeholder="$0.00"
+            [(ngModel)]="newTrip.discountPrice"
+          />
         </div>
       </div>
 
       <div class="form-group">
         <label>وصف الرحلة</label>
-        <textarea class="form-control" rows="4" placeholder="أدخل وصفًا تفصيليًا للرحلة"
-                  [(ngModel)]="newTrip.description"></textarea>
+        <textarea
+          class="form-control"
+          rows="4"
+          placeholder="أدخل وصفًا تفصيليًا للرحلة"
+          [(ngModel)]="newTrip.description"
+        ></textarea>
       </div>
 
       <div class="form-group">
         <label>برنامج الرحلة (يوم بيوم)</label>
-        <textarea class="form-control" rows="6" placeholder="أدخل تفاصيل برنامج الرحلة"
-                  [(ngModel)]="newTrip.itinerary"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>الصور</label>
-        <div style="border: 2px dashed #ddd; border-radius: 8px; padding: 20px; text-align: center;" (click)="fileInput.click()">
-          <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #999; margin-bottom: 10px"></i>
-          <p style="color: #666" >اسحب الصور هنا أو انقر للتحميل</p>
-          <input type="file" style="display: none" #fileInput (change)="onFileSelected($event)">
-          <button class="btn btn-sm btn-outline-primary" >اختر صورة</button>
-        </div>
+        <textarea
+          class="form-control"
+          rows="6"
+          placeholder="أدخل تفاصيل برنامج الرحلة"
+          [(ngModel)]="newTrip.itinerary"
+        ></textarea>
       </div>
 
       <div class="form-footer">
         <button class="btn btn-outline">إلغاء</button>
-        <button class="btn btn-primary" (click)="addNewTrip()">حفظ الرحلة</button>
+        <button class="btn btn-primary" (click)="addNewTrip()">
+          حفظ الرحلة
+        </button>
       </div>
     </div>
   </div>

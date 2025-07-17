@@ -20,7 +20,7 @@ import {
   provideHttpClient,
   withFetch,
 } from '@angular/common/http';
- 
+
 import { AuthService } from './services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -35,17 +35,10 @@ import { FilterBookingsPipe } from './pipes/filter-bookings.pipe';
 import { BookingService } from './services/booking.service';
 import { TripService } from './services/trip.service';
 import { FirebaseModule } from './firebase/firebase.module';
-import { provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth } from '@angular/fire/auth';
-import { getAuth } from 'firebase/auth';
-
- 
-import {   initializeApp } from '@angular/fire/app';
 import { TokenInterceptor } from './interceptors/jwt.interceptor';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { environment } from '../environments/environment';
- 
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +66,8 @@ import { environment } from '../environments/environment';
     FormsModule,
     HttpClientModule,
     FilterBookingsPipe,
- 
+        AngularFirestoreModule,
+    AngularFireStorageModule
   ],
   providers: [
     provideClientHydration(withEventReplay()),
@@ -85,7 +79,7 @@ import { environment } from '../environments/environment';
       multi: true,
     },
     BookingService,
-    TripService,
+   
   ],
   bootstrap: [AppComponent],
 })
