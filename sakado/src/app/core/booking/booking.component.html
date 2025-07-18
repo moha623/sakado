@@ -1,315 +1,321 @@
-  <!-- Packages Section -->
-  <section
-    id="packages"
-    class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50"
-    
-  >
-    <div class="container mx-auto px-4">
-      <!-- Heading -->
-      <div class="text-center mb-16">
-        <div class="relative inline-block mb-6">
-          <h6 class="text-primary font-bold text-xl mb-2">الباقات</h6>
+<!-- Packages Section -->
+<section
+  id="packages"
+  class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50"
+>
+  <div class="container mx-auto px-4">
+    <!-- Heading -->
+    <div class="text-center mb-16">
+      <div class="relative inline-block mb-6">
+        <h6 class="text-primary font-bold text-xl mb-2">الباقات</h6>
+        <div
+          class="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"
+        ></div>
+      </div>
+      <h1 class="text-4xl font-bold mb-6">باقاتنا السياحية المميزة</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        اختر من بين مجموعة واسعة من الباقات المصممة لتلبي جميع توقعاتك وتفضيلاتك
+      </p>
+    </div>
+
+    <!-- Package Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Package 1 - Thailand -->
+      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-hidden relative">
+          <img
+            class="w-full h-60 object-cover transition-transform duration-500"
+            src="https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+            alt="Thailand Package"
+          />
           <div
-            class="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"
-          ></div>
+            class="absolute top-4 right-4 bg-accent text-white text-sm font-bold py-1 px-3 rounded-full"
+          >
+            الأكثر مبيعاً
+          </div>
         </div>
-        <h1 class="text-4xl font-bold mb-6">باقاتنا السياحية المميزة</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          اختر من بين مجموعة واسعة من الباقات المصممة لتلبي جميع توقعاتك
-          وتفضيلاتك
-        </p>
+        <div class="flex border-b border-gray-200">
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+            <span class="text-sm">تايلاند</span>
+          </div>
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-calendar-alt text-primary mr-2"></i>
+            <span class="text-sm">7 أيام</span>
+          </div>
+          <div class="flex-1 text-center py-3">
+            <i class="fas fa-user text-primary mr-2"></i>
+            <span class="text-sm">شخصين</span>
+          </div>
+        </div>
+        <div class="text-center p-6">
+          <h3 class="text-3xl font-bold mb-3 text-primary">$1,490</h3>
+          <div class="flex justify-center mb-4">
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+          </div>
+          <p class="text-gray-600 mb-6">
+            باقة شاملة: الإقامة الفاخرة، الجولات السياحية، الانتقالات، وجبات
+            الطعام
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              (click)="scrollToForm()"
+              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
+            >
+              احجز الآن
+            </a>
+            <a
+              routerLink="/details"
+              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
+            >
+              التفاصيل
+            </a>
+          </div>
+        </div>
       </div>
 
-      <!-- Package Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Package 1 - Thailand -->
-        <div
-          class="package-card bg-white rounded-2xl overflow-hidden shadow-xl"
-        >
-          <div class="overflow-hidden relative">
-            <img
-              class="w-full h-60 object-cover transition-transform duration-500"
-              src="https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-              alt="Thailand Package"
-            />
-            <div
-              class="absolute top-4 right-4 bg-accent text-white text-sm font-bold py-1 px-3 rounded-full"
+      <!-- Package 2 - Indonesia -->
+      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-hidden">
+          <img
+            class="w-full h-60 object-cover transition-transform duration-500"
+            src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+            alt="Indonesia Package"
+          />
+        </div>
+        <div class="flex border-b border-gray-200">
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+            <span class="text-sm">إندونيسيا</span>
+          </div>
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-calendar-alt text-primary mr-2"></i>
+            <span class="text-sm">5 أيام</span>
+          </div>
+          <div class="flex-1 text-center py-3">
+            <i class="fas fa-user text-primary mr-2"></i>
+            <span class="text-sm">شخصين</span>
+          </div>
+        </div>
+        <div class="text-center p-6">
+          <h3 class="text-3xl font-bold mb-3 text-primary">$1,190</h3>
+          <div class="flex justify-center mb-4">
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+          </div>
+          <p class="text-gray-600 mb-6">
+            رحلة إلى بالي: شواطئ، ثقافة، ومغامرات لا تُنسى مع مرشد سياحي خاص
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              (click)="scrollToForm()"
+              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
             >
-              الأكثر مبيعاً
-            </div>
-          </div>
-          <div class="flex border-b border-gray-200">
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-              <span class="text-sm">تايلاند</span>
-            </div>
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-calendar-alt text-primary mr-2"></i>
-              <span class="text-sm">7 أيام</span>
-            </div>
-            <div class="flex-1 text-center py-3">
-              <i class="fas fa-user text-primary mr-2"></i>
-              <span class="text-sm">شخصين</span>
-            </div>
-          </div>
-          <div class="text-center p-6">
-            <h3 class="text-3xl font-bold mb-3 text-primary">$1,490</h3>
-            <div class="flex justify-center mb-4">
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            </div>
-            <p class="text-gray-600 mb-6">
-              باقة شاملة: الإقامة الفاخرة، الجولات السياحية، الانتقالات، وجبات
-              الطعام
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="#"
-                class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
-              >
-                احجز الآن
-              </a>
-              <a
-                href="#"
-                class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
-              >
-                التفاصيل
-              </a>
-            </div>
+              احجز الآن
+            </a>
+            <a
+              routerLink="/details"
+              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
+            >
+              التفاصيل
+            </a>
           </div>
         </div>
+      </div>
 
-        <!-- Package 2 - Indonesia -->
-        <div
-          class="package-card bg-white rounded-2xl overflow-hidden shadow-xl"
-        >
-          <div class="overflow-hidden">
-            <img
-              class="w-full h-60 object-cover transition-transform duration-500"
-              src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-              alt="Indonesia Package"
-            />
+      <!-- Package 3 - Malaysia -->
+      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
+        <div class="overflow-hidden">
+          <img
+            class="w-full h-60 object-cover transition-transform duration-500"
+            src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1464&q=80"
+            alt="Malaysia Package"
+          />
+        </div>
+        <div class="flex border-b border-gray-200">
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+            <span class="text-sm">ماليزيا</span>
           </div>
-          <div class="flex border-b border-gray-200">
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-              <span class="text-sm">إندونيسيا</span>
-            </div>
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-calendar-alt text-primary mr-2"></i>
-              <span class="text-sm">5 أيام</span>
-            </div>
-            <div class="flex-1 text-center py-3">
-              <i class="fas fa-user text-primary mr-2"></i>
-              <span class="text-sm">شخصين</span>
-            </div>
+          <div class="flex-1 text-center border-l border-gray-200 py-3">
+            <i class="fas fa-calendar-alt text-primary mr-2"></i>
+            <span class="text-sm">6 أيام</span>
           </div>
-          <div class="text-center p-6">
-            <h3 class="text-3xl font-bold mb-3 text-primary">$1,190</h3>
-            <div class="flex justify-center mb-4">
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            </div>
-            <p class="text-gray-600 mb-6">
-              رحلة إلى بالي: شواطئ، ثقافة، ومغامرات لا تُنسى مع مرشد سياحي خاص
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="#"
-                class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
-              >
-                احجز الآن
-              </a>
-              <a
-                href="#"
-                class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
-              >
-                التفاصيل
-              </a>
-            </div>
+          <div class="flex-1 text-center py-3">
+            <i class="fas fa-user text-primary mr-2"></i>
+            <span class="text-sm">شخصين</span>
           </div>
         </div>
-
-        <!-- Package 3 - Malaysia -->
-        <div
-          class="package-card bg-white rounded-2xl overflow-hidden shadow-xl"
-        >
-          <div class="overflow-hidden">
-            <img
-              class="w-full h-60 object-cover transition-transform duration-500"
-              src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1464&q=80"
-              alt="Malaysia Package"
-            />
+        <div class="text-center p-6">
+          <h3 class="text-3xl font-bold mb-3 text-primary">$1,290</h3>
+          <div class="flex justify-center mb-4">
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
           </div>
-          <div class="flex border-b border-gray-200">
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-              <span class="text-sm">ماليزيا</span>
-            </div>
-            <div class="flex-1 text-center border-l border-gray-200 py-3">
-              <i class="fas fa-calendar-alt text-primary mr-2"></i>
-              <span class="text-sm">6 أيام</span>
-            </div>
-            <div class="flex-1 text-center py-3">
-              <i class="fas fa-user text-primary mr-2"></i>
-              <span class="text-sm">شخصين</span>
-            </div>
-          </div>
-          <div class="text-center p-6">
-            <h3 class="text-3xl font-bold mb-3 text-primary">$1,290</h3>
-            <div class="flex justify-center mb-4">
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-              <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            </div>
-            <p class="text-gray-600 mb-6">
-              جولة في كوالالمبور ولنكاوي: بين ناطحات السحاب والجزر الاستوائية
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="#"
-                class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
-              >
-                احجز الآن
-              </a>
-              <a
-                href="#"
-                class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
-              >
-                التفاصيل
-              </a>
-            </div>
+          <p class="text-gray-600 mb-6">
+            جولة في كوالالمبور ولنكاوي: بين ناطحات السحاب والجزر الاستوائية
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              (click)="scrollToForm()"
+              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
+            >
+              احجز الآن
+            </a>
+            <a
+              routerLink="/details"
+              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
+            >
+              التفاصيل
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Booking Section -->
-  <section id="contact" class="booking-section py-20" dir="rtl">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Left Content -->
-        <div class="text-white">
-          <span class="text-blue-200 font-bold text-lg">الحجز</span>
-          <h1 class="text-3xl md:text-4xl font-bold mt-2 mb-6">
-            احجز رحلتك الآن
-          </h1>
-          <p class="mb-4 text-blue-100">
-            املأ النموذج وسيتواصل معك أحد مستشارينا لمساعدتك في التخطيط لرحلتك
-            المثالية
-          </p>
-          <p class="mb-6 text-blue-100">
-            فريقنا من الخبراء جاهز للإجابة على جميع استفساراتك وتقديم أفضل
-            العروض والاقتراحات
-          </p>
-          <div class="flex items-center gap-4 mt-8">
-            <div
-              class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center"
-            >
-              <i class="fas fa-headset text-xl text-white"></i>
+<!-- Booking Section -->
+<section id="contact" class="booking-section py-20" dir="rtl">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Content -->
+      <div class="text-white">
+        <span class="text-blue-200 font-bold text-lg">الحجز</span>
+        <h1 class="text-3xl md:text-4xl font-bold mt-2 mb-6">
+          احجز رحلتك الآن
+        </h1>
+        <p class="mb-4 text-blue-100">
+          املأ النموذج وسيتواصل معك أحد مستشارينا لمساعدتك في التخطيط لرحلتك
+          المثالية
+        </p>
+        <p class="mb-6 text-blue-100">
+          فريقنا من الخبراء جاهز للإجابة على جميع استفساراتك وتقديم أفضل العروض
+          والاقتراحات
+        </p>
+        <div class="flex items-center gap-4 mt-8">
+          <div
+            class="w-14 h-14 bg-primary/20 rounded-full flex items-center justify-center"
+          >
+            <i class="fas fa-headset text-xl text-white"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-white">الدعم الفني 24/7</h4>
+            <p class="text-blue-100">+966 55 123 4567</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Form -->
+      <div class="glass-card rounded-2xl p-8">
+        <h2 class="text-2xl font-bold text-white mb-6">احجز رحلتك</h2>
+        <form (ngSubmit)="submitBooking()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-blue-100 mb-2" for="name"
+                >الاسم الكامل</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="fullName"
+                [(ngModel)]="bookingData.fullName"
+                class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
             </div>
             <div>
-              <h4 class="font-bold text-white">الدعم الفني 24/7</h4>
-              <p class="text-blue-100">+966 55 123 4567</p>
+              <label class="block text-blue-100 mb-2" for="email"
+                >البريد الإلكتروني</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                [(ngModel)]="bookingData.email"
+                class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
             </div>
           </div>
-        </div>
 
-        <!-- Booking Form -->
-        <div class="glass-card rounded-2xl p-8">
-          <h2 class="text-2xl font-bold text-white mb-6">احجز رحلتك</h2>
-          <form>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-blue-100 mb-2" for="name"
-                  >الاسم الكامل</label
-                >
-                <input
-                  type="text"
-                  id="name"
-                  class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label class="block text-blue-100 mb-2" for="email"
-                  >البريد الإلكتروني</label
-                >
-                <input
-                  type="email"
-                  id="email"
-                  class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-blue-100 mb-2" for="phone"
-                  >رقم الجوال</label
-                >
-                <input
-                  type="tel"
-                  id="phone"
-                  class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <div>
-                <label class="block text-blue-100 mb-2" for="date"
-                  >تاريخ السفر</label
-                >
-                <input
-                  type="date"
-                  id="date"
-                  class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-            </div>
-
-            <div class="mb-6">
-              <label class="block text-blue-100 mb-2" for="message"
-                >الوجهة المطلوبة</label
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4" dir="rtl">
+            <div>
+              <label class="block text-blue-100 mb-2" for="phone"
+                >رقم الجوال</label
               >
-              <select
-                id="destination"
-                class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-              >
-                <option class="bg-dark" value="">اختر وجهة</option>
-                <option class="bg-dark" value="1">تركيا</option>
-                <option class="bg-dark" value="2">ماليزيا</option>
-                <option class="bg-dark" value="3">المالديف</option>
-                <option class="bg-dark" value="4">تايلاند</option>
-                <option class="bg-dark" value="5">اليونان</option>
-              </select>
-            </div>
-
-            <div class="mb-6">
-              <label class="block text-blue-100 mb-2" for="message"
-                >ملاحظات إضافية</label
-              >
-              <textarea
-                id="message"
-                rows="3"
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                [(ngModel)]="bookingData.phone"
                 class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
-              ></textarea>
+              />
             </div>
+            <div>
+              <label class="block text-blue-100 mb-2" for="date"
+                >تاريخ السفر</label
+              >
+              <input
+                type="date"
+                id="date"
+                name="travelDate"
+                [(ngModel)]="bookingData.travelDate"
+                class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+          </div>
 
-            <button
-              type="submit"
-              class="w-full bg-gradient-to-r from-[#253808] to-[#b5e249] hover:from-[#b5e249] hover:to-[#253808] text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-[1.02]"
+          <div class="mb-6">
+            <label class="block text-blue-100 mb-2" for="message"
+              >الوجهة المطلوبة</label
             >
-              إرسال الطلب
-            </button>
-          </form>
-        </div>
+            <select
+              id="destination"
+              name="destination"
+              [(ngModel)]="bookingData.destination"
+              class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            >
+              <option class="bg-dark" value="">اختر وجهة</option>
+              <option class="bg-dark" value="1">تركيا</option>
+              <option class="bg-dark" value="2">ماليزيا</option>
+              <option class="bg-dark" value="3">المالديف</option>
+              <option class="bg-dark" value="4">تايلاند</option>
+              <option class="bg-dark" value="5">اليونان</option>
+            </select>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-blue-100 mb-2" for="message"
+              >ملاحظات إضافية</label
+            >
+            <textarea
+              id="message"
+              rows="3"
+              name="notes"
+              [(ngModel)]="bookingData.notes"
+              class="w-full bg-white/10 border border-blue-300/30 rounded-lg py-3 px-4 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-primary"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="isSubmitting"
+            class="w-full bg-gradient-to-r from-[#253808] to-[#b5e249] hover:from-[#b5e249] hover:to-[#253808] text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-[1.02]"
+          >
+            <span *ngIf="!isSubmitting">إرسال الطلب</span>
+            <span *ngIf="isSubmitting">جاري المعالجة...</span>
+          </button>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>

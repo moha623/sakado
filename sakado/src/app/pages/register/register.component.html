@@ -1,7 +1,7 @@
 <div
   class="bg-gradient-to-br from-blue-50 to-cyan-100 h-screen font-[Tajawal] overflow-hidden [direction:rtl]"
 >
-  <div class="flex items-center justify-center [direction:rtl]">
+  <div    class="flex h-screen items-stretch justify-center [direction:rtl] w-full">
     <div
       class="w-full flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(11,83,148,0.15)]"
     >
@@ -50,17 +50,11 @@
       <!-- Left Side - Form -->
       <div class="w-full md:w-3/5 md:p-10">
         <div class="text-center">
-          <div class="flex justify-center mb-4">
-            <div
-              class="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center text-cyan-400"
-            >
-              <i class="fas fa-user-plus text-3xl"></i>
-            </div>
-          </div>
+
           <h1 class="text-5xl md:text-5xl font-bold text-blue-900 mb-2">
             إنشاء حساب جديد
           </h1>
-          <p class="text-gray-600">انضم لمجتمع السفر وابدأ رحلتك السياحية</p>
+          <p class="text-gray-600 mb-4">انضم لمجتمع السفر وابدأ رحلتك السياحية</p>
         </div>
 
         <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm">
@@ -131,7 +125,7 @@
             />
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="  gap-6">
             <div class="relative mb-6">
               <i
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"

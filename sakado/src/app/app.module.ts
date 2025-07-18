@@ -38,6 +38,7 @@ import { FirebaseModule } from './firebase/firebase.module';
 import { TokenInterceptor } from './interceptors/jwt.interceptor';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
 
 @NgModule({
   declarations: [
@@ -66,8 +67,9 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
     FormsModule,
     HttpClientModule,
     FilterBookingsPipe,
-        AngularFirestoreModule,
-    AngularFireStorageModule
+    ShortenIdPipe,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
   ],
   providers: [
     provideClientHydration(withEventReplay()),
@@ -79,7 +81,6 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
       multi: true,
     },
     BookingService,
-   
   ],
   bootstrap: [AppComponent],
 })

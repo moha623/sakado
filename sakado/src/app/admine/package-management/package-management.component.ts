@@ -159,6 +159,7 @@ export class PackageManagementComponent implements OnInit {
 
   async addTrip(tripData: Trip) {
     try {
+  
       // Add server timestamp and default values
       const tripWithMetadata = {
         ...tripData,
@@ -169,7 +170,18 @@ export class PackageManagementComponent implements OnInit {
 
       // Call service to add trip
       await this.tripService.addTrip(tripWithMetadata);
-
+    if (
+        !this.newTrip.category ||
+        !this.newTrip.description ||
+        !this.newTrip.name ||
+        !this.newTrip.destination ||
+        !this.newTrip.price ||
+        !this.newTrip.startDate ||
+        !this.newTrip.endDate
+      ) {
+        alert('يرجى ملء الحقول المطلوبة');
+        return;
+      }
       alert('تم إضافة الرحلة بنجاح!');
       this.resetForm();
       this.loadTrips();

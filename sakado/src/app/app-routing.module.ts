@@ -18,14 +18,16 @@ import { DashboardComponent } from './admine/dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: '',
+      title: 'Touriste - Accueil',
     component: LayoutComponent, // Layout with header/footer
     children: [
       { path: '', component: HomeComponent },
       {
         path: 'home',
+      
         redirectTo: '',
         pathMatch: 'full',
-        title: 'Touriste - Accueil',
+
         canActivate: [authGuard],
       },
       {
@@ -73,13 +75,14 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // default child route
       { path: 'dashboard', component: DashboardComponent },
-      { path: 'PackageManagement', component: PackageManagementComponent, },
+      { path: 'PackageManagement', component: PackageManagementComponent },
       { path: 'BookingManagement', component: BookingManagementComponent },
     ],
   },
 
   {
     path: 'auth',
+    title: 'Touriste - Register/Login',
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },

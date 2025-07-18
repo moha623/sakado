@@ -26,7 +26,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  
+   scrollToForm() {
+    document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth' });
+  }
   onLogout() {
     this.authService.logout();
       this.router.navigate(['/auth/login']);
