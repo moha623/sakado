@@ -1,180 +1,92 @@
 <!-- Packages Section -->
-<section
-  id="packages"
-  class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50"
->
-  <div class="container mx-auto px-4">
-    <!-- Heading -->
-    <div class="text-center mb-16">
-      <div class="relative inline-block mb-6">
-        <h6 class="text-primary font-bold text-xl mb-2">الباقات</h6>
-        <div
-          class="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"
-        ></div>
+  <section
+     dir="rtl"
+    class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50"
+  >
+    <div class="container mx-auto px-4">
+      <!-- Heading -->
+      <div class="text-center mb-16">
+        <div class="relative inline-block mb-6">
+          <h6 class="text-primary font-bold text-xl mb-2">الباقات</h6>
+          <div
+            class="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"
+          ></div>
+        </div>
+        <h1 class="text-4xl font-bold mb-6">باقاتنا السياحية المميزة</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          اختر من بين مجموعة واسعة من الباقات المصممة لتلبي جميع توقعاتك
+          وتفضيلاتك
+        </p>
       </div>
-      <h1 class="text-4xl font-bold mb-6">باقاتنا السياحية المميزة</h1>
-      <p class="text-gray-600 max-w-2xl mx-auto">
-        اختر من بين مجموعة واسعة من الباقات المصممة لتلبي جميع توقعاتك وتفضيلاتك
-      </p>
+
+    <!-- Dynamic Trip Grid -->
+    <div *ngIf="loading" class="text-center py-12">
+      <p class="text-xl text-primary">جاري تحميل الرحلات...</p>
     </div>
 
-    <!-- Package Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Package 1 - Thailand -->
-      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
+    <div *ngIf="!loading && trips.length === 0" class="text-center py-12">
+      <p class="text-xl text-primary">لا توجد رحلات متاحة حالياً</p>
+    </div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-6">
+  <div *ngFor="let trip of trips"
+    class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
         <div class="overflow-hidden relative">
-          <img
-            class="w-full h-60 object-cover transition-transform duration-500"
-            src="https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            alt="Thailand Package"
+          <img 
+            class="w-full h-60 object-cover transition-transform duration-500 hover:scale-110"
+            [src]="  'https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'"
+            [alt]="trip.name"
           />
-          <div
-            class="absolute top-4 right-4 bg-accent text-white text-sm font-bold py-1 px-3 rounded-full"
-          >
-            الأكثر مبيعاً
+          <div class="absolute top-4 right-4 bg-accent text-[#253808] text-xl font-bold py-1 px-3 rounded-full">
+            فئة : {{ trip.category }}
+          </div>
+          <div class="absolute bottom-4 left-4 bg-red-500 text-white text-sm font-bold py-1 px-3 rounded-full">
+            {{ getAvailabilityText(trip) }}
           </div>
         </div>
+        
         <div class="flex border-b border-gray-200">
           <div class="flex-1 text-center border-l border-gray-200 py-3">
             <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-            <span class="text-sm">تايلاند</span>
+            <span class="text-sm">{{ trip.destination }}</span>
           </div>
           <div class="flex-1 text-center border-l border-gray-200 py-3">
             <i class="fas fa-calendar-alt text-primary mr-2"></i>
-            <span class="text-sm">7 أيام</span>
-          </div>
-          <div class="flex-1 text-center py-3">
-            <i class="fas fa-user text-primary mr-2"></i>
-            <span class="text-sm">شخصين</span>
+            <span class="text-sm">
+              {{ calculateDuration(trip.startDate, trip.endDate) }} أيام
+            </span>
           </div>
         </div>
+        
         <div class="text-center p-6">
-          <h3 class="text-3xl font-bold mb-3 text-primary">$1,490</h3>
-          <div class="flex justify-center mb-4">
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
+          <div class="flex justify-center items-center gap-3 mb-3">
+            <h3 *ngIf="trip.discountPrice" class="text-2xl font-bold text-gray-400 line-through">
+              {{ trip.price | currency:'USD':'symbol':'1.0-0' }}
+            </h3>
+            <h3 class="text-3xl font-bold text-primary">
+              {{ (trip.discountPrice || trip.price) | currency:'USD':'symbol':'1.0-0' }}
+            </h3>
           </div>
+          
           <p class="text-gray-600 mb-6">
-            باقة شاملة: الإقامة الفاخرة، الجولات السياحية، الانتقالات، وجبات
-            الطعام
+            {{ trip.description }}
           </p>
+          
+          <div class="mb-4 text-sm text-gray-500">
+            <i class="fas fa-calendar mr-2"></i>
+            من {{ formatDate(trip.startDate) }} إلى {{ formatDate(trip.endDate) }}
+          </div>
+          
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
+            <button
               (click)="scrollToForm()"
-              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
+              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition cursor-pointer"
             >
               احجز الآن
-            </a>
+            </button>
             <a
-              routerLink="/details"
-              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
-            >
-              التفاصيل
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Package 2 - Indonesia -->
-      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
-        <div class="overflow-hidden">
-          <img
-            class="w-full h-60 object-cover transition-transform duration-500"
-            src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
-            alt="Indonesia Package"
-          />
-        </div>
-        <div class="flex border-b border-gray-200">
-          <div class="flex-1 text-center border-l border-gray-200 py-3">
-            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-            <span class="text-sm">إندونيسيا</span>
-          </div>
-          <div class="flex-1 text-center border-l border-gray-200 py-3">
-            <i class="fas fa-calendar-alt text-primary mr-2"></i>
-            <span class="text-sm">5 أيام</span>
-          </div>
-          <div class="flex-1 text-center py-3">
-            <i class="fas fa-user text-primary mr-2"></i>
-            <span class="text-sm">شخصين</span>
-          </div>
-        </div>
-        <div class="text-center p-6">
-          <h3 class="text-3xl font-bold mb-3 text-primary">$1,190</h3>
-          <div class="flex justify-center mb-4">
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-          </div>
-          <p class="text-gray-600 mb-6">
-            رحلة إلى بالي: شواطئ، ثقافة، ومغامرات لا تُنسى مع مرشد سياحي خاص
-          </p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              (click)="scrollToForm()"
-              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
-            >
-              احجز الآن
-            </a>
-            <a
-              routerLink="/details"
-              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
-            >
-              التفاصيل
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Package 3 - Malaysia -->
-      <div class="package-card bg-white rounded-2xl overflow-hidden shadow-xl">
-        <div class="overflow-hidden">
-          <img
-            class="w-full h-60 object-cover transition-transform duration-500"
-            src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1464&q=80"
-            alt="Malaysia Package"
-          />
-        </div>
-        <div class="flex border-b border-gray-200">
-          <div class="flex-1 text-center border-l border-gray-200 py-3">
-            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
-            <span class="text-sm">ماليزيا</span>
-          </div>
-          <div class="flex-1 text-center border-l border-gray-200 py-3">
-            <i class="fas fa-calendar-alt text-primary mr-2"></i>
-            <span class="text-sm">6 أيام</span>
-          </div>
-          <div class="flex-1 text-center py-3">
-            <i class="fas fa-user text-primary mr-2"></i>
-            <span class="text-sm">شخصين</span>
-          </div>
-        </div>
-        <div class="text-center p-6">
-          <h3 class="text-3xl font-bold mb-3 text-primary">$1,290</h3>
-          <div class="flex justify-center mb-4">
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-            <i class="fas fa-star text-yellow-400 mx-0.5"></i>
-          </div>
-          <p class="text-gray-600 mb-6">
-            جولة في كوالالمبور ولنكاوي: بين ناطحات السحاب والجزر الاستوائية
-          </p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
-              (click)="scrollToForm()"
-              class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
-            >
-              احجز الآن
-            </a>
-            <a
-              routerLink="/details"
-              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
+              [routerLink]="['/more-details', trip.id]"
+              class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition text-center"
             >
               التفاصيل
             </a>

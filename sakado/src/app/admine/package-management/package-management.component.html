@@ -29,165 +29,204 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let trip of trips">
-            <td>{{ trip.name }}</td>
-            <td>{{ trip.category }}</td>
-            <td>{{ trip.destination }}</td>
-            <td>${{ trip.price }}</td>
-            <td>
-              <span [ngClass]="getStatusClass(trip.status)">
-                {{ getStatusText(trip.status) }}
-              </span>
-            </td>
-            <td>{{ trip.participants }}</td>
-            <td class="action-cell">
-          <div class="action-btn view-btn">
-    <i class="fas fa-eye"></i>
-  </div>
+          <ng-container *ngIf="!loading; else loadingIndicator">
+            <tr *ngFor="let trip of trips">
+              <td>{{ trip.name }}</td>
+              <td>{{ trip.category }}</td>
+              <td>{{ trip.destination }}</td>
+              <td>${{ trip.price }}</td>
+              <td>
+                <span [ngClass]="getStatusClass(trip.status)">
+                  {{ getStatusText(trip.status) }}
+                </span>
+              </td>
+              <td>{{ trip.participants }}</td>
+              <td class="action-cell">
+                <div class="action-btn view-btn">
+                  <i class="fas fa-eye"></i>
+                </div>
 
-              <div class="action-btn edit-btn">
-                <i class="fas fa-edit"></i>
-              </div>
-              <div class="action-btn delete-btn">
-                <i class="fas fa-trash"></i>
-              </div>
-            </td>
-          </tr>
+                <div class="action-btn edit-btn">
+                  <i class="fas fa-edit" (click)="loadTrips()"></i>
+                </div>
+                <div class="action-btn delete-btn">
+                  <i class="fas fa-trash" (click)="deleteTrip('id')"></i>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #loadingIndicator>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div class="loading-indicator">
+                  <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
+                </div>
+              </td>
+            </tr>
+          </ng-template>
         </tbody>
       </table>
-    </div>
 
-    <!-- Package Form -->
-    <div class="form-container" id="section1">
-      <div class="form-header">
-        <div class="card-title">إضافة رحلة جديدة</div>
-      </div>
-
-      <div class="form-grid">
-        <div class="form-group">
-          <label>اسم الرحلة</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="أدخل اسم الرحلة"
-            [(ngModel)]="newTrip.name"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>التصنيف</label>
-          <select class="form-control" [(ngModel)]="newTrip.category">
-            <option value="">اختر التصنيف</option>
-            <option *ngFor="let category of categories" [value]="category">
-              {{ category }}
+      <div class="pagination">
+        <div class="page-size">
+          <span>العناصر في الصفحة:</span>
+          <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <option *ngFor="let size of pageSizes" [value]="size">
+              {{ size }}
             </option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label>الوجهة / المكان</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="أدخل اسم الوجهة"
-            [(ngModel)]="newTrip.destination"
-          />
-        </div>
+        <div class="page-controls">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">
+            السابق
+          </button>
 
-        <div class="form-group">
-          <label>الحالة</label>
-          <select class="form-control" [(ngModel)]="newTrip.status">
-            <option
-              *ngFor="let status of statusOptions"
-              [value]="getStatusValue(status)"
-            >
-              {{ status }}
-            </option>
-          </select>
+          <span class="page-info">
+            الصفحة {{ currentPage }} من {{ totalPages }}
+          </span>
+
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages || totalPages === 0"
+          >
+            التالي
+          </button>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>تاريخ البدء</label>
-          <input
-            type="date"
-            class="form-control"
-            [(ngModel)]="newTrip.startDate"
-            [ngModel]="newTrip.startDate | date : 'yyyy-MM-dd'"
-            (ngModelChange)="newTrip.startDate = $event"
-          />
+      <!-- Package Form -->
+      <div class="form-container" id="section1">
+        <div class="form-header">
+          <div class="card-title">إضافة رحلة جديدة</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>اسم الرحلة</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="أدخل اسم الرحلة"
+              [(ngModel)]="newTrip.name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>التصنيف</label>
+            <select class="form-control" [(ngModel)]="newTrip.category">
+              <option value="">اختر التصنيف</option>
+              <option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>الوجهة / المكان</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="أدخل اسم الوجهة"
+              [(ngModel)]="newTrip.destination"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>الحالة</label>
+            <select class="form-control" [(ngModel)]="newTrip.status">
+              <option
+                *ngFor="let status of statusOptions"
+                [value]="getStatusValue(status)"
+              >
+                {{ status }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>تاريخ البدء</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="newTrip.startDate"
+              [ngModel]="newTrip.startDate | date : 'yyyy-MM-dd'"
+              (ngModelChange)="newTrip.startDate = $event"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>تاريخ الانتهاء</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="newTrip.endDate"
+              [ngModel]="newTrip.endDate | date : 'yyyy-MM-dd'"
+              (ngModelChange)="newTrip.endDate = $event"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>عدد المشاركين الأقصى</label>
+            <input
+              type="number"
+              class="form-control"
+              value="20"
+              [(ngModel)]="newTrip.maxParticipants"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>السعر الأساسي</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="$0.00"
+              [(ngModel)]="newTrip.price"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>سعر التخفيض (اختياري)</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="$0.00"
+              [(ngModel)]="newTrip.discountPrice"
+            />
+          </div>
         </div>
 
         <div class="form-group">
-          <label>تاريخ الانتهاء</label>
-          <input
-            type="date"
+          <label>وصف الرحلة</label>
+          <textarea
             class="form-control"
-            [(ngModel)]="newTrip.endDate"
-            [ngModel]="newTrip.endDate | date : 'yyyy-MM-dd'"
-            (ngModelChange)="newTrip.endDate = $event"
-          />
+            rows="4"
+            placeholder="أدخل وصفًا تفصيليًا للرحلة"
+            [(ngModel)]="newTrip.description"
+          ></textarea>
         </div>
 
         <div class="form-group">
-          <label>عدد المشاركين الأقصى</label>
-          <input
-            type="number"
+          <label>برنامج الرحلة (يوم بيوم)</label>
+          <textarea
             class="form-control"
-            value="20"
-            [(ngModel)]="newTrip.maxParticipants"
-          />
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>السعر الأساسي</label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="$0.00"
-            [(ngModel)]="newTrip.price"
-          />
+            rows="6"
+            placeholder="أدخل تفاصيل برنامج الرحلة"
+            [(ngModel)]="newTrip.itinerary"
+          ></textarea>
         </div>
 
-        <div class="form-group">
-          <label>سعر التخفيض (اختياري)</label>
-          <input
-            type="number"
-            class="form-control"
-            placeholder="$0.00"
-            [(ngModel)]="newTrip.discountPrice"
-          />
+        <div class="form-footer">
+          <button class="btn btn-outline">إلغاء</button>
+          <button class="btn btn-primary" (click)="addNewTrip()">
+            حفظ الرحلة
+          </button>
         </div>
-      </div>
-
-      <div class="form-group">
-        <label>وصف الرحلة</label>
-        <textarea
-          class="form-control"
-          rows="4"
-          placeholder="أدخل وصفًا تفصيليًا للرحلة"
-          [(ngModel)]="newTrip.description"
-        ></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>برنامج الرحلة (يوم بيوم)</label>
-        <textarea
-          class="form-control"
-          rows="6"
-          placeholder="أدخل تفاصيل برنامج الرحلة"
-          [(ngModel)]="newTrip.itinerary"
-        ></textarea>
-      </div>
-
-      <div class="form-footer">
-        <button class="btn btn-outline">إلغاء</button>
-        <button class="btn btn-primary" (click)="addNewTrip()">
-          حفظ الرحلة
-        </button>
       </div>
     </div>
   </div>

@@ -5,18 +5,18 @@
                 <div class="logo-icon">
                     <i class="fas fa-plane"></i>
                 </div>
-                <div class="logo-text">ساكادو</div>
+                <div class="logo-text" >ساكادو</div>
             </div>
             
             <div class="footer-grid" >
                 <div class="footer-section">
                     <h4>عن الشركة</h4>
                     <div class="footer-links">
-                        <a href="#">من نحن</a>
-                        <a href="#">اتصل بنا</a>
-                        <a href="#">سياسة الخصوصية</a>
-                        <a href="#">الشروط والأحكام</a>
-                        <a href="#">الأسئلة الشائعة</a>
+                        <a routerLink="about">من نحن</a>
+                        <a routerLink="contact">اتصل بنا</a>
+                        <a routerLink="">سياسة الخصوصية</a>
+                        <a routerLink="">الشروط والأحكام</a>
+                        <a routerLink="">الأسئلة الشائعة</a>
                     </div>
                 </div>
                 
@@ -67,7 +67,7 @@
                         <p>اشترك في نشرتنا البريدية ليصلك كل جديد عن عروضنا ووجهاتنا السياحية المميزة</p>
                         <div class="newsletter-form">
                             <input type="email" class="newsletter-input" placeholder="بريدك الإلكتروني">
-                            <button class="newsletter-button">اشتراك</button>
+                            <button class="newsletter-button" routerLink="contact">اشتراك</button>
                         </div>
                     </div>
                 </div>
@@ -77,15 +77,14 @@
         <div class="footer-bottom">
             <div class="footer-bottom-content">
                 <div class="copyright">
-                    © 2023 <a href="#">ساكادو للسياحة</a>, جميع الحقوق محفوظة.
+                    © 2023 <a routerLink="/" (click)="scrollToTop()">ساكادو للسياحة</a>, جميع الحقوق محفوظة.
                     صمم بواسطة <a href="#">mohamed CHAABANE  </a>
                 </div>
                 
                 <div class="footer-links-bottom">
-                    <a href="#">الرئيسية</a>
-                    <a href="#">الكوكيز</a>
-                    <a href="#">المساعدة</a>
-                    <a href="#">الأسئلة الشائعة</a>
+                    <a routerLink="/home" (click)="scrollToTop()">الرئيسية</a>
+                    <a routerLink="contact" id="contact">المساعدة</a>
+                    <a routerLink="about">الأسئلة الشائعة</a>
                 </div>
             </div>
         </div>

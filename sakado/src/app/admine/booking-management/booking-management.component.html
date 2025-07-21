@@ -45,8 +45,8 @@
               <td>{{ booking.id | shortenId:8 }}</td>
               <td>{{ booking.destination }}</td>
               <td>{{ booking.fullName }}</td>
-              <td>{{ booking.createdAt | date:'shortDate' }}</td>
-              <td>{{ booking.travelDate | date:'shortDate' }}</td>
+              <td>{{ booking.createdAt |   simpleDate:'dd/MM/yyyy, HH:mm'}}</td>
+              <td>{{ booking.travelDate  |   simpleDate:'dd/MM/yyyy, HH:mm' }}</td>
               <td>
                 <span [ngClass]="getStatusClass(booking.status)">
                   {{ getStatusText(booking.status) }}
@@ -83,12 +83,12 @@
     <div class="booking-container" *ngIf="selectedBooking">
       <div class="booking-header">
         <div class="card-title">تفاصيل الحجز {{ selectedBooking.id | shortenId:8 }}</div>
-        <div>
-          <button class="btn btn-outline" (click)="changeBookingStatus()">
+        <div class="flex  ">
+          <button class="btn btn-outline  " (click)="changeBookingStatus()">
             <i class="fas fa-sync"></i>
             تغيير الحالة
           </button>
-          <button class="btn btn-primary" (click)="updateBooking()">
+          <button class="btn btn-primary " (click)="updateBooking()">
             <i class="fas fa-save"></i>
             حفظ التغييرات
           </button>
@@ -109,12 +109,12 @@
         
         <div class="summary-card">
           <div class="summary-title">تاريخ الحجز</div>
-          <div class="summary-value">{{ selectedBooking.createdAt | date:'medium' }}</div>
+          <div class="summary-value">{{ selectedBooking.createdAt |   simpleDate:'dd/MM/yyyy, HH:mm'  }}</div>
         </div>
         
         <div class="summary-card">
           <div class="summary-title">آخر تحديث</div>
-          <div class="summary-value">{{ selectedBooking.updatedAt | date:'medium' }}</div>
+          <div class="summary-value">{{ selectedBooking.updatedAt |   simpleDate:'dd/MM/yyyy, HH:mm' }}</div>
         </div>
       </div>
       

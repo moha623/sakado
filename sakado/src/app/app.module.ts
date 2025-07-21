@@ -22,7 +22,7 @@ import {
 } from '@angular/common/http';
 
 import { AuthService } from './services/auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BookingComponent } from './core/booking/booking.component';
 import { MoreDetailsComponent } from './pages/more-details/more-details.component';
@@ -36,9 +36,12 @@ import { BookingService } from './services/booking.service';
 import { TripService } from './services/trip.service';
 import { FirebaseModule } from './firebase/firebase.module';
 import { TokenInterceptor } from './interceptors/jwt.interceptor';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+ 
 import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { SimpleDatePipe } from './pipes/shortdate.pipe';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,7 @@ import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
     PackageManagementComponent,
     BookingManagementComponent,
     DashboardComponent,
+ 
   ],
   imports: [
     FirebaseModule, // Import FirebaseModule to initialize Firebase
@@ -68,8 +72,8 @@ import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
     HttpClientModule,
     FilterBookingsPipe,
     ShortenIdPipe,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
+ SimpleDatePipe
+ 
   ],
   providers: [
     provideClientHydration(withEventReplay()),
@@ -81,6 +85,9 @@ import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
       multi: true,
     },
     BookingService,
+    provideCharts(withDefaultRegisterables()),
+ provideFirestore(() => getFirestore()),
+ DatePipe
   ],
   bootstrap: [AppComponent],
 })

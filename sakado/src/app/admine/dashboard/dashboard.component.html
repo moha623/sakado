@@ -176,3 +176,83 @@
     </div>
   </div>
 </div>
+<div class="dashboard" dir="rtl">
+  <!-- Header -->
+  <div class="header">
+    <h1><i class="fas fa-chart-line"></i> لوحة تحليل الحجوزات</h1>
+    <div class="header-info">
+      <div class="date-box">
+        <i class="far fa-calendar-alt"></i>  
+      </div>
+      <div class="user-info">
+        <img [src]=" " alt="User">
+        <div>
+          <div> </div>
+          <div class="user-role"> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon" style="background: var(--secondary);">
+        <i class="fas fa-suitcase-rolling"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-title">إجمالي الحجوزات</div>
+        <!-- <div class="stat-value">{{ totalBookings | number }}</div> -->
+        <div class="stat-change change-up">
+          <i class="fas fa-arrow-up"></i> ١٤٪ زيادة عن الشهر الماضي
+        </div>
+      </div>
+    </div>
+    <!-- Other stat cards -->
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-container">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">حجوزات الشهر الحالي حسب الوجهات</div>
+        <div class="chart-actions">
+          <button><i class="fas fa-download"></i></button>
+          <button><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <!-- <canvas baseChart
+          [type]="'bar'"
+          [data]="barChartData"
+          [options]="barChartOptions">
+        </canvas> -->
+      </div>
+    </div>
+    
+    <div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">توزيع الحجوزات حسب النوع</div>
+        <div class="chart-actions">
+          <button><i class="fas fa-download"></i></button>
+          <button><i class="fas fa-expand"></i></button>
+        </div>
+      </div>
+      <div class="chart-container">
+        <!-- <canvas baseChart
+          [type]="'doughnut'"
+          [data]="pieChartData"
+          [options]="pieChartOptions">
+        </canvas> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Other charts -->
+  
+  <!-- Footer -->
+  <div class="footer">
+    <div>© 2023 نظام إدارة الحجوزات. جميع الحقوق محفوظة.</div>
+    <div>آخر تحديث:  </div>
+  </div>
+</div>

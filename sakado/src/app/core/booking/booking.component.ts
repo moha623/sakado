@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../services/booking.service';
+import { idToken } from '@angular/fire/auth';
+import { Trip } from '../../models/trip.model';
+import { TripService } from '../../services/trip.service';
 
 @Component({
   selector: 'app-booking',
@@ -7,9 +10,10 @@ import { BookingService } from '../../services/booking.service';
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.scss',
 })
-export class BookingComponent {
+export class BookingComponent implements OnInit {
   isSubmitting = false;
-
+  trips: Trip[] = [];
+  loading = true;
   bookingData = {
     fullName: '',
     email: '',
@@ -19,7 +23,46 @@ export class BookingComponent {
     notes: '',
   };
 
-  constructor(private bookingService: BookingService) {}
+  constructor(private bookingService: BookingService ,private tripService: TripService) {}
+
+
+   async ngOnInit() {
+    try {
+       this.trips = await this.tripService.getTripsForCards();
+    } catch (error) {
+      console.error('Error fetching trips:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  calculateDuration(startDate: Date | string, endDate: Date | string): number {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  formatDate(date: Date | string): string {
+    return new Date(date).toLocaleDateString( );
+  }
+
+  // scrollToForm() {
+  //   const formElement = document.getElementById('section1');
+  //   if (formElement) {
+  //     formElement.scrollIntoView({ behavior: 'smooth' });
+  //   }
+  // }
+
+  getAvailabilityText(trip: Trip): string {
+    const available = trip.maxParticipants - trip.participants;
+    if (available <= 0) return 'مكتمل';
+    if (available <= 3) return `متبقي ${available} مقاعد فقط`;
+    return `متوفر (${trip.participants}/${trip.maxParticipants})`;
+  }
+
+
+
 
   // Validation methods
   validateEmail(email: string) {
@@ -53,18 +96,18 @@ export class BookingComponent {
         return;
       }
 
-      // if (
-      //   this.bookingData.phone &&
-      //   !this.validatePhone(this.bookingData.phone)
-      // ) {
-      //   alert('رقم الجوال غير صالح');
-      //   return;
-      // }
+      if (
+        this.bookingData.phone &&
+        !this.validatePhone(this.bookingData.phone)
+      ) {
+        alert('رقم الجوال غير صالح');
+        return;
+      }
 
-      // ADD THIS: Actually create the booking
+     
       await this.bookingService.createBooking(this.bookingData);
 
-      // Success handling
+ 
       alert('تم إرسال طلب الحجز بنجاح! سنتواصل معك قريباً.');
       this.resetForm();
     } catch (error) {
@@ -89,4 +132,5 @@ export class BookingComponent {
   scrollToForm() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   }
+
 }

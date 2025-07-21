@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Trip } from '../../models/trip.model';
 import { TripService } from '../../services/trip.service';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs';
 import { serverTimestamp } from 'firebase/firestore';
 @Component({
   selector: 'app-package-management',
@@ -10,109 +8,8 @@ import { serverTimestamp } from 'firebase/firestore';
   templateUrl: './package-management.component.html',
   styleUrl: './package-management.component.scss',
 })
-// export class PackageManagementComponent implements OnInit {
-//   trips: Trip[] = [];
-//   categories: string[] = [];
-//   statusOptions: string[] = [];
-//   selectedFile: File | null = null;
-//   imagePreview: string | ArrayBuffer | null = null;
 
-//   newTrip: Trip = {
-//     id: 0,
-//     name: '',
-//     category: '',
-//     destination: '',
-//     price: 0,
-//     status: 'draft',
-//     participants: '0/0',
-//     maxParticipants: 20
-//   };
 
-//   constructor(private tripService: TripService) {}
-
-//   ngOnInit() {
-//     this.trips = this.tripService.getTrips();
-//     this.categories = this.tripService.getCategories();
-//     this.statusOptions = this.tripService.getStatusOptions();
-//   }
-
-//   addNewTrip() {
-//     if (this.newTrip.name && this.newTrip.category && this.newTrip.destination) {
-//       // Add image if selected
-//       if (this.selectedFile) {
-//         this.newTrip.image = URL.createObjectURL(this.selectedFile);
-//       }
-
-//       this.newTrip.participants = `0/${this.newTrip.maxParticipants}`;
-//       this.tripService.addTrip(this.newTrip);
-//       this.trips = this.tripService.getTrips();
-
-//       // Reset form
-//       this.newTrip = {
-//         id: 0,
-//         name: '',
-//         category: '',
-//         destination: '',
-//         price: 0,
-//         status: 'draft',
-//         participants: '0/0',
-//         maxParticipants: 20
-//       };
-
-//       // Clear file selection
-//       this.selectedFile = null;
-//       this.imagePreview = null;
-//     }
-//   }
-
-//   onFileSelected(event: Event) {
-//     const input = event.target as HTMLInputElement;
-//     if (input.files && input.files.length > 0) {
-//       this.selectedFile = input.files[0];
-
-//       // Create image preview
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imagePreview = reader.result;
-//       };
-//       reader.readAsDataURL(this.selectedFile);
-//     }
-//   }
-
-//   getStatusClass(status: string) {
-//     return {
-//       'status status-active': status === 'active',
-//       'status status-draft': status === 'draft',
-//       'status status-archived': status === 'archived'
-//     };
-//   }
-
-//   getStatusText(status: string) {
-//     return {
-//       'active': 'نشطة',
-//       'draft': 'مسودة',
-//       'archived': 'مؤرشفة',
-//       'completed': 'مكتملة'
-//     }[status];
-//   }
-
-//  getStatusValue(statusText: string): 'active' | 'draft' | 'archived' | 'completed' {
-//     switch (statusText) {
-//       case 'نشطة': return 'active';
-//       case 'مسودة': return 'draft';
-//       case 'مؤرشفة': return 'archived';
-//       case 'مكتملة': return 'completed';
-//       default: return 'draft';
-//     }
-//   }
-
-//   scrollToForm() {
-//     const formElement = document.getElementById('section1');
-//     if (formElement) {
-//       formElement.scrollIntoView({ behavior: 'smooth' });
-//     }
-//   }
-// }
 export class PackageManagementComponent implements OnInit {
   trips: Trip[] = [];
   newTrip: Trip = {
@@ -129,37 +26,58 @@ export class PackageManagementComponent implements OnInit {
     endDate: new Date(),
   };
 
+  currentPage = 1;
+  pageSize = 3;
+  lastDoc: any = null;
+  totalPages = 0;
+  totalItems = 0;
+  pageSizes = [5, 10, 20];
+
   categories = ['شاطئية', 'جبلية', 'ثقافية', 'مغامرات', 'تسوق'];
   statusOptions = ['نشطة', 'مكتملة', 'ملغية'];
 
+  loading = true;
   constructor(private tripService: TripService) {}
 
   ngOnInit() {
     // Use setTimeout to ensure DI is fully initialized
     setTimeout(() => {
       this.loadTrips();
-    });
+    },1000);
   }
 
+  // loadTrips() {
+  //   this.tripService.getTrips().subscribe({
+  //     next: (trips) => {
+  //       this.trips = trips;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading trips:', err);
+  //       alert('حدث خطأ أثناء تحميل الرحلات');
+  //     },
+  //   });
+  // }
   loadTrips() {
-    this.tripService.getTrips().subscribe({
-      next: (trips) => {
-        this.trips = trips;
-      },
-      error: (err) => {
-        console.error('Error loading trips:', err);
-        alert('حدث خطأ أثناء تحميل الرحلات');
-      },
-    });
-  }
+        this.loading = true;
+    this.tripService
+      .getTrips(this.pageSize, this.lastDoc)
+      .subscribe((result: any) => {
+        this.trips = result.trips;
+        this.lastDoc = result.lastDoc;
+        // Update pagination controls
+        this.calculateTotalPages();
 
+      });
+    
+      this.loading = false;
+   
+  }
   scrollToForm() {
     document.getElementById('section1')?.scrollIntoView({ behavior: 'smooth' });
   }
 
   async addTrip(tripData: Trip) {
     try {
-  
       // Add server timestamp and default values
       const tripWithMetadata = {
         ...tripData,
@@ -170,7 +88,7 @@ export class PackageManagementComponent implements OnInit {
 
       // Call service to add trip
       await this.tripService.addTrip(tripWithMetadata);
-    if (
+      if (
         !this.newTrip.category ||
         !this.newTrip.description ||
         !this.newTrip.name ||
@@ -195,19 +113,25 @@ export class PackageManagementComponent implements OnInit {
     this.addTrip(this.newTrip);
   }
 
-  deleteTrip(tripId: string) {
-    if (confirm('هل أنت متأكد من حذف هذه الرحلة؟')) {
-      this.tripService
-        .deleteTrip(tripId)
-        .then(() => {
-          this.trips = this.trips.filter((t) => t.id !== tripId);
-        })
-        .catch((error) => {
-          console.error('Error deleting trip:', error);
-          alert('حدث خطأ أثناء حذف الرحلة');
-        });
+// your.component.ts
+async deleteTrip(tripId: string) {
+  if (!confirm('هل أنت متأكد من حذف هذه الرحلة؟')) return;
+  
+  try {
+    await this.tripService.deleteTrip(tripId);
+    // Ensure correct ID comparison
+    const initialLength = this.trips.length;
+    this.trips = this.trips.filter(t => t.id === tripId);
+    
+    if (initialLength === this.trips.length) {
+      console.warn('Trip not found in local array:', tripId);
     }
+  } catch (error) {
+    console.error('Deletion failed:', error);
+    alert('حدث خطأ: '  );
   }
+}
+
 
   getStatusClass(status: string): string {
     switch (status) {
@@ -262,5 +186,36 @@ export class PackageManagementComponent implements OnInit {
       startDate: new Date(),
       endDate: new Date(),
     };
+  }
+
+  calculateTotalPages() {
+ 
+    this.tripService.getTotalTrips().subscribe((count) => {
+      this.totalPages = count;
+      console.log('Total documents in trips:', count);
+    });
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadTrips();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      // To go back, we need to re-fetch from beginning
+      this.lastDoc = null;
+      this.loadTrips();
+    }
+  }
+
+  changePageSize(size: number) {
+    this.pageSize = size;
+    this.currentPage = 1;
+    this.lastDoc = null;
+    this.loadTrips();
   }
 }

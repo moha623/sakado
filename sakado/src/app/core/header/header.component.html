@@ -2,29 +2,34 @@
 <nav class="bg-white shadow-md fixed w-full z-50" dir="rtl">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
-      <div class="flex items-center">
+      <div class="flex items-center"    (click)="scrollToTop()">
         <div
+      
           routerLink="/"
           class="bg-primary w-10 h-10 rounded-full flex items-center justify-center"
         >
           <i class="fas fa-plane-departure text-white text-xl"></i>
         </div>
         <span routerLink="/" class="text-xl font-bold text-primary mr-2"
+       
           >ساكادو</span
         >
       </div>
 
       <div class="hidden md:flex space-x-8" *ngIf="isLoggedIn">
-        <a routerLink="/" class="text-primary font-medium">الرئيسية</a>
-        <a routerLink="/about" class="hover:text-primary transition">من نحن</a>
+        <a routerLink="/" class="text-primary font-medium" (click)="scrollToTop()">الرئيسية</a>
+        <a routerLink="/about" class="hover:text-primary transition"  (click)="scrollToSection('about')">من نحن</a>
         <a routerLink="/gallery" class="hover:text-primary transition"
+        (click)="scrollToSection('gallery')"
           >المعرض
         </a>
 
         <a routerLink="/booking" class="hover:text-primary transition"
-          >الباقات</a
+      (click)="scrollToSection('booking')"
+        >الباقات</a
         >
         <a routerLink="/contact" class="hover:text-primary transition"
+        (click)="scrollToSection('contact-us')"
         >تواصل معنا</a
         >
       </div>
@@ -133,7 +138,7 @@
   </div>
 </section>
 
-<script>
+<!-- <script>
   // Simple animation on scroll
   document.addEventListener("DOMContentLoaded", function () {
     const animatedElements = document.querySelectorAll(".animate-fade-in");
@@ -160,4 +165,4 @@
       observer.observe(element);
     });
   });
-</script>
+</script> -->

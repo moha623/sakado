@@ -30,8 +30,11 @@ export class BookingManagementComponent implements OnInit {
     private firestore: Firestore
   ) {}
 
-  ngOnInit(): void {
-    this.loadBookings();
+  ngOnInit() {
+    setTimeout(()=>{
+         this.loadBookings();
+    })
+ 
   }
 
   async loadBookings() {
@@ -54,8 +57,7 @@ export class BookingManagementComponent implements OnInit {
   applyFilters() {
     this.filteredBookings = this.bookings.filter(booking => {
       const statusMatch = this.statusFilter === 'all' || booking.status === this.statusFilter;
-      const destinationMatch = this.destinationFilter === 'all' || 
-                              booking.destination === this.destinationFilter;
+      const destinationMatch = this.destinationFilter === 'all' ||  booking.destination === this.destinationFilter;
       return statusMatch && destinationMatch;
     });
   }
@@ -185,4 +187,7 @@ export class BookingManagementComponent implements OnInit {
       }
     }
   }
+
+
+
 }

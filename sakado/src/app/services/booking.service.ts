@@ -58,7 +58,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Booking } from '../models/booking.model';
-
+ import { serverTimestamp } from 'firebase/firestore';
 @Injectable({
   providedIn: 'root'
 })
@@ -84,7 +84,7 @@ export class BookingService {
     try {
       const bookingWithMetadata = {
         ...bookingData,
-        // createdAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
         status: 'pending' // Default status
       };
       
