@@ -18,10 +18,10 @@
               <option *ngFor="let dest of uniqueDestinations" [value]="dest">{{ dest }}</option>
             </select>
           </div>
-          <button class="btn btn-primary" (click)="openCreateModal()">
+          <!-- <button class="btn btn-primary" (click)="openCreateModal()" >
             <i class="fas fa-plus"></i>
             حجز جديد
-          </button>
+          </button> -->
         </div>
       </div>
       
@@ -39,7 +39,12 @@
         </thead>
         <tbody>
           <ng-container *ngIf="!loading; else loadingIndicator">
-            <tr *ngFor="let booking of filteredBookings"
+                 <tr *ngIf="!filteredBookings.length">
+        <td colspan="7" class="text-center py-4">
+          لا توجد حجوزات متاحة
+        </td>
+      </tr>
+            <tr *ngFor="let booking of filteredBookings "
                 [class.active]="selectedBooking?.id === booking.id"
                 (click)="selectBooking(booking)">
               <td>{{ booking.id | shortenId:8 }}</td>
@@ -53,10 +58,10 @@
                 </span>
               </td>
               <td class="action-cell">
-                <div class="action-btn view-btn" (click)="viewBooking(booking, $event)">
+                <div class="action-btn view-btn" (click)="viewBooking(booking, $event)"  >
                   <i class="fas fa-eye"></i>
                 </div>
-                <div class="action-btn edit-btn" (click)="editBooking(booking, $event)">
+                <div class="action-btn edit-btn" (click)="viewBooking(booking, $event)" (click)="scrollToSection('booking-header')">
                   <i class="fas fa-edit"></i>
                 </div>
                 <div class="action-btn delete-btn" (click)="confirmDelete(booking, $event)">
@@ -66,28 +71,56 @@
             </tr>
           </ng-container>
           
-          <ng-template #loadingIndicator>
-            <tr>
-              <td colspan="7" class="text-center">
-                <div class="loading-indicator">
-                  <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
-                </div>
-              </td>
-            </tr>
-          </ng-template>
+   <ng-template #loadingIndicator>
+      <tr>
+        <td colspan="7" class="text-center py-4">
+          <div class="loading-indicator">
+            <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
+          </div>
+        </td>
+      </tr>
+    </ng-template>
         </tbody>
       </table>
+       <div class="pagination">
+        <div class="page-size">
+          <span>العناصر في الصفحة:</span>
+          <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <option *ngFor="let size of pageSizes" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="page-controls">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">
+            السابق
+          </button>
+
+          <span class="page-info">
+            الصفحة {{ currentPage }} من {{ totalPages }}
+          </span>
+
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages || totalPages === 0"
+          >
+            التالي
+          </button>
+        </div>
+      </div>
+
     </div>
     
     <!-- Booking Details Panel -->
     <div class="booking-container" *ngIf="selectedBooking">
-      <div class="booking-header">
-        <div class="card-title">تفاصيل الحجز {{ selectedBooking.id | shortenId:8 }}</div>
+      <div class="booking-header" id="booking-header">
+        <div class="card-title" >تفاصيل الحجز {{ selectedBooking.id | shortenId:8 }}</div>
         <div class="flex  ">
-          <button class="btn btn-outline  " (click)="changeBookingStatus()">
+          <!-- <button class="btn btn-outline  " (click)="changeBookingStatus()">
             <i class="fas fa-sync"></i>
             تغيير الحالة
-          </button>
+          </button> -->
           <button class="btn btn-primary " (click)="updateBooking()">
             <i class="fas fa-save"></i>
             حفظ التغييرات

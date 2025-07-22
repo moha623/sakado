@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-    <!-- Sidebar -->
+ 
     <div class="sidebar  " dir="rtl">
         <div class="logo">
             <h1>ساكادو <span>للرحلات</span></h1>
@@ -53,93 +53,6 @@
     
 
 <router-outlet  ></router-outlet>
-    <script>
-        // Initialize charts
-        document.addEventListener('DOMContentLoaded', function() {
-            // Bookings over time chart
-            const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
-            const bookingsChart = new Chart(bookingsCtx, {
-                type: 'line',
-                data: {
-                    labels: ['1 نوف', '2 نوف', '3 نوف', '4 نوف', '5 نوف', '6 نوف', '7 نوف'],
-                    datasets: [{
-                        label: 'الحجوزات',
-                        data: [12, 19, 8, 15, 24, 18, 22],
-                        borderColor: '#2c6e49',
-                        backgroundColor: 'rgba(44, 110, 73, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Package popularity chart
-            const popularityCtx = document.getElementById('popularityChart').getContext('2d');
-            const popularityChart = new Chart(popularityCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['استكشاف الصحراء', 'مغامرة الغابات', 'اكتشاف الجبال', 'رحلة السواحل', 'المدن المخفية'],
-                    datasets: [{
-                        label: 'عدد الحجوزات',
-                        data: [24, 18, 8, 5, 12],
-                        backgroundColor: [
-                            'rgba(44, 110, 73, 0.7)',
-                            'rgba(76, 149, 108, 0.7)',
-                            'rgba(255, 158, 0, 0.7)',
-                            'rgba(27, 67, 50, 0.7)',
-                            'rgba(216, 243, 220, 0.7)'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-            
-            // Navigation functionality
-            const navItems = document.querySelectorAll('.nav-item');
-            const contentSections = document.querySelectorAll('.content');
-            
-            navItems.forEach((item, index) => {
-                item.addEventListener('click', () => {
-                    // Remove active class from all nav items
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    
-                    // Add active class to clicked item
-                    item.classList.add('active');
-                    
-                    // Hide all content sections
-                    contentSections.forEach(section => {
-                        section.style.display = 'none';
-                    });
-                    
-                    // Show corresponding content section
-                    if(index === 0) {
-                        document.getElementById('dashboardContent').style.display = 'block';
-                    } else if(index === 1) {
-                        document.getElementById('packageManagement').style.display = 'block';
-                    } else if(index === 2) {
-                        document.getElementById('bookingManagement').style.display = 'block';
-                    }
-                });
-            });
-        });
-    </script>
+ 
 </div>
  

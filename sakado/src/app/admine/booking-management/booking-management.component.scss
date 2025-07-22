@@ -669,3 +669,164 @@
             }
         }
  
+
+              
+ .pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-controls button {
+  padding: 5px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.page-controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-weight: bold;
+}
+
+.page-size {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-size select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+
+/* Backdrop covering entire viewport, semi-transparent */
+.modal-backdrop {
+  position: fixed;
+  top: 0;      /* full viewport */
+  left: 0;     /* full viewport */
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+
+  display: flex;              /* enables flexbox */
+  justify-content: center;    /* centers horizontally */
+  align-items: center;        /* centers vertically */
+
+  z-index: 1000;
+}
+
+/* Modal content box */
+.modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header, body, footer spacing */
+.modal-header,
+.modal-body,
+.modal-footer {
+  padding: 16px 24px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-footer {
+    display: flex;
+    
+  border-top: 1px solid #eee;
+  text-align: right;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  min-width: 80px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+/* Hover states */
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+.btn-outline:hover {
+  background-color: #3b82f6;
+  color: white;
+}
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+/* Optional animation for modal appear */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-card {
+  animation: fadeInScale 0.3s ease forwards;
+}

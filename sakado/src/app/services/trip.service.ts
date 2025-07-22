@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
- 
 import { Trip } from '../models/trip.model';
-import { from, Observable } from 'rxjs';
-import { 
-  Firestore, 
-  addDoc, 
-  collection, 
- docData,
+import {
+  Firestore,
+  collection,
+  addDoc,
   doc,
+  updateDoc,
   deleteDoc,
-  getCountFromServer
-} from '@angular/fire/firestore';
- import { serverTimestamp } from 'firebase/firestore';
- import { query,  orderBy, limit as fsLimit, startAfter, getDocs, QueryDocumentSnapshot, DocumentData } from '@angular/fire/firestore';
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  getDocs,
+  getCountFromServer,
  
-import { map } from 'rxjs/operators';
-
-
-@Injectable({ providedIn: 'root' })
+  DocumentData,
+  serverTimestamp,
+   
+} from '@angular/fire/firestore';
+ import { DocumentSnapshot, QueryDocumentSnapshot,   } from 'firebase/firestore';
+@Injectable({
+  providedIn: 'root'
+})
 export class TripService {
-  constructor(private    firestore: Firestore,) {}
+  constructor(private firestore: Firestore) {}
 
+  private totalTripsCache: number | null = null;
+
+  // Add a new trip and return the doc ID
   async addTrip(trip: Trip): Promise<string> {
+      
     try {
-      const tripsCollection = collection(this.firestore, 'trips');
-      const docRef = await addDoc(tripsCollection, {
+      const tripsRef = collection(this.firestore, 'trips');
+      const docRef = await addDoc(tripsRef, {
         ...trip,
         createdAt: serverTimestamp(),
         participants: trip.participants || 0,
-        status: trip.status || 'active'
+        status: trip.status || 'active',
       });
+      this.invalidateCache();
       return docRef.id;
     } catch (error) {
       console.error('Error adding trip:', error);
@@ -37,45 +46,65 @@ export class TripService {
     }
   }
 
-getTrips(pageSize: number, lastDoc?: QueryDocumentSnapshot<DocumentData>): Observable<{trips: Trip[], lastDoc: QueryDocumentSnapshot<DocumentData> | null}> {
-  let tripsQuery = query(
-    collection(this.firestore, 'trips'),
-    orderBy('name'),    // Replace with your sort field, must be indexed in Firestore!
-    fsLimit(pageSize),
-    ...(lastDoc ? [startAfter(lastDoc)] : [])
-  );
+  // Update existing trip by id
+  async updateTrip(trip: Trip): Promise<void> {
+    const tripDoc = doc(this.firestore, `trips/${trip.id}`);
+    await updateDoc(tripDoc, { ...trip });
+    this.invalidateCache();
+  }
 
-  return from(getDocs(tripsQuery)).pipe(
-    map(snapshot => {
-      const trips = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as Trip));
-      const nextLastDoc = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length-1] : null;
-      return { trips, lastDoc: nextLastDoc };
-    })
-  );
-}
-deleteTrip(tripId: string): Promise<void> {
-  const tripDoc = doc(this.firestore, `trips/${tripId}`);
-  return deleteDoc(tripDoc);
-}
-getTotalTrips() {
-  const tripsRef = collection(this.firestore, 'trips');
-  const q = query(tripsRef); // Add .where(...) here if you want filters
+  // Delete trip by id
+  async deleteTrip(tripId: string): Promise<void> {
+    const tripDoc = doc(this.firestore, `trips/${tripId}`);
+    await deleteDoc(tripDoc);
+    this.invalidateCache();
+  }
 
-  // getCountFromServer returns a promise, wrap in from() to make Observable
-  return from(getCountFromServer(q)).pipe(
-    map(snapshot => snapshot.data().count as number)
-  );
-}
+  // Paginated fetch: pageSize and optional last document for cursor
+  async getTrips(
+    pageSize: number,
+  lastDoc: DocumentSnapshot | null 
+  ): Promise<{ trips: Trip[]; lastDoc: QueryDocumentSnapshot<DocumentData> | null }> {
+    let tripsRef = collection(this.firestore, 'trips');
+    let q = query(tripsRef, orderBy('name'), limit(pageSize));
 
- async getTripsForCards(): Promise<Trip[]> {
+    if (lastDoc) {
+      q = query(q, startAfter(lastDoc));
+    }
+
+    const snapshot = await getDocs(q);
+    const trips = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as Trip),
+    }));
+
+    const nextLastDoc = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
+
+    return { trips, lastDoc: nextLastDoc };
+  }
+
+  // Get total number of trips with caching
+  async getTotalTrips(): Promise<number> {
+    if (this.totalTripsCache === null) {
+      const tripsRef = collection(this.firestore, 'trips');
+      const snapshot = await getCountFromServer(tripsRef);
+      this.totalTripsCache = snapshot.data().count;
+    }
+    return this.totalTripsCache;
+  }
+
+  // Invalidate the cached total count when data changes
+  invalidateCache() {
+    this.totalTripsCache = null;
+  }
+
+  // Get all trips (without pagination), useful for cards or dropdowns
+  async getTripsForCards(): Promise<Trip[]> {
     const tripsRef = collection(this.firestore, 'trips');
     const snapshot = await getDocs(tripsRef);
     return snapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data() as Trip
+      ...(doc.data() as Trip),
     }));
   }
 }

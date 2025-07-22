@@ -70,10 +70,10 @@ export class BookingComponent implements OnInit {
     return re.test(email);
   }
 
-  validatePhone(phone: string) {
-    const re = /^[0-8]{10}$/;
-    return re.test(phone);
-  }
+  // validatePhone(phone: any) {
+  //   const re = /^[0-8]{10}$/;
+  //   return re.test(phone);
+  // }
 
   async submitBooking() {
     this.isSubmitting = true;
@@ -96,13 +96,13 @@ export class BookingComponent implements OnInit {
         return;
       }
 
-      if (
-        this.bookingData.phone &&
-        !this.validatePhone(this.bookingData.phone)
-      ) {
-        alert('رقم الجوال غير صالح');
-        return;
-      }
+      // if (
+      //   this.bookingData.phone &&
+      //   !this.validatePhone(this.bookingData.phone)
+      // ) {
+      //   alert('رقم الجوال غير صالح');
+      //   return;
+      // }
 
      
       await this.bookingService.createBooking(this.bookingData);

@@ -2,15 +2,24 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Trip } from '../../models/trip.model';
 import { TripService } from '../../services/trip.service';
 import { serverTimestamp } from 'firebase/firestore';
+import { DocumentSnapshot } from 'firebase/firestore';
+
 @Component({
   selector: 'app-package-management',
   standalone: false,
   templateUrl: './package-management.component.html',
   styleUrl: './package-management.component.scss',
 })
-
-
 export class PackageManagementComponent implements OnInit {
+  uniqueDestinations: string[] = [];
+
+  currentPage = 1;
+  pageSize = 5; // Fixed to 5 elements per page
+  cursors: (DocumentSnapshot | null)[] = [null]; // Document snapshots for pagination
+  totalPages = 0;
+  totalItems = 0;
+  pageSizes = [5, 10, 20];
+
   trips: Trip[] = [];
   newTrip: Trip = {
     name: '',
@@ -26,24 +35,19 @@ export class PackageManagementComponent implements OnInit {
     endDate: new Date(),
   };
 
-  currentPage = 1;
-  pageSize = 3;
-  lastDoc: any = null;
-  totalPages = 0;
-  totalItems = 0;
-  pageSizes = [5, 10, 20];
-
   categories = ['شاطئية', 'جبلية', 'ثقافية', 'مغامرات', 'تسوق'];
   statusOptions = ['نشطة', 'مكتملة', 'ملغية'];
 
   loading = true;
+
+  bookings: any;
   constructor(private tripService: TripService) {}
 
   ngOnInit() {
-    // Use setTimeout to ensure DI is fully initialized
+    this.loadInitialData();
     setTimeout(() => {
       this.loadTrips();
-    },1000);
+    }, 1000);
   }
 
   // loadTrips() {
@@ -57,20 +61,31 @@ export class PackageManagementComponent implements OnInit {
   //     },
   //   });
   // }
-  loadTrips() {
-        this.loading = true;
-    this.tripService
-      .getTrips(this.pageSize, this.lastDoc)
-      .subscribe((result: any) => {
-        this.trips = result.trips;
-        this.lastDoc = result.lastDoc;
-        // Update pagination controls
-        this.calculateTotalPages();
+  async loadTrips() {
+    try {
+     const lastDoc = this.cursors[this.currentPage - 1];
+      const result = await this.tripService.getTrips(
+        this.pageSize,lastDoc
+         
+      );
+      this.trips = result.trips;
+      this.extractUniqueDestinations();
 
-      });
-    
+      // Update cursor for next page
+      if (result.trips.length > 0) {
+        this.cursors[this.currentPage] = result.lastDoc;
+      }
+    } catch (err) {
+      console.error('Error loading bookings:', err);
+    } finally {
       this.loading = false;
-   
+    }
+  }
+
+  extractUniqueDestinations() {
+    this.uniqueDestinations = [
+      ...new Set(this.trips.map((b) => b.destination)),
+    ];
   }
   scrollToForm() {
     document.getElementById('section1')?.scrollIntoView({ behavior: 'smooth' });
@@ -113,25 +128,23 @@ export class PackageManagementComponent implements OnInit {
     this.addTrip(this.newTrip);
   }
 
-// your.component.ts
-async deleteTrip(tripId: string) {
-  if (!confirm('هل أنت متأكد من حذف هذه الرحلة؟')) return;
-  
-  try {
-    await this.tripService.deleteTrip(tripId);
-    // Ensure correct ID comparison
-    const initialLength = this.trips.length;
-    this.trips = this.trips.filter(t => t.id === tripId);
-    
-    if (initialLength === this.trips.length) {
-      console.warn('Trip not found in local array:', tripId);
-    }
-  } catch (error) {
-    console.error('Deletion failed:', error);
-    alert('حدث خطأ: '  );
-  }
-}
+  async deleteTrip(tripId: string) {
+    if (!confirm('هل أنت متأكد من حذف هذه الرحلة؟')) return;
 
+    try {
+      await this.tripService.deleteTrip(tripId);
+      // Ensure correct ID comparison
+      const initialLength = this.trips.length;
+      this.trips = this.trips.filter((t) => t.id === tripId);
+
+      if (initialLength === this.trips.length) {
+        console.warn('Trip not found in local array:', tripId);
+      }
+    } catch (error) {
+      console.error('Deletion failed:', error);
+      alert('حدث خطأ: ');
+    }
+  }
 
   getStatusClass(status: string): string {
     switch (status) {
@@ -188,14 +201,6 @@ async deleteTrip(tripId: string) {
     };
   }
 
-  calculateTotalPages() {
- 
-    this.tripService.getTotalTrips().subscribe((count) => {
-      this.totalPages = count;
-      console.log('Total documents in trips:', count);
-    });
-  }
-
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -206,16 +211,24 @@ async deleteTrip(tripId: string) {
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      // To go back, we need to re-fetch from beginning
-      this.lastDoc = null;
       this.loadTrips();
     }
   }
-
-  changePageSize(size: number) {
+  async loadInitialData() {
+    this.loading = true;
+    try {
+      this.totalItems = await this.tripService.getTotalTrips();
+      this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+      await this.loadTrips();
+    } catch (err) {
+      console.error('Initialization error:', err);
+    }
+  }
+  async changePageSize(size: number) {
     this.pageSize = size;
     this.currentPage = 1;
-    this.lastDoc = null;
-    this.loadTrips();
+    this.cursors = [null];
+    this.tripService.invalidateCache();
+    await this.loadTrips();
   }
 }
