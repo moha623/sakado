@@ -5,10 +5,6 @@
       <div class="table-header">
         <div class="card-title">إدارة الرحلات</div>
         <div class="table-actions">
-          <button class="btn btn-outline">
-            <i class="fas fa-filter"></i>
-            فلترة
-          </button>
           <button class="btn btn-primary" (click)="scrollToForm()">
             <i class="fas fa-plus"></i>
             إضافة رحلة
@@ -42,15 +38,11 @@
               </td>
               <td>{{ trip.participants }}</td>
               <td class="action-cell">
-                <div class="action-btn view-btn">
-                  <i class="fas fa-eye"></i>
+                <div class="action-btn edit-btn" (click)="editTrip(trip)">
+                  <i class="fas fa-edit"></i>
                 </div>
-
-                <div class="action-btn edit-btn">
-                  <i class="fas fa-edit" (click)="loadTrips()"></i>
-                </div>
-                <div class="action-btn delete-btn">
-                  <i class="fas fa-trash" (click)="deleteTrip('id')"></i>
+                <div class="action-btn delete-btn"  (click)="confirmDelete(trip)">
+                  <i class="fas fa-trash"></i>
                 </div>
               </td>
             </tr>
@@ -71,74 +63,50 @@
         <div class="page-size">
           <span>العناصر في الصفحة:</span>
           <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
-            <option *ngFor="let size of pageSizes" [value]="size">
-              {{ size }}
-            </option>
+            <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
           </select>
         </div>
 
         <div class="page-controls">
-          <button (click)="prevPage()" [disabled]="currentPage === 1">
-            السابق
-          </button>
-
-          <span class="page-info">
-            الصفحة {{ currentPage }} من {{ totalPages }}
-          </span>
-
-          <button
-            (click)="nextPage()"
-            [disabled]="currentPage === totalPages || totalPages === 0"
-          >
-            التالي
-          </button>
+          <button (click)="prevPage()" [disabled]="currentPage === 1">السابق</button>
+          <span class="page-info">الصفحة {{ currentPage }} من {{ totalPages }}</span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages || totalPages === 0">التالي</button>
         </div>
       </div>
 
       <!-- Package Form -->
       <div class="form-container" id="section1">
         <div class="form-header">
-          <div class="card-title">إضافة رحلة جديدة</div>
+          <div class="card-title">
+            {{ editingTrip ? 'تعديل رحلة' : 'إضافة رحلة جديدة' }}
+          </div>
         </div>
 
         <div class="form-grid">
           <div class="form-group">
             <label>اسم الرحلة</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="أدخل اسم الرحلة"
-              [(ngModel)]="newTrip.name"
-            />
+            <input type="text" class="form-control" placeholder="أدخل اسم الرحلة"
+                   [(ngModel)]="currentTrip.name" required>
           </div>
 
           <div class="form-group">
             <label>التصنيف</label>
-            <select class="form-control" [(ngModel)]="newTrip.category">
+            <select class="form-control" [(ngModel)]="currentTrip.category" required>
               <option value="">اختر التصنيف</option>
-              <option *ngFor="let category of categories" [value]="category">
-                {{ category }}
-              </option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>الوجهة / المكان</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="أدخل اسم الوجهة"
-              [(ngModel)]="newTrip.destination"
-            />
+            <input type="text" class="form-control" placeholder="أدخل اسم الوجهة"
+                   [(ngModel)]="currentTrip.destination" required>
           </div>
 
           <div class="form-group">
             <label>الحالة</label>
-            <select class="form-control" [(ngModel)]="newTrip.status">
-              <option
-                *ngFor="let status of statusOptions"
-                [value]="getStatusValue(status)"
-              >
+            <select class="form-control" [(ngModel)]="currentTrip.status">
+              <option *ngFor="let status of statusOptions" [value]="statusMap[status]">
                 {{ status }}
               </option>
             </select>
@@ -148,86 +116,74 @@
         <div class="form-row">
           <div class="form-group">
             <label>تاريخ البدء</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="newTrip.startDate"
-              [ngModel]="newTrip.startDate | date : 'yyyy-MM-dd'"
-              (ngModelChange)="newTrip.startDate = $event"
-            />
+            <input type="date" class="form-control"
+                   [value]="currentTrip.startDate | date:'yyyy-MM-dd'"
+                    >
           </div>
 
           <div class="form-group">
             <label>تاريخ الانتهاء</label>
-            <input
-              type="date"
-              class="form-control"
-              [(ngModel)]="newTrip.endDate"
-              [ngModel]="newTrip.endDate | date : 'yyyy-MM-dd'"
-              (ngModelChange)="newTrip.endDate = $event"
-            />
+            <input type="date" class="form-control"
+                   [value]="currentTrip.endDate | date:'yyyy-MM-dd'"
+              >
           </div>
 
           <div class="form-group">
             <label>عدد المشاركين الأقصى</label>
-            <input
-              type="number"
-              class="form-control"
-              value="20"
-              [(ngModel)]="newTrip.maxParticipants"
-            />
+            <input type="number" class="form-control" min="1"
+                   [(ngModel)]="currentTrip.maxParticipants" value="20">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>السعر الأساسي</label>
-            <input
-              type="number"
-              class="form-control"
-              placeholder="$0.00"
-              [(ngModel)]="newTrip.price"
-            />
+            <input type="number" class="form-control" placeholder="$0.00" min="0"
+                   [(ngModel)]="currentTrip.price" required>
           </div>
 
           <div class="form-group">
             <label>سعر التخفيض (اختياري)</label>
-            <input
-              type="number"
-              class="form-control"
-              placeholder="$0.00"
-              [(ngModel)]="newTrip.discountPrice"
-            />
+            <input type="number" class="form-control" placeholder="$0.00" min="0"
+                   [(ngModel)]="currentTrip.discountPrice">
           </div>
         </div>
 
         <div class="form-group">
           <label>وصف الرحلة</label>
-          <textarea
-            class="form-control"
-            rows="4"
-            placeholder="أدخل وصفًا تفصيليًا للرحلة"
-            [(ngModel)]="newTrip.description"
-          ></textarea>
+          <textarea class="form-control" rows="4" placeholder="أدخل وصفًا تفصيليًا للرحلة"
+                    [(ngModel)]="currentTrip.description" required></textarea>
         </div>
 
         <div class="form-group">
           <label>برنامج الرحلة (يوم بيوم)</label>
-          <textarea
-            class="form-control"
-            rows="6"
-            placeholder="أدخل تفاصيل برنامج الرحلة"
-            [(ngModel)]="newTrip.itinerary"
-          ></textarea>
+          <textarea class="form-control" rows="6" placeholder="أدخل تفاصيل برنامج الرحلة"
+                    [(ngModel)]="currentTrip.itinerary"></textarea>
         </div>
 
         <div class="form-footer">
-          <button class="btn btn-outline">إلغاء</button>
-          <button class="btn btn-primary" (click)="addNewTrip()">
-            حفظ الرحلة
+          <button class="btn btn-outline" (click)="resetForm()">إلغاء</button>
+          <button class="btn btn-primary" (click)="saveTrip()">
+            {{ editingTrip ? 'تحديث' : 'حفظ' }}
           </button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-backdrop" *ngIf="showDeleteConfirmation">
+  <div class="modal-content animate-card">
+    <div class="modal-header">
+      <h3>تأكيد الحذف</h3>
+    </div>
+    <div class="modal-body">
+      <p>هل أنت متأكد من حذف رحلة "{{ tripToDelete?.name }}"؟</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showDeleteConfirmation = false">إلغاء</button>
+      <button class="btn delete-button" (click)="deleteTrip()">حذف</button>
     </div>
   </div>
 </div>

@@ -5,17 +5,27 @@
         <div class="card-title">إدارة الحجوزات</div>
         <div class="table-actions">
           <div>
-            <select class="form-control" style="width: auto; display: inline-block;" 
-                    [(ngModel)]="statusFilter">
+            <select
+              class="form-control "
+              style="width: auto; display: inline-block"
+              [(ngModel)]="statusFilter"
+              (change)="onFilterChange()"
+            >
               <option value="all">حالة الحجز</option>
               <option value="pending">في الانتظار</option>
               <option value="confirmed">مؤكدة</option>
               <option value="cancelled">ملغاة</option>
             </select>
-            <select class="form-control" style="width: auto; display: inline-block; margin-right: 10px;" 
-                    [(ngModel)]="destinationFilter">
+            <select
+              class="form-control "
+              style="width: auto; display: inline-block; margin-right: 10px"
+              [(ngModel)]="destinationFilter"
+              (change)="onFilterChange()"
+            >
               <option value="all">جميع الوجهات</option>
-              <option *ngFor="let dest of uniqueDestinations" [value]="dest">{{ dest }}</option>
+              <option *ngFor="let dest of uniqueDestinations" [value]="dest">
+                {{ dest }}
+              </option>
             </select>
           </div>
           <!-- <button class="btn btn-primary" (click)="openCreateModal()" >
@@ -24,7 +34,7 @@
           </button> -->
         </div>
       </div>
-      
+
       <table class="table">
         <thead>
           <tr>
@@ -39,50 +49,62 @@
         </thead>
         <tbody>
           <ng-container *ngIf="!loading; else loadingIndicator">
-                 <tr *ngIf="!filteredBookings.length">
-        <td colspan="7" class="text-center py-4">
-          لا توجد حجوزات متاحة
-        </td>
-      </tr>
-            <tr *ngFor="let booking of filteredBookings "
-                [class.active]="selectedBooking?.id === booking.id"
-                (click)="selectBooking(booking)">
-              <td>{{ booking.id | shortenId:8 }}</td>
+            <tr *ngIf="!filteredBookings.length">
+              <td colspan="7" class="text-center py-4">لا توجد حجوزات متاحة</td>
+            </tr>
+            <tr
+              *ngFor="let booking of filteredBookings"
+              (click)="handleBookingAction(booking, 'view', $event)"
+            >
+              <td>{{ booking.id | shortenId : 8 }}</td>
               <td>{{ booking.destination }}</td>
               <td>{{ booking.fullName }}</td>
-              <td>{{ booking.createdAt |   simpleDate:'dd/MM/yyyy, HH:mm'}}</td>
-              <td>{{ booking.travelDate  |   simpleDate:'dd/MM/yyyy, HH:mm' }}</td>
+              <td>
+                {{ booking.createdAt | simpleDate : "dd/MM/yyyy, HH:mm" }}
+              </td>
+              <td>
+                {{ booking.travelDate | simpleDate : "dd/MM/yyyy, HH:mm" }}
+              </td>
               <td>
                 <span [ngClass]="getStatusClass(booking.status)">
                   {{ getStatusText(booking.status) }}
                 </span>
               </td>
               <td class="action-cell">
-                <div class="action-btn view-btn" (click)="viewBooking(booking, $event)"  >
+                <div
+                  class="action-btn view-btn"
+                  (click)="handleBookingAction(booking, 'view', $event)"
+                >
                   <i class="fas fa-eye"></i>
                 </div>
-                <div class="action-btn edit-btn" (click)="viewBooking(booking, $event)" (click)="scrollToSection('booking-header')">
+                <!-- <div
+                  class="action-btn edit-btn"
+                  (click)="handleBookingAction(booking, 'edit', $event)"
+                >
                   <i class="fas fa-edit"></i>
-                </div>
-                <div class="action-btn delete-btn" (click)="confirmDelete(booking, $event)">
+                </div> -->
+                <div
+                  class="action-btn  "
+                  (click)="handleBookingAction(booking, 'delete', $event)"
+                >
                   <i class="fas fa-trash"></i>
                 </div>
               </td>
             </tr>
           </ng-container>
-          
-   <ng-template #loadingIndicator>
-      <tr>
-        <td colspan="7" class="text-center py-4">
-          <div class="loading-indicator">
-            <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
-          </div>
-        </td>
-      </tr>
-    </ng-template>
+
+          <ng-template #loadingIndicator>
+            <tr>
+              <td colspan="7" class="text-center py-4">
+                <div class="loading-indicator">
+                  <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
+                </div>
+              </td>
+            </tr>
+          </ng-template>
         </tbody>
       </table>
-       <div class="pagination">
+      <div class="pagination">
         <div class="page-size">
           <span>العناصر في الصفحة:</span>
           <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
@@ -109,25 +131,25 @@
           </button>
         </div>
       </div>
-
     </div>
-    
+
     <!-- Booking Details Panel -->
     <div class="booking-container" *ngIf="selectedBooking">
       <div class="booking-header" id="booking-header">
-        <div class="card-title" >تفاصيل الحجز {{ selectedBooking.id | shortenId:8 }}</div>
-        <div class="flex  ">
-          <!-- <button class="btn btn-outline  " (click)="changeBookingStatus()">
-            <i class="fas fa-sync"></i>
-            تغيير الحالة
-          </button> -->
-          <button class="btn btn-primary " (click)="updateBooking()">
+        <div class="card-title">
+          تفاصيل الحجز {{ selectedBooking.id | shortenId : 8 }}
+        </div>
+        <div class="flex">
+          <button
+            class="btn btn-primary"
+            (click)="saveBooking(selectedBooking)"
+          >
             <i class="fas fa-save"></i>
             حفظ التغييرات
           </button>
         </div>
       </div>
-      
+
       <div class="booking-summary">
         <div class="summary-card">
           <div class="summary-title">حالة الحجز</div>
@@ -139,40 +161,59 @@
             </select>
           </div>
         </div>
-        
+
         <div class="summary-card">
           <div class="summary-title">تاريخ الحجز</div>
-          <div class="summary-value">{{ selectedBooking.createdAt |   simpleDate:'dd/MM/yyyy, HH:mm'  }}</div>
+          <div class="summary-value">
+            {{ selectedBooking.createdAt | simpleDate : "dd/MM/yyyy, HH:mm" }}
+          </div>
         </div>
-        
+
         <div class="summary-card">
           <div class="summary-title">آخر تحديث</div>
-          <div class="summary-value">{{ selectedBooking.updatedAt |   simpleDate:'dd/MM/yyyy, HH:mm' }}</div>
+          <div class="summary-value">
+            {{ selectedBooking.updatedAt | simpleDate : "dd/MM/yyyy, HH:mm" }}
+          </div>
         </div>
       </div>
-      
+
       <div class="card-title">معلومات العميل</div>
       <div class="form-grid">
         <div class="form-group">
           <label>الاسم الكامل</label>
-          <input type="text" class="form-control" [(ngModel)]="selectedBooking.fullName">
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedBooking.fullName"
+          />
         </div>
-        
+
         <div class="form-group">
           <label>البريد الإلكتروني</label>
-          <input type="email" class="form-control" [(ngModel)]="selectedBooking.email">
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="selectedBooking.email"
+          />
         </div>
-        
+
         <div class="form-group">
           <label>رقم الجوال</label>
-          <input type="tel" class="form-control" [(ngModel)]="selectedBooking.phone">
+          <input
+            type="tel"
+            class="form-control"
+            [(ngModel)]="selectedBooking.phone"
+          />
         </div>
       </div>
-      
+
       <div class="form-grid">
         <div class="form-group">
           <label>الوجهة</label>
-          <select class="form-control" [(ngModel)]="selectedBooking.destination">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedBooking.destination"
+          >
             <option value="تركيا">تركيا</option>
             <option value="ماليزيا">ماليزيا</option>
             <option value="المالديف">المالديف</option>
@@ -180,16 +221,24 @@
             <option value="اليونان">اليونان</option>
           </select>
         </div>
-        
+
         <div class="form-group">
           <label>تاريخ السفر</label>
-          <input type="date" class="form-control" [(ngModel)]="selectedBooking.travelDate">
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="selectedBooking.travelDate"
+          />
         </div>
       </div>
-      
+
       <div class="form-group">
         <label>ملاحظات إضافية</label>
-        <textarea class="form-control" rows="3" [(ngModel)]="selectedBooking.notes"></textarea>
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="selectedBooking.notes"
+        ></textarea>
       </div>
     </div>
   </div>
@@ -199,7 +248,7 @@
 <div class="modal-backdrop" *ngIf="showModal">
   <div class="modal-content animate-card">
     <div class="modal-header">
-      <h3>{{ editingBooking ? 'تعديل الحجز' : 'إنشاء حجز جديد' }}</h3>
+      <h3>{{ editingBooking ? "تعديل الحجز" : "إنشاء حجز جديد" }}</h3>
       <button class="close-btn" (click)="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
@@ -207,8 +256,8 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" (click)="closeModal()">إلغاء</button>
-      <button class="btn btn-primary" (click)="editingBooking ? updateBooking() : createBooking()">
-        {{ editingBooking ? 'تحديث' : 'إنشاء' }}
+      <button class="btn btn-primary" (click)="saveBooking()">
+        {{ editingBooking ? "تحديث" : "إنشاء" }}
       </button>
     </div>
   </div>
@@ -221,11 +270,15 @@
       <h3>تأكيد الحذف</h3>
     </div>
     <div class="modal-body">
-      <p>هل أنت متأكد من حذف الحجز {{ bookingToDelete?.id | shortenId:8 }}؟</p>
+      <p>
+        هل أنت متأكد من حذف الحجز {{ bookingToDelete?.id | shortenId : 8 }}؟
+      </p>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" (click)="showDeleteConfirmation = false">إلغاء</button>
-      <button class="btn btn-danger" (click)="deleteBooking()">حذف</button>
+      <button class="btn  " (click)="showDeleteConfirmation = false">
+        إلغاء
+      </button>
+      <button class="btn delete-button" (click)="deleteBooking()">حذف</button>
     </div>
   </div>
 </div>

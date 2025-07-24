@@ -4,23 +4,16 @@ export interface Booking {
   fullName: string;
   email: string;
   phone: string;
-  travelDate: string; // or Date if you prefer
+  travelDate: Date;
   destination: string;
-  notes: string;
-  status: 'pending' | 'confirmed' | 'cancelled';
+  ticketCount: number;
+  totalPrice: number;
+  status: string;
+  notes?: string;
   createdAt: Date;
   updatedAt: Date;
-  trip: string;
-  participant: string;
 }
-// export interface Booking {
-  
-//   trip: string;
-//   participant: string;
-//   date: string;
-//   amount: number;
-//   status: string; // 'confirmed', 'pending', 'cancelled'
-// }
+ 
 
 export interface BookingDetails {
   tripName: string;

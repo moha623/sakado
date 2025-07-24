@@ -9,7 +9,7 @@ export class FilterBookingsPipe implements PipeTransform {
   transform(bookings: Booking[], statusFilter: string, tripFilter: string): Booking[] {
     return bookings.filter(booking => {
       const statusMatch = statusFilter === 'all' || booking.status === statusFilter;
-      const tripMatch = tripFilter === 'all' || booking.trip === tripFilter;
+      const tripMatch = tripFilter === 'all' || booking.id === tripFilter;
       return statusMatch && tripMatch;
     });
   }

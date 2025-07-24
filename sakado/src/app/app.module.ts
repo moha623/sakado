@@ -72,7 +72,7 @@ import { SimpleDatePipe } from './pipes/shortdate.pipe';
     HttpClientModule,
     FilterBookingsPipe,
     ShortenIdPipe,
- SimpleDatePipe
+ SimpleDatePipe,
  
   ],
   providers: [
