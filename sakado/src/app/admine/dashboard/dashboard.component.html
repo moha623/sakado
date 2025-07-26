@@ -1,10 +1,8 @@
 <!-- Main Content -->
-<div class="main-content" dir="rtl">
-  <!-- Header -->
-
-  <!-- Dashboard Content -->
+<!-- <div class="main-content" dir="rtl">
+ 
   <div class="content" id="dashboardContent">
-    <!-- KPI Cards -->
+  
     <div class="kpi-container">
       <div class="kpi-card">
         <div class="kpi-title">المستخدمون المسجلون</div>
@@ -56,7 +54,7 @@
       </div>
     </div>
 
-    <!-- Charts and Activity -->
+ 
     <div class="charts-container">
       <div class="chart-card">
         <div class="card-header">
@@ -84,7 +82,7 @@
       </div>
     </div>
 
-    <!-- Activity Feed -->
+ 
     <div class="activity-feed">
       <div class="card-header">
         <div class="card-title">النشاطات الأخيرة</div>
@@ -144,7 +142,7 @@
       </div>
     </div>
 
-    <!-- Quick Actions -->
+ 
     <div class="quick-actions">
       <div class="action-card"  routerLink="PackageManagement">
         <div class="action-icon">
@@ -175,5 +173,208 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
  
+
+
+
+<ng-container *ngIf="!isLoading; else loading">
+  <div class="main-content" dir="rtl">
+    <div class="content" id="dashboardContent">
+        <div class="kpi-container">
+      <div class="kpi-card">
+        <div class="kpi-title">المستخدمون المسجلون</div>
+        <div class="kpi-value">1,248</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-arrow-up"></i>
+          <span>+24 هذا الأسبوع</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الرحلات النشطة</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-plus-circle"></i>
+          <span>3 رحلات جديدة</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الحجوزات (هذا الشهر)</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-chart-line"></i>
+          <span>+42% عن الشهر الماضي</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">المشاركون</div>
+        <div class="kpi-value">1,842</div>
+        <div class="kpi-trend">
+          <i class="fas fa-users"></i>
+          <span>142 مشارك نشط</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">الإيرادات</div>
+        <div class="kpi-value">$24,842</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-dollar-sign"></i>
+          <span>+$2,421 هذا الشهر</span>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">مستخدمون جدد (24 ساعة)</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-trend trend-up">
+          <i class="fas fa-user-plus"></i>
+          <span>+8 منذ البارحة</span>
+        </div>
+      </div>
+    </div>
+      <div class="charts-container">
+        
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">حجوزات الرحلات</div>
+          </div>
+          <div class="chart-container">
+            <apx-chart
+              [series]="bookingsChartOptions.series"
+              [chart]="bookingsChartOptions.chart"
+              [dataLabels]="bookingsChartOptions.dataLabels"
+              [plotOptions]="bookingsChartOptions.plotOptions"
+              [xaxis]="bookingsChartOptions.xaxis"
+              [yaxis]="bookingsChartOptions.yaxis"
+              [grid]="bookingsChartOptions.grid"
+            >
+            </apx-chart>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">شعبية الرحلات حسب المشاركين</div>
+          </div>
+          <div class="chart-container">
+            <apx-chart
+              [series]="popularityChartOptions.series"
+              [chart]="popularityChartOptions.chart"
+              [dataLabels]="popularityChartOptions.dataLabels"
+              [plotOptions]="popularityChartOptions.plotOptions"
+              [xaxis]="popularityChartOptions.xaxis"
+              [yaxis]="popularityChartOptions.yaxis"
+              [grid]="popularityChartOptions.grid"
+            >
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+      <div class="charts-container">
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">المستخدمون الجدد (أسبوعي)</div>
+          </div>
+          <div class="chart-container">
+            <apx-chart
+                [series]="weeklyUsersChartOptions.series"
+      [chart]="weeklyUsersChartOptions.chart"
+      [dataLabels]="weeklyUsersChartOptions.dataLabels"
+      [plotOptions]="weeklyUsersChartOptions.plotOptions"
+      [xaxis]="weeklyUsersChartOptions.xaxis"
+      [yaxis]="weeklyUsersChartOptions.yaxis"
+      [grid]="weeklyUsersChartOptions.grid"
+      [fill]="weeklyUsersChartOptions.fill"
+      [legend]="weeklyUsersChartOptions.legend">
+            </apx-chart>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div class="card-title">توزيع الإيرادات حسب الرحلة</div>
+          </div>
+          <div class="chart-container">
+            <apx-chart
+              [series]="revenuePieChartOptions.series"
+              [chart]="revenuePieChartOptions.chart"
+              [labels]="revenuePieChartOptions.labels"
+              [colors]="revenuePieChartOptions.colors"
+              [dataLabels]="revenuePieChartOptions.dataLabels"
+              [legend]="revenuePieChartOptions.legend"
+              [responsive]="revenuePieChartOptions.responsive"
+              [theme]="revenuePieChartOptions.theme"
+              [tooltip]="revenuePieChartOptions.tooltip"
+            >
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-container">
+        <apx-chart
+          [series]="popularityChartOptions.series"
+          [chart]="popularityChartOptions.chart"
+          [dataLabels]="popularityChartOptions.dataLabels"
+          [plotOptions]="popularityChartOptions.plotOptions"
+          [xaxis]="popularityChartOptions.xaxis"
+          [yaxis]="popularityChartOptions.yaxis"
+          [fill]="popularityChartOptions.fill"
+          [legend]="popularityChartOptions.legend"
+        >
+        </apx-chart>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of activities">
+          <div class="activity-icon">
+            <i [class]="getActivityIcon(activity.type)"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">{{ activity.title }}</div>
+            <div class="activity-desc">{{ activity.description }}</div>
+            <div class="activity-time">{{ activity.time }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <div class="action-card" routerLink="PackageManagement">
+          <div class="action-icon">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="action-title">إضافة رحلة جديدة</div>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-list"></i>
+          </div>
+          <div class="action-title">عرض جميع الحجوزات</div>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-users-cog"></i>
+          </div>
+          <div class="action-title" routerLink=" BookingManagement">
+            إدارة المستخدمين
+          </div>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="action-title">إضافة مشرف جديد</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="loading-spinner">
+    <i class="fas fa-spinner fa-spin fa-2x"></i>
+    <p>جاري تحميل البيانات...</p>
+  </div>
+</ng-template>

@@ -6,9 +6,9 @@
         <div
       
           routerLink="/"
-          class="bg-primary w-10 h-10 rounded-full flex items-center justify-center"
+          class="bg-[#86b817] w-10 h-10 rounded-full flex items-center justify-center"
         >
-          <i class="fas fa-plane-departure text-white text-xl"></i>
+          <i class="fas fa-plane-departure text-white text-xl bg-[#86b817] "></i>
         </div>
         <span routerLink="/" class="text-xl font-bold text-primary mr-2"
        
@@ -37,14 +37,14 @@
       <div class="flex items-center">
         <button
           routerLink="/auth/register"
-          class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-full transition"
+          class="bg-[#86b817]   text-white font-medium py-2 px-6 rounded-full transition"
           *ngIf="!isLoggedIn"
         >
           انضم إلينا
         </button>
         <button
           routerLink="/auth/register"
-          class="bg-red-600 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-full transition"
+          class="bg-[#4c956c]   text-white font-medium py-2 px-6 rounded-full transition"
           *ngIf="isLoggedIn"
           (click)="onLogout()"
         >

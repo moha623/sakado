@@ -1,12 +1,6 @@
-// @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
-// @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+ 
 @import url('../../../assets/fontawesome/css/all.min.css');
-
-.primary{
-        --tw-bg-opacity: 1;
-    background-color: rgb(134 184 23 / var(--tw-bg-opacity, 1)) /* #86b817 */
-}
-
+ 
 
       @keyframes fadeIn {
         from {
@@ -175,7 +169,7 @@
         font-size: 2.8rem;
         font-weight: 800;
         background: linear-gradient(to right, #b5e249, #b5e249);
-        -webkit-background-clip: text;
+ 
         -webkit-text-fill-color: transparent;
         margin-bottom: 15px;
     }
