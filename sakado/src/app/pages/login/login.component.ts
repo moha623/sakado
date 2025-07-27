@@ -9,61 +9,96 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  // signupUsers: any[] = [];
-  // loginObj: any = {
-  //   username: '',
-  //   password: '',
-  // };
-
-  // login() {
-  //   console.log('Login object:', this.loginObj);
-  //   if (!this.loginObj.username || !this.loginObj.password) {
-  //     console.error('Both username and password are required');
-  //     return;
-  //   }
-  //   this.authService.login(this.loginObj).subscribe(
-  //     (response) => {
-  //       console.log('Login successful', response);
-  //       this.router.navigate(['/']);
-  //     },
-  //     (error) => {
-  //       console.error('Login failed', error);
-  //     }
-  //   );
-  // }
-  // logout() {
-  //   this.authService.logout();
-  //   this.router.navigate(['/login']);
-  // }
   email: string = '';
   password: string = '';
-  error: string = '';
+  loading = false;
+  success = false;
+  errorData: {message: string, icon: string, links?: any[]} | null = null;
+  redirectTimer: any;
+  countdown = 5;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, public router: Router) {}
 
   onSubmit() {
+    this.errorData = null;
+    this.loading = true;
+
     this.auth.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Login successful', response);
-        this.router.navigate(['/']);
+        this.success = true;
+        this.loading = false;
+        
+        // Start redirect countdown
+        this.startCountdown();
       },
-
-      error: (err) => console.error('Login failed', err),
+      error: (err) => {
+        this.setErrorData(err.code || 'unknown');
+        this.loading = false;
+        console.error('Login failed', err);
+      },
     });
   }
-logout() {
-  this.auth.logout().subscribe({
-    next: () => {
-      console.log('User logged out');
-      this.router.navigate(['/login']);
-    },
-    error: (e) => {
-      console.error('Logout failed:', e);
-      
-      localStorage.removeItem('authToken');
-      this.router.navigate(['/login']);
-    }
-  });
-}
 
+  startCountdown() {
+    this.countdown = 5;
+    this.redirectTimer = setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        clearInterval(this.redirectTimer);
+        this.router.navigate(['/']);
+      }
+    }, 1000);
+  }
+
+  private setErrorData(errorCode: string) {
+    const errorMap: Record<string, 
+      {message: string, icon: string, links?: Array<{text: string, path?: string, action?: string}>}
+    > = {
+      'auth/invalid-credential': {
+        message: 'بيانات الدخول غير صحيحة. يرجى التحقق من البريد الإلكتروني وكلمة المرور.',
+        icon: 'fa-exclamation-triangle'
+      },
+      'auth/user-disabled': {
+        message: 'هذا الحساب معطل. يرجى الاتصال بالدعم الفني.',
+        icon: 'fa-user-lock',
+        links: [
+          {text: 'الاتصال بالدعم', action: 'mailto:support@example.com'}
+        ]
+      },
+      'auth/user-not-found': {
+        message: 'لا يوجد حساب مرتبط بهذا البريد الإلكتروني.',
+        icon: 'fa-user-times',
+        links: [
+          {text: 'إنشاء حساب جديد', path: '/auth/register'},
+          {text: 'استعادة كلمة المرور', path: '/reset-password'}
+        ]
+      },
+      'auth/wrong-password': {
+        message: 'كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.',
+        icon: 'fa-key'
+      },
+      'auth/too-many-requests': {
+        message: 'عدد كبير جدًا من محاولات الدخول الفاشلة. يرجى المحاولة لاحقًا.',
+        icon: 'fa-shield-alt'
+      },
+      'auth/network-request-failed': {
+        message: 'تعذر الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.',
+        icon: 'fa-wifi'
+      },
+      'default': {
+        message: 'حدث خطأ غير متوقع أثناء محاولة الدخول. يرجى المحاولة مرة أخرى.',
+        icon: 'fa-exclamation-circle'
+      }
+    };
+
+    this.errorData = errorMap[errorCode] || errorMap['default'];
+  }
+
+  // Clean up timer when component is destroyed
+  ngOnDestroy() {
+    if (this.redirectTimer) {
+      clearInterval(this.redirectTimer);
+    }
+  }
 }

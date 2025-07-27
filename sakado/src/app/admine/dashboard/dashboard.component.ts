@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
- 
-import { Firestore } from '@angular/fire/firestore';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Firestore, orderBy } from '@angular/fire/firestore';
 import {
   collection,
   query,
@@ -19,23 +25,10 @@ import {
   ApexGrid,
   ApexLegend,
   ApexResponsive,
-  ApexNonAxisChartSeries,
-  ApexTheme,
-  ApexTooltip,
 } from 'ng-apexcharts';
 import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
-type PieChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  colors: string[];
-  dataLabels: ApexDataLabels;
-  legend: ApexLegend;
-  responsive: ApexResponsive[];
-  theme: ApexTheme;
-  tooltip: ApexTooltip;
-};
+import { Trip } from '../../models/trip.model';
+
 type BookingChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -55,20 +48,125 @@ type BookingChartOptions = {
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnChanges {
+  trips: Trip[] = []; // Now managed internally
+  revenueChartOptions: any = null;
   isLoading = true;
+  currentYear = new Date().getFullYear();
 
-  revenuePieChartOptions: PieChartOptions;
+  bookingsChartOptions: any = {
+    series: [],
+    chart: {
+      type: 'donut',
+      height: 350,
+      fontFamily: 'Tajawal, sans-serif',
+    },
+    dataLabels: {
+      enabled: true,
+      style: {
+        fontSize: '14px',
+        fontWeight: 'bold',
+        colors: ['#fff'],
+      },
+      dropShadow: {
+        enabled: false,
+      },
+    },
+    plotOptions: {
+      pie: {
+        donut: {
+          labels: {
+            show: true,
+            name: {
+              show: true,
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#253808',
+            },
+            value: {
+              show: true,
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: '#253808',
+              formatter: (val: string) => `${val} حجوزات`,
+            },
+            total: {
+              show: true,
+              label: 'الإجمالي',
+              color: '#253808',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              formatter: (w: any) => {
+                return (
+                  w.globals.seriesTotals.reduce(
+                    (a: number, b: number) => a + b,
+                    0
+                  ) + ' حجز'
+                );
+              },
+            },
+          },
+        },
+      },
+    },
+    labels: [],
+    colors: [
+      '#253808',
+      '#b5e249',
+      '#8BC34A',
+      '#4CAF50',
+      '#CDDC39',
+      '#FFEB3B',
+      '#FFC107',
+      '#FF9800',
+      '#FF5722',
+      '#795548',
+      '#607D8B',
+      '#9E9E9E',
+    ],
+    legend: {
+      position: 'right',
+      horizontalAlign: 'center',
+      fontSize: '14px',
+      markers: {
+        width: 12,
+        height: 12,
+        radius: 12,
+      },
+      itemMargin: {
+        horizontal: 10,
+        vertical: 5,
+      },
+      labels: {
+        colors: '#253808',
+        useSeriesColors: false,
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 300,
+          },
+          legend: {
+            position: 'bottom',
+          },
+        },
+      },
+    ],
+  };
+
   registeredUsers: number = 0;
   activeTrips: number = 0;
   monthlyBookings: number = 0;
   participants: number = 0;
   revenue: number = 0;
   newUsers24h: number = 0;
-
+  totaleMonthlyBookings: number = 0; // Total bookings for the month
+  Totale: number = 0; // Total revenue for the month
   // Chart Options
-  bookingsChartOptions: BookingChartOptions;
-  popularityChartOptions: BookingChartOptions;
+
   weeklyUsersChartOptions: BookingChartOptions;
 
   // Activity Feed
@@ -76,53 +174,267 @@ export class DashboardComponent implements OnInit {
 
   weeklyUsersChartOptopns: any;
 
-  // Table Data
-  tripsData = [
-    { name: 'رحلة الصحراء', bookings: 98, participants: 42, revenue: 4200 },
-    { name: 'رحلة الجبال', bookings: 76, participants: 35, revenue: 3500 },
-    { name: 'رحلة الغابات', bookings: 65, participants: 28, revenue: 2800 },
-    { name: 'رحلة الساحل', bookings: 58, participants: 24, revenue: 2400 },
-    { name: 'رحلة المغامرة', bookings: 42, participants: 18, revenue: 1800 },
-  ];
+  pieChartOptions: any = {};
 
   constructor(private firestore: Firestore) {
-    this.revenuePieChartOptions = this.createPieChartOptions();
-    this.bookingsChartOptions = this.createChartOptions(
-      'حجوزات الرحلات',
-      'bookings'
-    );
-    this.popularityChartOptions = this.createChartOptions(
-      'شعبية الرحلات',
-      'participants'
-    );
     this.weeklyUsersChartOptions = this.createChartOptions(
       'المستخدمون الجدد',
       'users'
     );
   }
-
   async ngOnInit() {
     this.isLoading = true;
     try {
-      await this.loadWeeklyUsersChart();
-     
-      await this.loadKPIData();
-      await this.loadChartsData();
-      this.loadActivityFeed();
-      this.updatePieChartData(); // Add this line
-       
+      console.log('Initializing dashboard...');
+
+      // Load all data in parallel for better performance
+      await Promise.all([
+        this.loadTrips(),
+        this.loadWeeklyUsersChart(),
+        this.loadBookingsData(),
+        this.loadKPIData(), // Ensure this is called
+      ]);
+      console.log(this.Totale, 'Total Revenue for the month');
+         console.log(`Monthly Bookings: ${this.totaleMonthlyBookings}`);
+      this.updateRevenueChart();
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
       this.isLoading = false;
+      console.log('Dashboard initialization completed');
+    }
+  }
+  private async loadTrips(): Promise<void> {
+    console.log('Fetching trips from Firestore...');
+    const tripsRef = collection(this.firestore, 'trips');
+
+    // Optional: Add filters if needed (e.g., only future trips)
+    const q = query(
+      tripsRef,
+      orderBy('startDate', 'desc') // Example ordering
+      // where('status', '==', 'active') // Example filter
+    );
+
+    const querySnapshot = await getDocs(q);
+    this.trips = querySnapshot.docs.map((doc) => {
+      const data = doc.data() as Trip;
+      return {
+        ...data,
+        id: doc.id,
+        // Convert Firestore Timestamps to Date objects
+        startDate:
+          data.startDate instanceof Timestamp
+            ? data.startDate.toDate()
+            : data.startDate,
+        endDate:
+          data.endDate instanceof Timestamp
+            ? data.endDate.toDate()
+            : data.endDate,
+      };
+    });
+
+    console.log(`Fetched ${this.trips.length} trips`);
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Input changes detected:', changes);
+
+    if (changes['trips'] && this.trips) {
+      this.updateRevenueChart();
+    }
+  }
+
+  private updateRevenueChart() {
+    if (!this.trips || this.trips.length === 0) {
+      this.revenueChartOptions = null;
+      return;
     }
 
-    
+    const incomeData = this.calculateIncomeByCategory();
+
+    // If no completed trips found
+    if (incomeData.series.length === 0) {
+      console.warn('No completed trips found for revenue chart');
+      this.revenueChartOptions = null;
+      return;
+    }
+
+    this.revenueChartOptions = {
+      series: incomeData.series,
+      chart: {
+        type: 'pie',
+        width: '100%',
+        height: 300,
+        toolbar: { show: false },
+        fontFamily: 'Cairo, sans-serif',
+        events: {
+          mounted: (chart: any) => {
+            chart.windowResizeHandler();
+          },
+        },
+      },
+      labels: incomeData.labels,
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number, { seriesIndex, w }: any) => {
+          const value = w.config.series[seriesIndex];
+          return `$${value.toLocaleString('en-US', {
+            maximumFractionDigits: 0,
+          })}`;
+        },
+        style: {
+          fontSize: '14px',
+          fontWeight: 'bold',
+        },
+        dropShadow: { enabled: false },
+      },
+      legend: {
+        position: 'bottom',
+        fontSize: '14px',
+        labels: { colors: '#333' },
+        itemMargin: { horizontal: 10, vertical: 5 },
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) =>
+            `$${val.toLocaleString('en-US', { maximumFractionDigits: 0 })}`,
+        },
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            labels: {
+              show: true,
+              name: { show: true, fontSize: '16px' },
+              value: {
+                show: true,
+                fontSize: '20px',
+                formatter: (val: string) =>
+                  `$${Number(val).toLocaleString('en-US', {
+                    maximumFractionDigits: 0,
+                  })}`,
+              },
+              total: {
+                show: true,
+                label: 'إجمالي الإيرادات',
+                formatter: () => {
+                  const total = incomeData.series.reduce((a, b) => a + b, 0);
+                  return `$${total.toLocaleString('en-US')}`;
+                },
+              },
+            },
+          },
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 768,
+          options: {
+            chart: { width: '100%' },
+            legend: { position: 'bottom' },
+          },
+        },
+      ],
+    };
+  }
+
+  private calculateIncomeByCategory(): { series: number[]; labels: string[] } {
+    const categoryMap = new Map<string, number>();
+
+    if (!this.trips || this.trips.length === 0) {
+      return { series: [], labels: [] };
+    }
+
+    let completedTripsCount = 0;
+    let totalRevenue = 0;
+
+    for (const trip of this.trips) {
+      // Debug current trip
+
+      completedTripsCount++;
+      const price = trip.discountPrice ?? trip.price;
+      const revenue = price * trip.participants;
+      totalRevenue += revenue;
+
+      const currentTotal = categoryMap.get(trip.category) || 0;
+      const newTotal = currentTotal + revenue;
+      categoryMap.set(trip.category, newTotal);
+    }
+    this.Totale = totalRevenue; // Store total revenue for the month
+    console.log(this.Totale, 'Total Revenue for all trips');
+    return {
+      series: Array.from(categoryMap.values()),
+      labels: Array.from(categoryMap.keys()),
+    };
+  }
+
+  async loadBookingsData() {
+    try {
+      this.isLoading = true;
+      const bookings = await this.getBookings();
+      const monthlyCounts = this.aggregateBookingsByMonth(bookings);
+
+      this.bookingsChartOptions.series = Object.values(monthlyCounts);
+      this.bookingsChartOptions.labels = Object.keys(monthlyCounts);
+    } catch (error) {
+      console.error('Error loading bookings data:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async getBookings(): Promise<any[]> {
+    const bookingsRef = collection(this.firestore, 'bookings');
+
+    // Get bookings for the current year
+    const startDate = new Date(this.currentYear, 0, 1);
+    const endDate = new Date(this.currentYear + 1, 0, 1);
+
+    const q = query(
+      bookingsRef,
+      where('createdAt', '>=', Timestamp.fromDate(startDate)),
+      where('createdAt', '<', Timestamp.fromDate(endDate))
+    );
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => doc.data());
+  }
+
+  aggregateBookingsByMonth(bookings: any[]): { [month: string]: number } {
+    const monthNames = [
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
+    ];
+
+    // Initialize counts for all months
+    const monthlyCounts: { [key: string]: number } = {};
+    monthNames.forEach((month) => (monthlyCounts[month] = 0));
+
+    // Process each booking
+    bookings.forEach((booking) => {
+      if (booking.createdAt && booking.createdAt instanceof Timestamp) {
+        const date = booking.createdAt.toDate();
+        const monthIndex = date.getMonth();
+        const monthName = monthNames[monthIndex];
+        monthlyCounts[monthName]++;
+      }
+    });
+
+    return monthlyCounts;
   }
 
   private async loadWeeklyUsersChart() {
     const weeklyUsers = await this.getWeeklyUsersData();
-    console.log('weeklyUsers', weeklyUsers);
+
     this.weeklyUsersChartOptions = {
       series: [
         {
@@ -222,10 +534,20 @@ export class DashboardComponent implements OnInit {
       ],
     };
   }
- private async getWeeklyUsersData(): Promise<{ name: string; count: number }[]> {
-    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  private async getWeeklyUsersData(): Promise<
+    { name: string; count: number }[]
+  > {
+    const days = [
+      'الأحد',
+      'الإثنين',
+      'الثلاثاء',
+      'الأربعاء',
+      'الخميس',
+      'الجمعة',
+      'السبت',
+    ];
     const counts: number[] = new Array(7).fill(0);
-    
+
     try {
       // Get start of week (Sunday)
       const now = new Date();
@@ -233,45 +555,44 @@ export class DashboardComponent implements OnInit {
       const dayOfWeek = today.getDay(); // 0 = Sunday
       const startDate = new Date(today);
       startDate.setDate(today.getDate() - dayOfWeek);
-      
+
       // Query for each day of the week
       for (let i = 0; i < 7; i++) {
         const dayStart = new Date(startDate);
         dayStart.setDate(startDate.getDate() + i);
         dayStart.setHours(0, 0, 0, 0);
-        
+
         const dayEnd = new Date(dayStart);
         dayEnd.setDate(dayStart.getDate() + 1);
-        
+
         // Format dates for debugging
-        const startStr = format(dayStart, 'yyyy-MM-dd HH:mm:ss',  );
-        const endStr = format(dayEnd, 'yyyy-MM-dd HH:mm:ss',);
-      
-        
+        const startStr = format(dayStart, 'yyyy-MM-dd HH:mm:ss');
+        const endStr = format(dayEnd, 'yyyy-MM-dd HH:mm:ss');
+
         const q = query(
           collection(this.firestore, 'users'),
           where('createdAt', '>=', Timestamp.fromDate(dayStart)),
           where('createdAt', '<', Timestamp.fromDate(dayEnd))
         );
-        
+
         const snapshot = await getCountFromServer(q);
         counts[i] = snapshot.data().count;
-      
       }
     } catch (error) {
       console.error('Error fetching weekly users:', error);
       // Fallback to test data for debugging
       return days.map((day, index) => ({
         name: day,
-        count: [15, 22, 18, 30, 25, 40, 35][index]
+        count: [15, 22, 18, 30, 25, 40, 35][index],
       }));
     }
-    
+
     return days.map((day, index) => ({
       name: day,
-      count: counts[index]
+      count: counts[index],
     }));
   }
+
   private createChartOptions(
     title: string,
     metric: string
@@ -380,267 +701,65 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  private updatePieChartData(): void {
-    const totalRevenue = this.tripsData.reduce(
-      (sum, trip) => sum + trip.revenue,
-      0
-    );
-    const percentages = this.tripsData.map((trip) =>
-      Math.round((trip.revenue / totalRevenue) * 100)
-    );
-
-    this.revenuePieChartOptions = {
-      ...this.revenuePieChartOptions,
-      series: percentages,
-      labels: this.tripsData.map((trip) => trip.name),
-    };
-  }
   private async loadKPIData() {
-    // Get registered users count
-    const usersCol = collection(this.firestore, 'users');
-    const usersSnapshot = await getCountFromServer(usersCol);
-    this.registeredUsers = usersSnapshot.data().count;
+    try {
+      // 1. Registered Users
+      const usersCol = collection(this.firestore, 'users');
+      const usersSnapshot = await getCountFromServer(usersCol);
+      this.registeredUsers = usersSnapshot.data().count;
 
-    // Get active trips
-    const tripsQuery = query(
-      collection(this.firestore, 'trips'),
-      where('status', '==', 'active')
-    );
-    const tripsSnapshot = await getCountFromServer(tripsQuery);
-    this.activeTrips = tripsSnapshot.data().count;
+      // 2. Active Trips
+      const tripsQuery = query(
+        collection(this.firestore, 'trips'),
+        where('status', '==', 'active')
+      );
+      const tripsSnapshot = await getCountFromServer(tripsQuery);
+      this.activeTrips = tripsSnapshot.data().count;
 
-    // Get monthly bookings
-    const startOfMonth = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      1
-    );
-    const endOfMonth = new Date(
-      new Date().getFullYear(),
-      new Date().getMonth() + 1,
-      0
-    );
+      // 3. Monthly Bookings
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      endOfMonth.setHours(23, 59, 59, 999); // End of day
 
-    const bookingsQuery = query(
-      collection(this.firestore, 'bookings'),
-      where('bookingDate', '>=', startOfMonth),
-      where('bookingDate', '<=', endOfMonth)
-    );
+      const bookingsQuery = query(
+        collection(this.firestore, 'bookings'),
+        where('bookingDate', '>=', Timestamp.fromDate(startOfMonth)),
+        where('bookingDate', '<=', Timestamp.fromDate(endOfMonth))
+      );
 
-    const bookingsSnapshot = await getCountFromServer(bookingsQuery);
-    this.monthlyBookings = bookingsSnapshot.data().count;
+      const bookingsSnapshot = await getCountFromServer(bookingsQuery);
+      this.monthlyBookings = bookingsSnapshot.data().count;
+      this.totaleMonthlyBookings= this.monthlyBookings; // Store total bookings for the month
 
-    // Get participants (sum of participants in all bookings)
-    const bookingsDocs = await getDocs(bookingsQuery);
-    this.participants = bookingsDocs.docs.reduce(
-      (sum, doc) => sum + (doc.data()['participants'] || 1),
-      0
-    );
+      // 4. Participants and Revenue
+      const bookingsDocs = await getDocs(bookingsQuery);
+      this.participants = 0;
+      this.revenue = 0;
 
-    // Get revenue
-    this.revenue = bookingsDocs.docs.reduce(
-      (sum, doc) => sum + (doc.data()['totalPrice'] || 0),
-      0
-    );
+      bookingsDocs.forEach((doc) => {
+        const data = doc.data();
+        const participants = data['participants'] || 1;
+        const totalPrice = data['totalPrice'] || 0;
 
-    // Get new users in last 24 hours
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
+        this.participants += participants;
+        this.revenue += totalPrice;
+      });
 
-    const newUsersQuery = query(
-      collection(this.firestore, 'users'),
-      where('createdAt', '>=', yesterday)
-    );
+      // 5. New Users (24 hours)
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0); // Start of day yesterday
 
-    const newUsersSnapshot = await getCountFromServer(newUsersQuery);
-    this.newUsers24h = newUsersSnapshot.data().count;
-  }
+      const newUsersQuery = query(
+        collection(this.firestore, 'users'),
+        where('createdAt', '>=', Timestamp.fromDate(yesterday))
+      );
 
-  private async loadChartsData() {
-    // Bookings by Trip
-    const trips = await this.getTripsData();
-    this.bookingsChartOptions = {
-      ...this.bookingsChartOptions,
-      series: [
-        {
-          name: 'عدد الحجوزات',
-          data: trips.map((trip) => trip.bookings),
-        },
-      ],
-      xaxis: {
-        ...this.bookingsChartOptions.xaxis,
-        categories: trips.map((trip) => trip.name),
-      },
-    };
-
-    // Popularity by Participants
-    this.popularityChartOptions = {
-      ...this.popularityChartOptions,
-      series: [
-        {
-          name: 'عدد المشاركين',
-          data: trips.map((trip) => trip.participants),
-        },
-      ],
-      xaxis: {
-        ...this.popularityChartOptions.xaxis,
-        categories: trips.map((trip) => trip.name),
-      },
-    };
-
-    // Weekly New Users
-    const weeklyUsers = await this.getWeeklyUsersData();
-    this.weeklyUsersChartOptions = {
-      ...this.weeklyUsersChartOptions,
-      series: [
-        {
-          name: 'المستخدمون الجدد',
-          data: weeklyUsers.map((day) => day.count),
-        },
-      ],
-      xaxis: {
-        ...this.weeklyUsersChartOptions.xaxis,
-        categories: weeklyUsers.map((day) => day.name),
-      },
-    };
-  }
-
-  private async getTripsData(): Promise<
-    { name: string; bookings: number; participants: number }[]
-  > {
-    // In a real app, fetch from Firestore
-    return [
-      { name: 'رحلة الصحراء', bookings: 98, participants: 42 },
-      { name: 'رحلة الجبال', bookings: 76, participants: 35 },
-      { name: 'رحلة الغابات', bookings: 65, participants: 28 },
-      { name: 'رحلة الساحل', bookings: 58, participants: 24 },
-      { name: 'رحلة المغامرة', bookings: 42, participants: 18 },
-    ];
-  }
-
-  private loadActivityFeed() {
-    // Replace with actual Firestore query
-    this.activities = [
-      {
-        type: 'booking',
-        title: 'حجز جديد',
-        description: 'قام أحمد محمد بحجز رحلة استكشاف الصحراء',
-        time: 'منذ 5 دقائق',
-      },
-      {
-        type: 'user',
-        title: 'مستخدم جديد',
-        description: 'لين عبد الله قامت بالتسجيل في الموقع',
-        time: 'منذ 30 دقيقة',
-      },
-      {
-        type: 'review',
-        title: 'تقييم جديد',
-        description: 'عمر خالد أعطى 5 نجوم لرحلة الجبال',
-        time: 'منذ ساعة',
-      },
-      {
-        type: 'update',
-        title: 'تحديث رحلة',
-        description: 'تم تحديث رحلة استكشاف الجبال',
-        time: 'منذ ساعتين',
-      },
-    ];
-  }
-
-  // Get icon for activity type
-  getActivityIcon(type: string): string {
-    switch (type) {
-      case 'booking':
-        return 'fas fa-calendar-check';
-      case 'user':
-        return 'fas fa-user-plus';
-      case 'review':
-        return 'fas fa-star';
-      case 'update':
-        return 'fas fa-edit';
-      case 'inquiry':
-        return 'fas fa-comment';
-      default:
-        return 'fas fa-bell';
+      const newUsersSnapshot = await getCountFromServer(newUsersQuery);
+      this.newUsers24h = newUsersSnapshot.data().count;
+    } catch (error) {
+      console.error('Error loading KPI data:', error);
     }
-  }
-
-  private createPieChartOptions(): PieChartOptions {
-    return {
-      series: [],
-      chart: {
-        type: 'pie',
-        height: 350,
-        width: '100%',
-        toolbar: { show: false },
-        fontFamily: 'Cairo, sans-serif',
-      },
-      labels: [],
-      colors: [
-        '#3B82F6',
-        '#10B981',
-        '#8B5CF6',
-        '#F59E0B',
-        '#EF4444',
-        '#6366F1',
-      ],
-      dataLabels: {
-        enabled: true,
-        formatter: (val: number, opts) => {
-          return `${Math.round(val)}%`;
-        },
-        style: {
-          fontSize: '14px',
-          fontFamily: 'Cairo, sans-serif',
-          fontWeight: 'bold',
-        },
-        dropShadow: {
-          enabled: false,
-        },
-      },
-      legend: {
-        position: 'bottom',
-        horizontalAlign: 'center',
-        fontFamily: 'Cairo, sans-serif',
-        fontSize: '14px',
-
-        itemMargin: {
-          horizontal: 10,
-          vertical: 5,
-        },
-        formatter: (seriesName, opts) => {
-          return `${seriesName}: $${this.tripsData[
-            opts.seriesIndex
-          ].revenue.toLocaleString()}`;
-        },
-      },
-      responsive: [
-        {
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 300,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
-      theme: {
-        mode: 'light',
-      },
-      tooltip: {
-        fillSeriesColor: false,
-        y: {
-          formatter: (val, opts) => {
-            return `$${this.tripsData[
-              opts.seriesIndex
-            ].revenue.toLocaleString()} (${Math.round(val)}%)`;
-          },
-        },
-      },
-    };
   }
 }

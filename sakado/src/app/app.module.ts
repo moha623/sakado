@@ -61,6 +61,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     PackageManagementComponent,
     BookingManagementComponent,
     DashboardComponent,
+  
   ],
   imports: [
     FirebaseModule,

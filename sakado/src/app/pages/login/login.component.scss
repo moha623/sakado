@@ -1,1 +1,37 @@
  @import url('../../../assets/fontawesome/css/all.min.css');
+
+
+ .error-banner {
+  direction: rtl;
+  text-align: right;
+  
+  a {
+    color: #b91c1c;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 500;
+    
+    &:hover {
+      color: #7f1d1d;
+      text-decoration: underline;
+    }
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-spin {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

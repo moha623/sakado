@@ -1,7 +1,9 @@
 <div
   class="bg-gradient-to-br from-blue-50 to-cyan-100 h-screen font-[Tajawal] overflow-hidden [direction:rtl]"
 >
-  <div    class="flex h-screen items-stretch justify-center [direction:rtl] w-full">
+  <div
+    class="flex h-screen items-stretch justify-center [direction:rtl] w-full"
+  >
     <div
       class="w-full flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(11,83,148,0.15)]"
     >
@@ -48,85 +50,133 @@
       </div>
 
       <!-- Left Side - Form -->
-      <div class="w-full md:w-3/5 md:p-10">
-        <div class="text-center">
-
-          <h1 class="text-5xl md:text-5xl font-bold text-blue-900 mb-2">
-            إنشاء حساب جديد
-          </h1>
-          <p class="text-gray-600 mb-4">انضم لمجتمع السفر وابدأ رحلتك السياحية</p>
+          <div class="w-full md:w-3/5 p-6 md:p-10 relative min-h-[600px]">
+        <!-- Success State -->
+        <div *ngIf="success" class="h-full flex flex-col items-center justify-center text-center">
+          <div class="mb-6 text-green-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-4">تم إنشاء حسابك بنجاح!</h2>
+          <p class="text-lg text-gray-600 mb-8 max-w-md">
+            تم إنشاء حسابك بنجاح. يمكنك الآن تسجيل الدخول لبدء رحلتك السياحية.
+            <span class="block mt-2 text-blue-600 font-medium">سيتم تحويلك إلى صفحة تسجيل الدخول خلال 5 ثوانٍ...</span>
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <button 
+              (click)="router.navigate(['auth/login'])"
+              class="px-6 py-3 bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              الانتقال الآن <i class="fas fa-arrow-left mr-2"></i>
+            </button>
+            <!-- <button 
+              (click)="router.navigate(['/'])"
+              class="px-6 py-3 bg-white border-2 border-[#253808] text-[#253808] font-bold rounded-xl shadow-lg hover:bg-gray-50 transition-all duration-300"
+            >
+              الصفحة الرئيسية <i class="fas fa-home mr-2"></i>
+            </button> -->
+          </div>
+          <div class="mt-10 w-48 h-1 bg-gradient-to-r from-green-400 to-cyan-300 rounded-full animate-pulse"></div>
         </div>
 
-        <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm">
-          <div *ngIf="error" class="error">{{ error }}</div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="relative mb-6">
-              <i
-                class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
-              ></i>
-              <input
-          
-                name="username"
-                [(ngModel)]="username"
-                required
-                minlength="3"
-                maxlength="20"
-          
-                placeholder="الاسم الأول"
-                class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
-              />
-            </div>
-   
-            <div class="relative mb-6">
-              <i
-                class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
-              ></i>
-              <input
-                type="text"
-                name="lastname"
-                [(ngModel)]="lastname"
-                required
-                minlength="3"
-                maxlength="20"
-              
-                I
-               
-                placeholder="اسم العائلة"
-                class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
-              />
-            </div>
-     
-          </div>
-          <div class="relative mb-6">
-            <i
-              class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
-            ></i>
-            <input
-              name="number"
-              [(ngModel)]="number"
-              required
-              minlength="6"
-           
-      
-              placeholder="رقم الهاتف"
-              dir="rtl"
-              class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800 text-right"
-            />
+        <!-- Form and Loading States -->
+        <ng-container *ngIf="!success">
+        <ng-container *ngIf="!loading; else loadingIndicator">
+          <div class="text-center">
+            <h1 class="text-5xl md:text-5xl font-bold text-blue-900 mb-2">
+              إنشاء حساب جديد
+            </h1>
+            <p class="text-gray-600 mb-4">
+              انضم لمجتمع السفر وابدأ رحلتك السياحية
+            </p>
           </div>
 
-          <div class="relative mb-6">
-            <i
-              class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
-            ></i>
-            <input
-            [(ngModel)]="email" name="email"  
-              placeholder="البريد الإلكتروني"
-              class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
-            />
-          </div>
+                     <form class="space-y-4" (ngSubmit)="onSubmit()" #f="ngForm">
+              <!-- Error Banner -->
+              <div *ngIf="errorData" class="error-banner bg-red-50 border border-red-200 rounded-xl p-4 mb-4 flex items-start">
+                <i class="fas {{errorData.icon}} text-red-500 mt-1 mr-3 text-lg"></i>
+                <div class="text-red-700">
+                  <p>{{ errorData.message }}</p>
+                  
+                  <div *ngIf="errorData.links" class="mt-3 flex flex-wrap gap-3">
+                    <ng-container *ngFor="let link of errorData.links">
+                      <a *ngIf="link.path" 
+                        [routerLink]="link.path"
+                        class="inline-block px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors">
+                        {{ link.text }}
+                      </a>
+                      
+                      <a *ngIf="link.action" 
+                        [href]="link.action"
+                        class="inline-block px-3 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors">
+                        {{ link.text }}
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
 
-          <div class="  gap-6">
-            <div class="relative mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="relative">
+                <i
+                  class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
+                ></i>
+                <input
+                  name="username"
+                  [(ngModel)]="username"
+                  required
+                  minlength="3"
+                  maxlength="20"
+                  placeholder="الاسم الأول"
+                  class="w-full py-3 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
+                />
+              </div>
+
+              <div class="relative">
+                <i
+                  class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
+                ></i>
+                <input
+                  type="text"
+                  name="lastname"
+                  [(ngModel)]="lastname"
+                  required
+                  minlength="3"
+                  maxlength="20"
+                  placeholder="اسم العائلة"
+                  class="w-full py-3 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
+                />
+              </div>
+            </div>
+
+            <div class="relative">
+              <i
+                class="fas fa-phone absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
+              ></i>
+              <input
+                name="number"
+                [(ngModel)]="number"
+                required
+                minlength="6"
+                placeholder="رقم الهاتف"
+                class="w-full py-3 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800 text-right"
+              />
+            </div>
+
+            <div class="relative">
+              <i
+                class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
+              ></i>
+              <input
+                [(ngModel)]="email"
+                name="email"
+                placeholder="البريد الإلكتروني"
+                class="w-full py-3 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
+              />
+            </div>
+
+            <div class="relative">
               <i
                 class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
               ></i>
@@ -135,94 +185,141 @@
                 [(ngModel)]="password"
                 required
                 minlength="6"
-      
                 type="password"
                 placeholder="كلمة المرور"
-                class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
+                class="w-full py-3 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
               />
             </div>
- 
-            <!-- <div class="relative mb-6">
-              <i
-                class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#253808]"
-              ></i>
+
+            <div class="flex items-center mb-4">
               <input
-                name="confirmpassword"
-                [(ngModel)]=" confirmpassword"
+                type="checkbox"
+                id="terms"
                 required
-                minlength="6"
-                #confirmpassword="ngModel"
-                type="confirmpassword"
-                placeholder="تأكيد كلمة المرور"
-                class="w-full py-2 px-14 text-lg rounded-xl border-2 border-gray-200 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/30 transition-all duration-300 placeholder-gray-500 text-gray-800"
+                class="h-5 w-5 text-[#253808] rounded border-gray-300 focus:ring-cyan-400"
               />
-            </div> -->
-          </div>
+              <label for="terms" class="mr-2 block text-base text-gray-700">
+                أوافق على
+                <a href="#" class="text-[#253808] font-medium hover:underline">
+                  الشروط والأحكام
+                </a>
+              </label>
+            </div>
 
-          <div class="flex items-center mb-4">
-            <input
-              type="checkbox"
-              id="terms"
-              class="h-5 w-5 text-[#253808] rounded border-gray-300 focus:ring-cyan-400"
-            />
-            <label for="terms" class="mr-2 block text-base text-gray-700">
-              أوافق على
-              <a href="#" class="text-[#253808] font-medium hover:underline"
-                >الشروط والأحكام</a
-              >
-            </label>
-          </div>
+            <button
+              type="submit"
+              class="w-full py-3 text-xl rounded-xl bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold tracking-wide shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+            >
+              إنشاء حساب
+              <i class="fas fa-arrow-left mr-2"></i>
+            </button>
 
-          <button
-            type="submit"
-            class="w-full py-2 text-xl rounded-xl bg-gradient-to-br from-[#253808] to-[#b5e249] text-white font-bold tracking-wide shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
-          >
-            إنشاء حساب
-            <i class="fas fa-arrow-left mr-2"></i>
-          </button>
-          <div class="text-center mt-6">
-            <p class="text-gray-600">أو سجل باستخدام</p>
-            <div class="flex gap-4 mt-4">
-              <button
-                class="flex-1 py-4 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
-              >
-                <i class="fab fa-google text-red-500 text-xl"></i>
-              </button>
-              <button
-                class="flex-1 py-4 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
-              >
-                <i class="fab fa-facebook text-blue-600 text-xl"></i>
-              </button>
-              <button
-                class="flex-1 py-4 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
-              >
-                <i class="fab fa-twitter text-blue-400 text-xl"></i>
-              </button>
+            <div class="text-center mt-6">
+              <p class="text-gray-600">أو سجل باستخدام</p>
+              <div class="flex gap-4 mt-4">
+                <button
+                  type="button"
+                  class="flex-1 py-3 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
+                >
+                  <i class="fab fa-google text-red-500 text-xl"></i>
+                </button>
+                <button
+                  type="button"
+                  class="flex-1 py-3 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
+                >
+                  <i class="fab fa-facebook text-blue-600 text-xl"></i>
+                </button>
+                <button
+                  type="button"
+                  class="flex-1 py-3 rounded-xl border border-gray-300 flex items-center justify-center hover:border-[#253808] hover:bg-[#253808]/10 transition-all duration-300"
+                >
+                  <i class="fab fa-twitter text-blue-400 text-xl"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="text-center mt-6">
+              <p class="text-gray-700">
+                هل لديك حساب بالفعل؟
+                <a
+                  routerLink="/auth/login"
+                  class="text-[#253808] font-medium hover:underline"
+                >
+                  تسجيل الدخول
+                </a>
+              </p>
+            </div>
+          </form>
+        </ng-container>
+          <ng-template #loadingIndicator>
+            <div class="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-8">
+            <!-- Progress Bar -->
+            <div
+              class="w-full max-w-md bg-gray-200 rounded-full h-2.5 mb-8 overflow-hidden"
+            >
+              <div
+                class="bg-[#253808] h-2.5 rounded-full animate-progress"
+              ></div>
+            </div>
+
+            <!-- Animated Icons -->
+            <div class="relative w-32 h-32 mb-8">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div
+                  class="w-24 h-24 border-t-4 border-b-4 border-[#b5e249] rounded-full animate-spin"
+                ></div>
+              </div>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <i
+                  class="fas fa-passport text-4xl text-[#253808] animate-pulse"
+                ></i>
+              </div>
+            </div>
+
+            <!-- Animated Dots -->
+            <div class="flex space-x-2 mb-8">
+              <div
+                class="w-3 h-3 bg-[#253808] rounded-full animate-bounce"
+              ></div>
+              <div
+                class="w-3 h-3 bg-[#b5e249] rounded-full animate-bounce [animation-delay:150ms]"
+              ></div>
+              <div
+                class="w-3 h-3 bg-[#253808] rounded-full animate-bounce [animation-delay:300ms]"
+              ></div>
+            </div>
+
+            <!-- Status Messages -->
+            <div class="text-gray-500 space-y-2 text-center">
+              <p class="flex items-center justify-center">
+                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                تم التحقق من المعلومات
+              </p>
+              <p class="flex items-center justify-center animate-pulse">
+                <i class="fas fa-cog fa-spin text-[#253808] mr-2"></i>
+                جارٍ إنشاء الحساب
+              </p>
             </div>
           </div>
-
-          <div class="text-center mt-8">
-            <p class="text-gray-700">
-              هل لديك حساب بالفعل؟
-              <a
-                href="#"
-                class="text-[#253808] font-medium hover:underline"
-                routerLink="/auth/login"
-                >تسجيل الدخول</a
-              >
-            </p>
-          </div>
-        </form>
+        </ng-template>
+                </ng-container>
       </div>
     </div>
   </div>
-
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css"
-    rel="stylesheet"
-  />
 </div>
+<style>
+  @keyframes progress {
+    0% {
+      width: 5%;
+    }
+    50% {
+      width: 60%;
+    }
+    100% {
+      width: 95%;
+    }
+  }
+  .animate-progress {
+    animation: progress 1.5s ease-in-out infinite alternate;
+  }
+</style>
