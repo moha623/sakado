@@ -195,7 +195,7 @@ export class DashboardComponent implements OnInit, OnChanges {
         this.loadKPIData(), // Ensure this is called
       ]);
       console.log(this.Totale, 'Total Revenue for the month');
-         console.log(`Monthly Bookings: ${this.totaleMonthlyBookings}`);
+
       this.updateRevenueChart();
     } catch (error) {
       console.error('Error loading data:', error);
@@ -203,6 +203,7 @@ export class DashboardComponent implements OnInit, OnChanges {
       this.isLoading = false;
       console.log('Dashboard initialization completed');
     }
+    
   }
   private async loadTrips(): Promise<void> {
     console.log('Fetching trips from Firestore...');
@@ -372,7 +373,10 @@ export class DashboardComponent implements OnInit, OnChanges {
       this.isLoading = true;
       const bookings = await this.getBookings();
       const monthlyCounts = this.aggregateBookingsByMonth(bookings);
-
+      console.log(monthlyCounts, 'Monthly Bookings Counts');
+      Object.keys(monthlyCounts).filter((value, month) => {
+        console.log(value, month);
+      });
       this.bookingsChartOptions.series = Object.values(monthlyCounts);
       this.bookingsChartOptions.labels = Object.keys(monthlyCounts);
     } catch (error) {
@@ -396,6 +400,7 @@ export class DashboardComponent implements OnInit, OnChanges {
     );
 
     const querySnapshot = await getDocs(q);
+
     return querySnapshot.docs.map((doc) => doc.data());
   }
 
@@ -549,14 +554,12 @@ export class DashboardComponent implements OnInit, OnChanges {
     const counts: number[] = new Array(7).fill(0);
 
     try {
-      // Get start of week (Sunday)
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const dayOfWeek = today.getDay(); // 0 = Sunday
       const startDate = new Date(today);
       startDate.setDate(today.getDate() - dayOfWeek);
 
-      // Query for each day of the week
       for (let i = 0; i < 7; i++) {
         const dayStart = new Date(startDate);
         dayStart.setDate(startDate.getDate() + i);
@@ -565,7 +568,7 @@ export class DashboardComponent implements OnInit, OnChanges {
         const dayEnd = new Date(dayStart);
         dayEnd.setDate(dayStart.getDate() + 1);
 
-        // Format dates for debugging
+        dayEnd.setHours(0, 0, 0, 0); // End of the day
         const startStr = format(dayStart, 'yyyy-MM-dd HH:mm:ss');
         const endStr = format(dayEnd, 'yyyy-MM-dd HH:mm:ss');
 
@@ -583,10 +586,9 @@ export class DashboardComponent implements OnInit, OnChanges {
       // Fallback to test data for debugging
       return days.map((day, index) => ({
         name: day,
-        count: [15, 22, 18, 30, 25, 40, 35][index],
+        count: counts[index],
       }));
     }
-
     return days.map((day, index) => ({
       name: day,
       count: counts[index],
@@ -716,48 +718,74 @@ export class DashboardComponent implements OnInit, OnChanges {
       const tripsSnapshot = await getCountFromServer(tripsQuery);
       this.activeTrips = tripsSnapshot.data().count;
 
-      // 3. Monthly Bookings
+      // 3. Monthly Bookings (FIXED - using local timezone)
       const now = new Date();
+      console.log('Current local time:', now.toString());
+
+      // Create dates in local timezone
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
       const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      endOfMonth.setHours(23, 59, 59, 999); // End of day
+      endOfMonth.setHours(23, 59, 59, 999);
+
+      console.log('Local start of month:', startOfMonth.toString());
+      console.log('Local end of month:', endOfMonth.toString());
+
+      // Convert to Firestore Timestamps
+      const startTimestamp = Timestamp.fromDate(startOfMonth);
+      const endTimestamp = Timestamp.fromDate(endOfMonth);
+
+      console.log(
+        'Firestore start timestamp:',
+        startTimestamp.toDate().toString()
+      );
+      console.log('Firestore end timestamp:', endTimestamp.toDate().toString());
 
       const bookingsQuery = query(
         collection(this.firestore, 'bookings'),
-        where('bookingDate', '>=', Timestamp.fromDate(startOfMonth)),
-        where('bookingDate', '<=', Timestamp.fromDate(endOfMonth))
+        where('bookingDate', '>=', startTimestamp),
+        where('bookingDate', '<=', endTimestamp)
       );
 
-      const bookingsSnapshot = await getCountFromServer(bookingsQuery);
-      this.monthlyBookings = bookingsSnapshot.data().count;
-      this.totaleMonthlyBookings= this.monthlyBookings; // Store total bookings for the month
+      // Get actual documents for debugging
+      const bookingsSnapshot = await getDocs(bookingsQuery);
 
-      // 4. Participants and Revenue
-      const bookingsDocs = await getDocs(bookingsQuery);
-      this.participants = 0;
-      this.revenue = 0;
+      // Debug: Check if documents exist
+      if (bookingsSnapshot.empty) {
+        console.warn('No bookings found for current month!');
+      } else {
+        console.log(
+          `Found ${bookingsSnapshot.size} bookings for current month`
+        );
+        bookingsSnapshot.forEach((doc) => {
+          const data = doc.data();
+          const bookingDate = data['bookingDate'];
+          console.log(
+            `Booking ID: ${doc.id}, ` +
+              `Date: ${bookingDate.toDate().toString()}, ` +
+              `Timestamp: ${bookingDate.seconds}.${bookingDate.nanoseconds}`
+          );
+        });
+      }
 
-      bookingsDocs.forEach((doc) => {
-        const data = doc.data();
-        const participants = data['participants'] || 1;
-        const totalPrice = data['totalPrice'] || 0;
-
-        this.participants += participants;
-        this.revenue += totalPrice;
-      });
+      this.monthlyBookings = bookingsSnapshot.size;
 
       // 5. New Users (24 hours)
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      yesterday.setHours(0, 0, 0, 0); // Start of day yesterday
+      const twentyFourHoursAgo = new Date();
+      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
 
       const newUsersQuery = query(
         collection(this.firestore, 'users'),
-        where('createdAt', '>=', Timestamp.fromDate(yesterday))
+        where('createdAt', '>=', Timestamp.fromDate(twentyFourHoursAgo))
       );
 
       const newUsersSnapshot = await getCountFromServer(newUsersQuery);
       this.newUsers24h = newUsersSnapshot.data().count;
+
+      // DEBUG: Log date ranges and counts
+      console.log('Start of month:', startOfMonth);
+      console.log('End of month:', endOfMonth);
+      console.log('Monthly bookings:', this.monthlyBookings);
+      console.log('First booking doc:', bookingsSnapshot.docs[1]?.data());
     } catch (error) {
       console.error('Error loading KPI data:', error);
     }
