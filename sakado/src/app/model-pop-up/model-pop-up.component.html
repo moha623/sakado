@@ -1,0 +1,246 @@
+<!-- Popup Overlay -->
+<div 
+  *ngIf="isOpen"
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300"
+  (click)="close()"
+>
+  <!-- Form Container -->
+  <div 
+    class="bg-white rounded-xl shadow-popup max-w-4xl w-full mx-4 rtl overflow-hidden max-h-[90vh] flex flex-col"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Form Header -->
+    <!-- <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 text-white">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <i class="fas fa-route text-2xl mr-3"></i>
+          <h2 class="text-2xl font-bold">{{currentTrip ? 'تعديل الرحلة' : 'إضافة رحلة جديدة'}}</h2>
+        </div>
+        <button 
+          (click)="close()"
+          class="text-white hover:text-gray-200 transition transform hover:scale-110"
+        >
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <p class="mt-2 opacity-90">املأ التفاصيل أدناه {{currentTrip ? 'لتعديل الرحلة' : 'لإنشاء رحلة جديدة'}}</p>
+    </div> -->
+
+    <!-- Form Content -->
+    <div class="p-6 overflow-auto scrollbar-custom flex-grow">
+      <!-- Basic Information Section -->
+      <div class="form-section mb-6">
+        <div class="form-section-title">
+          <i class="fas fa-info-circle"></i>
+          <h3 class="text-xl font-semibold">المعلومات الأساسية</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700 required-label">اسم الرحلة</label>
+            <div class="relative">
+              <input 
+                type="text" 
+                placeholder="أدخل اسم الرحلة" 
+                required
+                [(ngModel)]="trip.name"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <i class="fas fa-signature absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700 required-label">التصنيف</label>
+            <div class="relative">
+              <select 
+                [(ngModel)]="trip.category" 
+                class="form-select border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none appearance-none bg-white"
+              >
+                <option value="">اختر التصنيف</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+              <i class="fas fa-tag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700 required-label">الوجهة</label>
+            <div class="relative">
+              <input 
+                type="text" 
+                placeholder="أدخل اسم الوجهة" 
+                [(ngModel)]="trip.destination"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <i class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col md:col-span-3">
+            <label class="mb-2 font-medium text-gray-700">الحالة</label>
+            <div class="relative">
+              <select 
+                [(ngModel)]="trip.status" 
+                class="form-select border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none appearance-none bg-white"
+              >
+                <option *ngFor="let status of statusOptions" [value]="statusMap[status]">
+                  {{ status }}
+                </option>
+              </select>
+              <i class="fas fa-info-circle absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date and Participants Section -->
+      <div class="form-section mb-6">
+        <div class="form-section-title">
+          <i class="fas fa-calendar-alt"></i>
+          <h3 class="text-xl font-semibold">التواريخ والمشاركين</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700">تاريخ البدء</label>
+            <div class="relative">
+              <input 
+                type="date" 
+                [(ngModel)]="trip.startDate"
+                [valueAsDate]="trip.startDate"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <i class="fas fa-calendar-day absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700">تاريخ الانتهاء</label>
+            <div class="relative">
+              <input 
+                type="date" 
+                [(ngModel)]="trip.endDate"
+                [valueAsDate]="trip.endDate"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <i class="fas fa-calendar-check absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700">عدد المشاركين الأقصى</label>
+            <div class="relative">
+              <input 
+                type="number" 
+                min="1" 
+                [(ngModel)]="trip.maxParticipants"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <i class="fas fa-users absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing Section -->
+      <div class="form-section mb-6">
+        <div class="form-section-title">
+          <i class="fas fa-tags"></i>
+          <h3 class="text-xl font-semibold">التسعير</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700 required-label">السعر الأساسي</label>
+            <div class="relative">
+              <input 
+                type="number" 
+                placeholder="0.00" 
+                min="0"
+                required
+                [(ngModel)]="trip.price"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+            </div>
+          </div>
+
+          <div class="form-group flex flex-col">
+            <label class="mb-2 font-medium text-gray-700">سعر التخفيض (اختياري)</label>
+            <div class="relative">
+              <input 
+                type="number" 
+                placeholder="0.00" 
+                min="0"
+                class="form-input border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+              />
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description Section -->
+      <div class="form-section mb-6">
+        <div class="form-section-title">
+          <i class="fas fa-align-left"></i>
+          <h3 class="text-xl font-semibold">وصف الرحلة</h3>
+        </div>
+        
+        <div class="form-group flex flex-col">
+          <div class="relative">
+            <textarea 
+              rows="4" 
+              [(ngModel)]="trip.description"
+              required
+              placeholder="أدخل وصفًا تفصيليًا للرحلة..." 
+              class="form-textarea h-[70px] border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+            ></textarea>
+            <i class="fas fa-align-left absolute left-3 top-4 text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itinerary Section -->
+      <div class="form-section mb-6">
+        <div class="form-section-title">
+          <i class="fas fa-list-ol"></i>
+          <h3 class="text-xl font-semibold">برنامج الرحلة</h3>
+        </div>
+        
+        <div class="form-group flex flex-col">
+          <div class="relative">
+            <textarea 
+              rows="6" 
+              [(ngModel)]="trip.itinerary"
+              placeholder="أدخل تفاصيل برنامج الرحلة..." 
+              class="form-textarea h-[90px] border border-gray-300 rounded-lg px-4 py-3 w-full pl-12 focus:outline-none focus:border-blue-500"
+            ></textarea>
+            <i class="fas fa-list-ol absolute left-3 top-4 text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-footer bg-gray-50 px-6 py-4 border-t border-gray-200">
+      <div class="flex justify-end space-x-4">
+        <button 
+          (click)="close()"
+          class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+          type="button"
+        >
+          <i class="fas fa-times mr-2"></i>إلغاء
+        </button>
+        <button 
+          (click)="saveTrip()"
+          class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md hover:shadow-lg"
+          type="button"
+        >
+          <i class="fas fa-save mr-2"></i>{{ currentTrip ? 'تحديث' : 'حفظ' }} الرحلة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

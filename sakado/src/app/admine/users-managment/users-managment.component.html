@@ -1,0 +1,175 @@
+<div class="  users">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between items-center ">
+    <div>
+  
+         <div class="logo text-5xl font-bold   m-6">
+            <h1>إدارة <span>المستخدمين</span></h1>
+        </div>
+    </div>
+    <div class=" md:mt-0 flex items-center space-x-4 m-8">
+      <div class="relative">
+        <input
+          type="text"
+          placeholder="بحث عن المستخدمين..."
+          class="search-input pr-10 pl-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        />
+        <i
+          class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        ></i>
+      </div>
+      <button
+        class="px-4 py-2.5 bg-[#2c6e49] text-white rounded-lg hover:bg-secondary transition flex items-center"
+      >
+        <i class="fas fa-plus ml-2"></i> إضافة مستخدم
+      </button>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div class="bg-white rounded-xl table-shadow overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              المستخدم
+            </th>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              البريد الإلكتروني
+            </th>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              الدور
+            </th>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              الحالة
+            </th>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              تاريخ الانضمام
+            </th>
+            <th
+              class="py-4 px-6 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              الإجراءات
+            </th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <ng-container *ngIf="!loading; else loadingIndicator">
+            <tr
+              class="table-row transition duration-150"
+              *ngFor="let user of users"
+            >
+              <td class="py-4 px-6">
+                <div class="flex items-center">
+                  <div class="user-avatar bg-blue-100 text-blue-600">
+                    {{ user.username | shortenId : 2 }}
+                  </div>
+                  <div class="mr-4">
+                    <div class="font-medium text-gray-900">
+                      {{ user.username }}
+                    </div>
+                    <div class="text-gray-500">{{ user.lastname }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-6 text-gray-600">{{ user.email }}</td>
+              <td class="py-4 px-6">
+                <span class="role-badge bg-purple-100 text-purple-800"
+                  >{{ user.role }}
+                </span>
+              </td>
+              <td class="py-4 px-6">
+                <span class="status-badge bg-green-100 text-green-800"
+                  >نشط</span
+                >
+              </td>
+              <td class="py-4 px-6 text-gray-600">
+                {{ user.createdAt | simpleDate : "dd/MM/yyyy, HH:mm" }}
+              </td>
+              <td class="py-4 px-6">
+                <div class="flex space-x-3">
+                  <button class="action-btn text-blue-500 hover:text-blue-700">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    class="action-btn text-red-500 hover:text-red-700"
+                    (click)="deleteUser()"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-template #loadingIndicator>
+            <tr>
+              <td colspan="7" class="text-center">
+                <div class="loading-indicator">
+                  <i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <div class="page-size">
+          <span>العناصر في الصفحة:</span>
+          <select [(ngModel)]="pageSize" (change)="changePageSize(pageSize)">
+            <option *ngFor="let size of pageSizes" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+
+        <div class="page-controls">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">
+            السابق
+          </button>
+          <span class="page-info"
+            >الصفحة {{ currentPage }} من {{ totalPages }}</span
+          >
+          <button
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages || totalPages === 0"
+          >
+            التالي
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-backdrop" *ngIf="showDeleteConfirmation">
+    <div class="modal-content animate-card">
+      <div class="modal-header">
+        <h3>تأكيد الحذف</h3>
+      </div>
+      <div class="modal-body">
+        <p>هل أنت متأكد من حذف رحلة "{{ userToDelete?.username }}"؟</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-outline"
+          (click)="showDeleteConfirmation = false"
+        >
+          إلغاء
+        </button>
+        <button class="btn delete-button" (click)="deleteUser()">حذف</button>
+      </div>
+    </div>
+  </div>
+</div>

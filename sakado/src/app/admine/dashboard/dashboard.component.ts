@@ -5,6 +5,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { Firestore, orderBy } from '@angular/fire/firestore';
 import {
@@ -28,6 +29,9 @@ import {
 } from 'ng-apexcharts';
 import { format } from 'date-fns';
 import { Trip } from '../../models/trip.model';
+// import { ModalComponent } from '../../pop-Up/modal.component';
+import { TripService } from '../../services/trip.service';
+import { ModelPopUpComponent } from '../../model-pop-up/model-pop-up.component';
 
 type BookingChartOptions = {
   series: ApexAxisChartSeries;
@@ -49,6 +53,7 @@ type BookingChartOptions = {
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit, OnChanges {
+    currentTrip: Trip = this.createEmptyTrip();
   trips: Trip[] = []; // Now managed internally
   revenueChartOptions: any = null;
   isLoading = true;
@@ -175,8 +180,15 @@ export class DashboardComponent implements OnInit, OnChanges {
   weeklyUsersChartOptopns: any;
 
   pieChartOptions: any = {};
+@ViewChild('tripModal') tripModal!: ModelPopUpComponent;
+ openTripModal() {
+    this.tripModal.open();
+  }
 
-  constructor(private firestore: Firestore) {
+  refreshTrips() {
+    // Refresh your trips list here
+  }
+  constructor(private firestore: Firestore,private tripService: TripService) {
     this.weeklyUsersChartOptions = this.createChartOptions(
       'المستخدمون الجدد',
       'users'
@@ -203,7 +215,6 @@ export class DashboardComponent implements OnInit, OnChanges {
       this.isLoading = false;
       console.log('Dashboard initialization completed');
     }
-    
   }
   private async loadTrips(): Promise<void> {
     console.log('Fetching trips from Firestore...');
@@ -788,6 +799,55 @@ export class DashboardComponent implements OnInit, OnChanges {
       console.log('First booking doc:', bookingsSnapshot.docs[1]?.data());
     } catch (error) {
       console.error('Error loading KPI data:', error);
+    }
+  }
+
+
+  @ViewChild('addTripModal') addTripModal!: ModelPopUpComponent;
+    createEmptyTrip(): Trip {
+    return {
+      name: '',
+      category: '',
+      destination: '',
+      price: 0,
+      status: 'active',
+      participants: 0,
+      maxParticipants: 20,
+      description: '',
+      itinerary: '',
+      startDate: new Date(),
+      endDate: new Date(),
+    };
+  }
+   
+  validateTrip(): boolean {
+    return !!this.currentTrip.name &&
+           !!this.currentTrip.category &&
+           !!this.currentTrip.destination &&
+           this.currentTrip.price > 0 &&
+           !!this.currentTrip.description;
+  }
+  // Reset form to initial state
+  resetForm() {
+    this.currentTrip = this.createEmptyTrip();
+  
+  }
+  async saveTrip() {
+    if (!this.validateTrip()) {
+      alert('يرجى ملء الحقول المطلوبة');
+      return;
+    }
+
+    try {
+      {
+        await this.tripService.addTrip(this.currentTrip);
+        alert('تم إضافة الرحلة بنجاح!');
+      }
+      this.resetForm();
+      this.loadTrips();
+    } catch (error) {
+      console.error('Error saving trip:', error);
+      alert('حدث خطأ أثناء العملية!');
     }
   }
 }

@@ -35,12 +35,12 @@
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
-      .hero-section {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-          url("../../assets/517991233_1132280285596824_9211689950967401450_n.jpg");
-        background-size: cover;
-        background-position: center;
-      }
+      // .hero-section {
+      //   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+       
+      //   background-size: cover;
+      //   background-position: center;
+      // }
       .destination-card {
         transition: all 0.3s ease;
       }
@@ -82,22 +82,22 @@
         transform: translateY(-8px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
       }
-      .booking-section {
-        background: linear-gradient(
-            rgba(15, 23, 42, 0.9),
-            rgba(15, 23, 42, 0.9)
-          ),
-          url("https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80");
-        background-size: cover;
-        background-position: center;
-      }
+      // .booking-section {
+      //   background: linear-gradient(
+      //       rgba(15, 23, 42, 0.9),
+      //       rgba(15, 23, 42, 0.9)
+      //     ),
+      //     url(" ");
+      //   background-size: cover;
+      //   background-position: center;
+      // }
 
-      .About-Tourist{
-         background:
-          url("https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80");
-        background-size: cover;
-        background-position: center;
-      }
+      // .About-Tourist{
+      //    background:
+      //     url("https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80");
+      //   background-size: cover;
+      //   background-position: center;
+      // }
 
 
  

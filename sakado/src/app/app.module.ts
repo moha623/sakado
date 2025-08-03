@@ -42,6 +42,10 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { SimpleDatePipe } from './pipes/shortdate.pipe';
 import { NgApexchartsModule } from 'ng-apexcharts';
+ 
+import { ModelPopUpComponent } from './model-pop-up/model-pop-up.component';
+import { UsersManagmentComponent } from './admine/users-managment/users-managment.component';
+import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +65,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     PackageManagementComponent,
     BookingManagementComponent,
     DashboardComponent,
+    ModelPopUpComponent,
+    UsersManagmentComponent,
+    AccessDeniedComponent,
   
   ],
   imports: [
@@ -74,7 +81,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ShortenIdPipe,
     SimpleDatePipe,
     NgApexchartsModule,
-  ],
+ 
+    FormsModule   
+],
   providers: [
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),

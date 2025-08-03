@@ -195,13 +195,15 @@
 
   
 
-    <div class="quick-actions">
-      <div class="action-card" routerLink="PackageManagement">
+    <div class="quick-actions"        (click)="openTripModal()">
+      <div class="action-card"  >
         <div class="action-icon">
           <i class="fas fa-plus"></i>
         </div>
         <div class="action-title">إضافة رحلة جديدة</div>
+        
       </div>
+
 
       <div class="action-card">
         <div class="action-icon">
@@ -225,8 +227,15 @@
         </div>
         <div class="action-title">إضافة مشرف جديد</div>
       </div>
+    
+        <!-- <app-model-pop-up 
+      (tripAdded)="refreshTrips()" 
+      #tripModal
+    ></app-model-pop-up> -->
+    
     </div>
   </div>
+
 </ng-container>
 
 <ng-template #loading>

@@ -19,6 +19,7 @@ export class RegisterComponent {
   username: string = '';
   lastname: string = '';
   number: any;
+  role:string=''
 
   onSubmit() {
     this.errorData = null;
@@ -28,6 +29,7 @@ export class RegisterComponent {
       username: this.username,
       lastname: this.lastname,
       number: this.number,
+      role:this.role
     };
 
     this.authService.register(this.email, this.password, userData).subscribe({

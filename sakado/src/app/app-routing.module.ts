@@ -6,7 +6,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import { authGuard } from './guards/auth.guard';
+ 
 import { BookingComponent } from './core/booking/booking.component';
 import { MoreDetailsComponent } from './pages/more-details/more-details.component';
 import { GalleryComponent } from './core/gallery/gallery.component';
@@ -14,6 +14,7 @@ import { AdmineComponent } from './admine/admine.component';
 import { PackageManagementComponent } from './admine/package-management/package-management.component';
 import { BookingManagementComponent } from './admine/booking-management/booking-management.component';
 import { DashboardComponent } from './admine/dashboard/dashboard.component';
+import { UsersManagmentComponent } from './admine/users-managment/users-managment.component';
 
 const routes: Routes = [
   {
@@ -28,25 +29,25 @@ const routes: Routes = [
         redirectTo: '',
         pathMatch: 'full',
 
-        canActivate: [authGuard],
+      
       },
       {
         path: 'about',
         component: AboutComponent,
         title: 'Touriste - À Propos',
-        canActivate: [authGuard],
+      
       },
       {
         path: 'contact',
         component: ContactComponent,
         title: 'Touriste - Contact',
-        canActivate: [authGuard],
+      
       },
       {
         path: 'booking',
         component: BookingComponent,
         title: 'Touriste - Forfaits',
-        canActivate: [authGuard],
+      
       },
 
       // {
@@ -60,13 +61,13 @@ const routes: Routes = [
     path: 'details',
     component: MoreDetailsComponent,
     title: 'Touriste - Détails',
-    canActivate: [authGuard],
+  
   },
   {
     path: 'gallery',
     component: GalleryComponent,
     title: 'Touriste - Gallery',
-    canActivate: [authGuard],
+  
   },
   {
     path: 'admine',
@@ -77,6 +78,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'PackageManagement', component: PackageManagementComponent },
       { path: 'BookingManagement', component: BookingManagementComponent },
+      { path: 'UserManagement', component: UsersManagmentComponent },
     ],
   },
 
