@@ -19,7 +19,7 @@ export class RegisterComponent {
   username: string = '';
   lastname: string = '';
   number: any;
-  role:string=''
+   role: 'user' | 'admin' = 'user'; // Add role property with default value
 
   onSubmit() {
     this.errorData = null;

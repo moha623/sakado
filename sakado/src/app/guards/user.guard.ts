@@ -11,9 +11,10 @@ export const userGuard: CanActivateFn = () => {
   return auth.currentUser$.pipe(
     take(1),
     map(user => {
-      const allowed = !!user; // Any logged-in user
-      if (!allowed) router.navigate(['/login']);
-      return allowed;
+      if (user) return true; // Any authenticated user
+      
+      router.navigate(['/login']);
+      return false;
     })
   );
 };

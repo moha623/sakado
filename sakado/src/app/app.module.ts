@@ -33,19 +33,19 @@ import { BookingManagementComponent } from './admine/booking-management/booking-
 import { DashboardComponent } from './admine/dashboard/dashboard.component';
 import { FilterBookingsPipe } from './pipes/filter-bookings.pipe';
 import { BookingService } from './services/booking.service';
-import { TripService } from './services/trip.service';
+ 
 import { FirebaseModule } from './firebase/firebase.module';
-import { TokenInterceptor } from './interceptors/jwt.interceptor';
+ 
 import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideStorage, getStorage } from '@angular/fire/storage';
+ 
 import { SimpleDatePipe } from './pipes/shortdate.pipe';
 import { NgApexchartsModule } from 'ng-apexcharts';
  
 import { ModelPopUpComponent } from './model-pop-up/model-pop-up.component';
-import { UsersManagmentComponent } from './admine/users-managment/users-managment.component';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
+import { UsersManagementComponent } from './admine/users-management/users-management.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +66,7 @@ import { AccessDeniedComponent } from './pages/access-denied/access-denied.compo
     BookingManagementComponent,
     DashboardComponent,
     ModelPopUpComponent,
-    UsersManagmentComponent,
+ UsersManagementComponent,
     AccessDeniedComponent,
   
   ],
@@ -88,11 +88,6 @@ import { AccessDeniedComponent } from './pages/access-denied/access-denied.compo
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
     AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
     BookingService,
     provideCharts(withDefaultRegisterables()),
     provideFirestore(() => getFirestore()),

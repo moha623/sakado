@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -24,13 +25,19 @@ export class LoginComponent {
     this.loading = true;
 
     this.auth.login(this.email, this.password).subscribe({
-      next: (response) => {
-        console.log('Login successful', response);
+      next: (user) => {
+          if (user.role === 'admin') {
+        this.router.navigate(['/admine/dashboard']);
+                console.log('Login successful', user);
         this.success = true;
         this.loading = false;
-        
+        console.log(user.role)
         // Start redirect countdown
         this.startCountdown();
+      }else {
+        this.router.navigate(['/']);
+      }
+
       },
       error: (err) => {
         this.setErrorData(err.code || 'unknown');

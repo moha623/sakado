@@ -102,12 +102,11 @@
                   <button class="action-btn text-blue-500 hover:text-blue-700">
                     <i class="fas fa-edit"></i>
                   </button>
-                  <button
-                    class="action-btn text-red-500 hover:text-red-700"
-                    (click)="deleteUser()"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
+<button 
+  class="action-btn text-red-500 hover:text-red-700"
+  (click)="confirmDelete(user)">  
+  <i class="fas fa-trash"></i>
+</button>
                 </div>
               </td>
             </tr>
@@ -158,9 +157,9 @@
       <div class="modal-header">
         <h3>تأكيد الحذف</h3>
       </div>
-      <div class="modal-body">
-        <p>هل أنت متأكد من حذف رحلة "{{ userToDelete?.username }}"؟</p>
-      </div>
+<div class="modal-body">
+  <p>هل أنت متأكد من حذف المستخدم "{{ userToDelete?.username }}"؟</p>
+</div>
       <div class="modal-footer">
         <button
           class="btn btn-outline"
@@ -169,6 +168,7 @@
           إلغاء
         </button>
         <button class="btn delete-button" (click)="deleteUser()">حذف</button>
+        
       </div>
     </div>
   </div>

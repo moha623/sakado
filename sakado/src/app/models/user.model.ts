@@ -5,5 +5,5 @@ export interface User {
   lastname: string;
   number: string;
   createdAt: Date;
-  role: string;
+  role: 'user' | 'admin'; // Add role property
 }
