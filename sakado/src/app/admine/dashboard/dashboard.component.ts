@@ -1,9 +1,11 @@
 import {
   Component,
+  Inject,
   Input,
   OnChanges,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -32,7 +34,7 @@ import { Trip } from '../../models/trip.model';
 // import { ModalComponent } from '../../pop-Up/modal.component';
 import { TripService } from '../../services/trip.service';
 import { ModelPopUpComponent } from '../../model-pop-up/model-pop-up.component';
-
+import { isPlatformServer } from '@angular/common';
 type BookingChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -188,13 +190,18 @@ export class DashboardComponent implements OnInit, OnChanges {
   refreshTrips() {
     // Refresh your trips list here
   }
-  constructor(private firestore: Firestore,private tripService: TripService) {
+  constructor(private firestore: Firestore,private tripService: TripService, @Inject(PLATFORM_ID) private platformId: Object) {
+   
     this.weeklyUsersChartOptions = this.createChartOptions(
       'المستخدمون الجدد',
       'users'
     );
   }
   async ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+    this.isLoading = false;
+    return;
+  }
     this.isLoading = true;
     try {
       console.log('Initializing dashboard...');
@@ -716,91 +723,47 @@ export class DashboardComponent implements OnInit, OnChanges {
 
   private async loadKPIData() {
     try {
-      // 1. Registered Users
-      const usersCol = collection(this.firestore, 'users');
-      const usersSnapshot = await getCountFromServer(usersCol);
-      this.registeredUsers = usersSnapshot.data().count;
+    // Combine count queries
+    const [usersCount, tripsCount, bookingsCount, newUsersCount] = await Promise.all([
+      getCountFromServer(collection(this.firestore, 'users')),
+      getCountFromServer(query(collection(this.firestore, 'trips'), where('status', '==', 'active'))),
+      this.getMonthlyBookingsCount(),
+      this.get24hUsersCount()
+    ]);
 
-      // 2. Active Trips
-      const tripsQuery = query(
-        collection(this.firestore, 'trips'),
-        where('status', '==', 'active')
-      );
-      const tripsSnapshot = await getCountFromServer(tripsQuery);
-      this.activeTrips = tripsSnapshot.data().count;
-
-      // 3. Monthly Bookings (FIXED - using local timezone)
-      const now = new Date();
-      console.log('Current local time:', now.toString());
-
-      // Create dates in local timezone
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      endOfMonth.setHours(23, 59, 59, 999);
-
-      console.log('Local start of month:', startOfMonth.toString());
-      console.log('Local end of month:', endOfMonth.toString());
-
-      // Convert to Firestore Timestamps
-      const startTimestamp = Timestamp.fromDate(startOfMonth);
-      const endTimestamp = Timestamp.fromDate(endOfMonth);
-
-      console.log(
-        'Firestore start timestamp:',
-        startTimestamp.toDate().toString()
-      );
-      console.log('Firestore end timestamp:', endTimestamp.toDate().toString());
-
-      const bookingsQuery = query(
-        collection(this.firestore, 'bookings'),
-        where('bookingDate', '>=', startTimestamp),
-        where('bookingDate', '<=', endTimestamp)
-      );
-
-      // Get actual documents for debugging
-      const bookingsSnapshot = await getDocs(bookingsQuery);
-
-      // Debug: Check if documents exist
-      if (bookingsSnapshot.empty) {
-        console.warn('No bookings found for current month!');
-      } else {
-        console.log(
-          `Found ${bookingsSnapshot.size} bookings for current month`
-        );
-        bookingsSnapshot.forEach((doc) => {
-          const data = doc.data();
-          const bookingDate = data['bookingDate'];
-          console.log(
-            `Booking ID: ${doc.id}, ` +
-              `Date: ${bookingDate.toDate().toString()}, ` +
-              `Timestamp: ${bookingDate.seconds}.${bookingDate.nanoseconds}`
-          );
-        });
-      }
-
-      this.monthlyBookings = bookingsSnapshot.size;
-
-      // 5. New Users (24 hours)
-      const twentyFourHoursAgo = new Date();
-      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
-
-      const newUsersQuery = query(
-        collection(this.firestore, 'users'),
-        where('createdAt', '>=', Timestamp.fromDate(twentyFourHoursAgo))
-      );
-
-      const newUsersSnapshot = await getCountFromServer(newUsersQuery);
-      this.newUsers24h = newUsersSnapshot.data().count;
-
-      // DEBUG: Log date ranges and counts
-      console.log('Start of month:', startOfMonth);
-      console.log('End of month:', endOfMonth);
-      console.log('Monthly bookings:', this.monthlyBookings);
-      console.log('First booking doc:', bookingsSnapshot.docs[1]?.data());
-    } catch (error) {
+    this.registeredUsers = usersCount.data().count;
+    this.activeTrips = tripsCount.data().count;
+    this.monthlyBookings = bookingsCount;
+    this.newUsers24h = newUsersCount;
+  }catch (error) {
       console.error('Error loading KPI data:', error);
     }
   }
+private async getMonthlyBookingsCount(): Promise<number> {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  
+  const q = query(
+    collection(this.firestore, 'bookings'),
+    where('bookingDate', '>=', Timestamp.fromDate(startOfMonth)),
+    where('bookingDate', '<=', Timestamp.fromDate(endOfMonth))
+  );
+  
+  return (await getCountFromServer(q)).data().count;
+}
+
+private async get24hUsersCount(): Promise<number> {
+  const twentyFourHoursAgo = new Date();
+  twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+  
+  const q = query(
+    collection(this.firestore, 'users'),
+    where('createdAt', '>=', Timestamp.fromDate(twentyFourHoursAgo))
+  );
+  
+  return (await getCountFromServer(q)).data().count;
+}
 
 
   @ViewChild('addTripModal') addTripModal!: ModelPopUpComponent;

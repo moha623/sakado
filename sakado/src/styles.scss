@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "tailwindcss";
+// @import "tailwindcss";
  
 
 // * {
@@ -46,3 +46,9 @@
 //   border-color: var(--primary-color);
 //   box-shadow: 0 0 0 0.2rem rgba(134, 184, 23, 0.25);
 // }
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
