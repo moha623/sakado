@@ -1,88 +1,92 @@
- 
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  UserCredential,
   idToken,
-   User as FirebaseUser 
 } from '@angular/fire/auth';
 import {
-  DocumentData,
   Firestore,
   collection,
   doc,
-  getCountFromServer,
   getDoc,
   getDocs,
-  serverTimestamp,
+  getCountFromServer,
   setDoc,
-} from '@angular/fire/firestore'; // ADD FIRESTORE
-import { query, startAfter, limit } from '@angular/fire/firestore';
-import {
-  BehaviorSubject,
-  catchError,
-  from,
-  map,
-  Observable,
-  of,
-  switchMap,
-  tap,
-  throwError,
-} from 'rxjs';
-import { User } from '../models/user.model';
+  query,
+  limit,
+  startAfter,
+  deleteDoc,
+} from '@angular/fire/firestore';
 import { HttpClient } from '@angular/common/http';
-import { DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
-import { deleteDoc } from '@angular/fire/firestore'; // Add this import 
+import { isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { switchMap, map, tap } from 'rxjs/operators';
+import { User } from '../models/user.model';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private tokenSubject = new BehaviorSubject<string | null>(null);
- 
-  private loggedIn: BehaviorSubject<boolean>;
-  loggedIn$: Observable<boolean>;
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+  public loggedIn$: Observable<boolean>;
+
   private totalUsersCache: number | null = null;
 
-    private currentUserSubject = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.currentUserSubject.asObservable();
-
-
-  constructor(private auth: Auth, private firestore: Firestore, private http: HttpClient  ) {
-     this.initAuthState();
-    this.loggedIn$ = this.currentUser$.pipe(map(user => !!user));
-    this.loggedIn = new BehaviorSubject<boolean>(
-      this.tokenSubject.value !== null
-    );
-   
+  constructor(
+    private auth: Auth,
+    private firestore: Firestore,
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.loggedIn$ = this.currentUser$.pipe(map((user) => !!user));
+    this.initializeAuthState();
   }
-  private fetchUserProfile(): void {
+
+  private initializeAuthState(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      console.warn(
+        'AuthService: Running on server, skipping localStorage access'
+      );
+      return;
+    }
+
+    // Initialize from localStorage if available
+    const storedToken = localStorage.getItem('authToken');
+    if (storedToken) this.tokenSubject.next(storedToken);
+
+    // Subscribe to Firebase ID token changes
+    idToken(this.auth).subscribe({
+      next: (token) => {
+        this.tokenSubject.next(token);
+        if (token) {
+          localStorage.setItem('authToken', token);
+          this.loadUserProfile();
+        } else {
+          localStorage.removeItem('authToken');
+          this.currentUserSubject.next(null);
+        }
+      },
+      error: () => {
+        localStorage.removeItem('authToken');
+        this.currentUserSubject.next(null);
+      },
+    });
+  }
+
+  private loadUserProfile(): void {
     const user = this.auth.currentUser;
     if (!user) return;
 
     const userDoc = doc(this.firestore, `users/${user.uid}`);
-    getDoc(userDoc).then(snapshot => {
+    getDoc(userDoc).then((snapshot) => {
       if (snapshot.exists()) {
         this.currentUserSubject.next({
           uid: user.uid,
-          ...snapshot.data() as User
+          ...(snapshot.data() as User),
         });
-      }
-    });
-  }
-  private initAuthState(): void {
-    // Initialize from localStorage
-    const storedToken = localStorage.getItem('authToken');
-    if (storedToken) this.tokenSubject.next(storedToken);
-    
-    // Listen for auth state changes
-    idToken(this.auth).subscribe(token => {
-      this.tokenSubject.next(token);
-      if (token) {
-        localStorage.setItem('authToken', token);
-        this.fetchUserProfile();
       } else {
-        localStorage.removeItem('authToken');
         this.currentUserSubject.next(null);
       }
     });
@@ -91,118 +95,121 @@ export class AuthService {
   register(
     email: string,
     password: string,
-    userData: { username: string; lastname: string; number: string; role: 'user' | 'admin' }
+    userData: {
+      username: string;
+      lastname: string;
+      number: string;
+      role: 'user' | 'admin';
+    }
   ): Observable<User> {
-    return from(createUserWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(userCred => {
-        const userProfile: User = {
+    return from(
+      createUserWithEmailAndPassword(this.auth, email, password)
+    ).pipe(
+      switchMap((userCred) => {
+        const newUser: User = {
           email,
           createdAt: new Date(),
-          ...userData
+          ...userData,
         };
-
-        return from(setDoc(
-          doc(this.firestore, `users/${userCred.user.uid}`),
-          userProfile
-        )).pipe(
-          map(() => userProfile),
-          tap(() => this.currentUserSubject.next(userProfile))
+        return from(
+          setDoc(doc(this.firestore, `users/${userCred.user.uid}`), newUser)
+        ).pipe(
+          tap(() => this.currentUserSubject.next(newUser)),
+          map(() => newUser)
         );
       })
     );
   }
 
-  // Update login to fetch profile
   login(email: string, password: string): Observable<User> {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(() => {
-        return new Observable<User>(observer => {
-          const unsubscribe = this.currentUser$.subscribe(user => {
-            if (user) {
-              observer.next(user);
-              observer.complete();
-              unsubscribe.unsubscribe();
-              console.log(user.role)
-            }
-          });
-        });
-      })
+      switchMap(
+        () =>
+          new Observable<User>((observer) => {
+            const subscription = this.currentUser$.subscribe((user) => {
+              if (user) {
+                observer.next(user);
+                observer.complete();
+                subscription.unsubscribe();
+              }
+            });
+          })
+      )
     );
   }
+
   logout(): Observable<void> {
     return from(signOut(this.auth)).pipe(
       tap(() => {
         this.currentUserSubject.next(null);
         this.tokenSubject.next(null);
-        this.loggedIn.next(false);
         localStorage.removeItem('authToken');
       })
     );
   }
- 
+
   get currentUserRole(): 'user' | 'admin' | null {
     return this.currentUserSubject.value?.role || null;
   }
+
   async getUsers(
     pageSize: number,
-    lastDoc: DocumentSnapshot | null
-  ): Promise<{
-    users: User[];
-    lastDoc: QueryDocumentSnapshot<DocumentData> | null;
-  }> {
-    let tripsRef = collection(this.firestore, 'users');
-    let q = query(tripsRef, limit(pageSize));
-
-    if (lastDoc) {
-      q = query(tripsRef, startAfter(lastDoc), limit(pageSize));
-    }
+    lastDoc: any | null
+  ): Promise<{ users: User[]; lastDoc: any | null }> {
+    const usersCollection = collection(this.firestore, 'users');
+    let q = query(usersCollection, limit(pageSize));
+    if (lastDoc)
+      q = query(usersCollection, startAfter(lastDoc), limit(pageSize));
 
     const snapshot = await getDocs(q);
     const users = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as User),
     }));
-    const nextLastDoc =
-      snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
+    const nextLastDoc = snapshot.docs.length
+      ? snapshot.docs[snapshot.docs.length - 1]
+      : null;
 
     return { users, lastDoc: nextLastDoc };
   }
-  async getTotalTrips(): Promise<number> {
+
+  async getTotalUsers(): Promise<number> {
     if (this.totalUsersCache === null) {
-      const usersRef = collection(this.firestore, 'users');
-      const snapshot = await getCountFromServer(usersRef);
+      const usersCollection = collection(this.firestore, 'users');
+      const snapshot = await getCountFromServer(usersCollection);
       this.totalUsersCache = snapshot.data().count;
     }
     return this.totalUsersCache;
   }
-  
 
+  async deleteUser(uid: string): Promise<void> {
+    try {
+      // Delete Firestore user document
+      const userDoc = doc(this.firestore, `users/${uid}`);
+      await deleteDoc(userDoc);
 
-async deleteUser(uid: string): Promise<void> {
-  try {
-    // Delete from Firestore
-    const userDoc = doc(this.firestore, `users/${uid}`);
-    await deleteDoc(userDoc);
-    
-    // Call Cloud Function to delete auth user
-    await this.callDeleteUserFunction(uid);
-    
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    throw error;
+      // Call Cloud Function to delete Auth user
+      await this.callDeleteUserFunction(uid);
+    } catch (error: unknown) {
+      // Narrow unknown error type safely
+      let errorMessage = 'Unknown error deleting user';
+      if (error instanceof Error) errorMessage = error.message;
+      console.error(`Error deleting user: ${errorMessage}`);
+      throw new Error(errorMessage);
+    }
   }
-}
 
-private async callDeleteUserFunction(uid: string): Promise<void> {
-  // Replace with your actual Cloud Function URL
-  const functionUrl = `https://your-region-your-project-id.cloudfunctions.net/deleteUser`;
-  
-  // Call the Cloud Function
-  return this.http.post(functionUrl, { uid }).toPromise()
-    .then(() => console.log('User deleted from authentication'))
-    .catch(err => {
-      console.error('Cloud Function error:', err);
-      throw err;
-    });
-}
+  private async callDeleteUserFunction(uid: string): Promise<void> {
+    const functionUrl =
+      'https://your-region-your-project-id.cloudfunctions.net/deleteUser';
+    try {
+      await this.http.post(functionUrl, { uid }).toPromise();
+      console.log('User deleted from authentication');
+    } catch (error: unknown) {
+      let errorMessage = 'Cloud Function error';
+      if (error instanceof Error) errorMessage = error.message;
+      console.error(errorMessage);
+      throw new Error(errorMessage);
+    }
+  }
 }

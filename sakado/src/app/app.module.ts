@@ -37,7 +37,7 @@ import { BookingService } from './services/booking.service';
 import { FirebaseModule } from './firebase/firebase.module';
  
 import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+ 
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
  
 import { SimpleDatePipe } from './pipes/shortdate.pipe';
@@ -89,7 +89,7 @@ import { UsersManagementComponent } from './admine/users-management/users-manage
     provideHttpClient(withFetch()),
     AuthService,
     BookingService,
-    provideCharts(withDefaultRegisterables()),
+    // provideCharts(withDefaultRegisterables()),
     provideFirestore(() => getFirestore()),
     
     DatePipe,
