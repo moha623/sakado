@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  provideClientHydration,
-  withEventReplay,
-} from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './core/layout/layout.component';
@@ -14,12 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-  withFetch,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 import { AuthService } from './services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -33,19 +24,19 @@ import { BookingManagementComponent } from './admine/booking-management/booking-
 import { DashboardComponent } from './admine/dashboard/dashboard.component';
 import { FilterBookingsPipe } from './pipes/filter-bookings.pipe';
 import { BookingService } from './services/booking.service';
- 
-import { FirebaseModule } from './firebase/firebase.module';
- 
+
 import { ShortenIdPipe } from './pipes/shorten-id-.pipe';
- 
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
- 
 import { SimpleDatePipe } from './pipes/shortdate.pipe';
 import { NgApexchartsModule } from 'ng-apexcharts';
- 
 import { ModelPopUpComponent } from './model-pop-up/model-pop-up.component';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 import { UsersManagementComponent } from './admine/users-management/users-management.component';
+
+// Import AngularFire modules (new modular approach)
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -66,33 +57,34 @@ import { UsersManagementComponent } from './admine/users-management/users-manage
     BookingManagementComponent,
     DashboardComponent,
     ModelPopUpComponent,
- UsersManagementComponent,
+    UsersManagementComponent,
     AccessDeniedComponent,
-  
+    // FilterBookingsPipe,
+    // ShortenIdPipe,
+    // SimpleDatePipe
   ],
   imports: [
-    FirebaseModule,
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    FilterBookingsPipe,
-    ShortenIdPipe,
-    SimpleDatePipe,
     NgApexchartsModule,
- 
-    FormsModule   
-],
+    SimpleDatePipe,
+    ShortenIdPipe
+  ],
   providers: [
-    provideClientHydration(withEventReplay()),
-    provideHttpClient(withFetch()),
-    AuthService,
-    BookingService,
-    // provideCharts(withDefaultRegisterables()),
+    // Initialize Firebase with the new modular approach
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     
+    AuthService,
+    BookingService,
     DatePipe,
+ 
+    provideClientHydration(withEventReplay()),
+    provideHttpClient(withFetch()),
   ],
   bootstrap: [AppComponent],
 })

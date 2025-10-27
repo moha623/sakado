@@ -6,7 +6,7 @@ import { DocumentSnapshot } from 'firebase/firestore';
 @Component({
   selector: 'app-users-management',
   standalone: false,
-  templateUrl: './users-management.component.html',
+  templateUrl:'./users-management.component.html',
   styleUrls: ['./users-management.component.scss'], // fixed typo
 })
 export class UsersManagementComponent implements OnInit {

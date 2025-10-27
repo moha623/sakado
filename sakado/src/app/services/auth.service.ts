@@ -35,7 +35,7 @@ export class AuthService {
   private totalUsersCache: number | null = null;
 
   constructor(
-    private auth: Auth,
+    public auth: Auth,
     private firestore: Firestore,
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object

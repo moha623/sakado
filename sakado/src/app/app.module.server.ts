@@ -3,11 +3,20 @@ import { ServerModule } from '@angular/platform-server';
 import { provideServerRouting } from '@angular/ssr';
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
-import { serverRoutes } from './app.routes.server';
 
 @NgModule({
   imports: [AppModule, ServerModule],
-  providers: [provideServerRouting(serverRoutes)],
+  providers: [ ],
   bootstrap: [AppComponent],
 })
 export class AppServerModule {}
+
+import { Routes } from '@angular/router';
+import { RenderMode } from '@angular/ssr';
+
+export const serverRoutes = [
+  {
+    path: '**',
+    renderMode: RenderMode.Server
+  }
+] as const;
