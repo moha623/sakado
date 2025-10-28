@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "dist/sakado/server/**/*.js", "use": "@vercel/node" },
+    { "src": "dist/sakado/browser/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

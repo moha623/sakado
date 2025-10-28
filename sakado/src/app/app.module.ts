@@ -10,8 +10,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { AboutComponent } from './core/about/about.component';
 import { ContactComponent } from './core/contact/contact.component';
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -37,6 +37,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { ScrollAnimationDirective } from '../scroll-animation.directive';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     NgApexchartsModule,
     SimpleDatePipe,
-    ShortenIdPipe
+    ShortenIdPipe,
+    ScrollAnimationDirective
   ],
   providers: [
     // Initialize Firebase with the new modular approach

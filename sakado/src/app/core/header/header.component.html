@@ -1,50 +1,68 @@
 <!-- Navigation -->
-<nav class="bg-white shadow-md fixed w-full z-50" dir="rtl">
+<nav class="backdrop-blur-md shadow-md fixed w-full z-50" dir="rtl">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
-      <div class="flex items-center"    (click)="scrollToTop()">
+      <div
+        class="flex items-center cursor-pointer"
+        (click)="scrollToTop()"
+      >
         <div
-      
           routerLink="/"
           class="bg-[#86b817] w-10 h-10 rounded-full flex items-center justify-center"
         >
-          <i class="fas fa-plane-departure text-white text-xl bg-[#86b817] "></i>
+          <i class="fas fa-plane-departure text-white text-xl"></i>
         </div>
-        <span routerLink="/" class="text-xl font-bold text-primary mr-2"
-       
+        <span
+          routerLink="/"
+          class="text-xl font-bold text-primary mr-2 select-none"
           >ساكادو</span
         >
       </div>
 
       <div class="hidden md:flex space-x-8" *ngIf="isLoggedIn">
-        <a routerLink="/" class="text-primary font-medium" (click)="scrollToTop()">الرئيسية</a>
-        <a routerLink="/about" class="hover:text-primary transition"  (click)="scrollToSection('about')">من نحن</a>
-        <a routerLink="/gallery" class="hover:text-primary transition"
-        (click)="scrollToSection('gallery')"
-          >المعرض
-        </a>
-
-        <a routerLink="/booking" class="hover:text-primary transition"
-      (click)="scrollToSection('booking')"
-        >الباقات</a
+        <a
+          routerLink="/"
+          class="text-primary ml-5 font-medium hover:underline hover:underline-offset-4 transition"
+          (click)="scrollToTop()"
+          >الرئيسية</a
         >
-        <a routerLink="/contact" class="hover:text-primary transition"
-        (click)="scrollToSection('contact-us')"
-        >تواصل معنا</a
+        <a
+          routerLink="/about"
+          class="text-primary  font-medium hover:underline hover:underline-offset-4 transition"
+          (click)="scrollToSection('about')"
+          >من نحن</a
+        >
+        <a
+          routerLink="/gallery"
+          class="text-primary font-medium hover:underline hover:underline-offset-4 transition"
+          (click)="scrollToSection('gallery')"
+          >المعرض</a
+        >
+        <a
+          routerLink="/booking"
+          class="text-primary font-medium hover:underline hover:underline-offset-4 transition"
+          (click)="scrollToSection('booking')"
+          >الباقات</a
+        >
+        <a
+          routerLink="/contact"
+          class="text-primary font-medium hover:underline hover:underline-offset-4 transition"
+          (click)="scrollToSection('contact-us')"
+          >تواصل معنا</a
         >
       </div>
 
       <div class="flex items-center">
         <button
           routerLink="/auth/register"
-          class="bg-[#86b817]   text-white font-medium py-2 px-6 rounded-full transition"
+          class="bg-[#86b817] text-white font-medium py-2 px-6 rounded-full transition"
           *ngIf="!isLoggedIn"
         >
           انضم إلينا
         </button>
         <button
           routerLink="/auth/register"
-          class="bg-[#4c956c]   text-white font-medium py-2 px-6 rounded-full transition"
+          class="bg-[#4c956c] text-white font-medium py-2 px-6 rounded-full transition"
           *ngIf="isLoggedIn"
           (click)="onLogout()"
         >
@@ -57,34 +75,3 @@
     </div>
   </div>
 </nav>
-
-
-
-<!-- <script>
-  // Simple animation on scroll
-  document.addEventListener("DOMContentLoaded", function () {
-    const animatedElements = document.querySelectorAll(".animate-fade-in");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = "translateY(0)";
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-      }
-    );
-
-    animatedElements.forEach((element) => {
-      element.style.opacity = 0;
-      element.style.transform = "translateY(20px)";
-      element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-      observer.observe(element);
-    });
-  });
-</script> -->

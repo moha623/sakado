@@ -1,86 +1,104 @@
 <div class="font-sans bg-gray-50 text-gray-800" dir="rtl">
   <!-- Hero Section -->
-<section class="hero-section pt-32 pb-40">
-  <div class=" mx-auto px-4">
-    <div class="max-w-3xl mx-auto text-center animate-fade-in">
-      <div class="glass-card rounded-2xl p-8 mb-12 backdrop-blur-md">
+  <section
+    class="hero-section pt-32 pb-40 overflow-hidden min-h-screen relative"
+  >
+    <div class="mx-auto px-4 max-w-3xl text-center font-serif text-white">
+      <!-- Glass Card with Animation -->
+      <div
+        class="glass-card rounded-2xl p-8 mb-12 backdrop-blur-[100px] border border-white/10 shadow-2xl transition-all duration-500 hover:shadow-cyan-500/10 hover:border-cyan-500/20"
+        appScrollAnimation
+        data-animation="fade-in-up"
+      >
         <h1
-          class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+          class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
         >
-          استمتع بإجازتك معنا
+          استمتع
+          <span
+            class="  w-9 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400"
+            >بإجازتك</span
+          >
+          معنا
         </h1>
-        <div
-          class="w-32 h-1 bg-gradient-to-r from-[#253808] to-[#b5e249] hover:from-[#b5e249] hover:to-[#253808] text-white font-bold rounded-full transition mx-auto mb-8"
-        ></div>
+        <!-- <div
+          class="w-32 h-1   bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full mx-auto mb-8 transition-all duration-500 hover:from-emerald-400 hover:to-cyan-400"
+        ></div> -->
         <p
-          class="text-xl md:text-2xl text-white mb-10 max-w-2xl mx-auto font-light"
+          appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left"
+          class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
         >
           استكشف العالم معنا واستمتع بأجمل العطلات التي تحلم بها في أفضل الوجهات
           العالمية
         </p>
       </div>
 
+      <!-- Search Bar with Animation -->
       <div
-        class="relative w-full max-w-2xl mx-auto animate-fade-in"
-        style="animation-delay: 0.3s"
-        dir="rtl"
+        class="relative w-full max-w-2xl mx-auto"
+        appScrollAnimation
+        data-animation="fade-in-up"
+        [animationDelay]="300"
       >
         <div class="flex flex-col md:flex-row gap-4 items-center">
           <div class="flex-1 relative w-full">
             <div
               class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none"
             >
-              <i class="fas fa-search text-gray-500"></i>
+              <i class="fas fa-search text-cyan-400"></i>
             </div>
             <input
               type="text"
               placeholder="مثال: تايلاند"
-              class="w-full bg-white/90 py-5 px-14 rounded-full border-0 focus:ring-4 focus:ring-accent focus:outline-none shadow-lg text-gray-800 text-lg"
+              class="w-full bg-slate-800/80 backdrop-blur-sm py-5 px-14 rounded-full border border-slate-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none shadow-xl text-white text-lg placeholder-gray-400 transition-all duration-300 hover:bg-slate-800/90"
             />
           </div>
 
           <button
-            class="w-full md:w-auto bg-gradient-to-r from-[#253808] to-[#b5e249] hover:from-[#b5e249] hover:to-[#253808]  y-2  text-white font-bold py-5 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+            class="w-full md:w-auto bg-gradient-to-r from-cyan-600 to-emerald-500 hover:from-cyan-500 hover:to-emerald-400 text-white font-bold py-5 px-10 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-cyan-500/20 group"
           >
             ابحث الآن
-            <i class="fas fa-arrow-left"></i>
+            <i
+              class="fas fa-arrow-left transition-transform duration-300 group-hover:-translate-x-1"
+            ></i>
           </button>
         </div>
       </div>
 
-      <!-- Popular destinations -->
+      <!-- Popular destinations with Animation -->
       <div
-        class="mt-12 flex flex-wrap justify-center gap-3 animate-fade-in"
-        style="animation-delay: 0.5s"
-        dir="rtl"
+        class="mt-12 flex flex-wrap justify-center gap-3"
+        appScrollAnimation
+        data-animation="fade-in-up"
+        [animationDelay]="500"
       >
-        <span class="text-white/90 font-medium">الوجهات الشائعة:</span>
+        <span class="text-gray-300 font-medium">الوجهات الشائعة:</span>
         <div class="flex flex-wrap justify-center gap-2">
           <span
-            class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
+            class="bg-slate-800/60 hover:bg-cyan-900/40 transition-all duration-300 px-4 py-2 rounded-full text-white cursor-pointer border border-slate-700 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1"
             >𝐂𝐫𝐢𝐪𝐮𝐞 𝐞𝐥 𝐌𝐢𝐝𝐞𝐧𝐢 -𝐛𝐢𝐳𝐞𝐫𝐭𝐞</span
           >
           <span
-            class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
+            class="bg-slate-800/60 hover:bg-cyan-900/40 transition-all duration-300 px-4 py-2 rounded-full text-white cursor-pointer border border-slate-700 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1"
             >Ras angela 𝐵𝑖𝑧𝑒𝑟𝑡𝑒</span
           >
           <span
-            class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
+            class="bg-slate-800/60 hover:bg-cyan-900/40 transition-all duration-300 px-4 py-2 rounded-full text-white cursor-pointer border border-slate-700 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1"
           >
             𝐵𝑒𝑛𝑖 𝑀𝑡𝑖𝑟, 𝐴𝑖𝑛 𝐷𝑟𝑎ℎ𝑒𝑚</span
           >
           <span
-            class="bg-white/10 hover:bg-white/20 transition px-4 py-2 rounded-full text-white cursor-pointer"
+            class="bg-slate-800/60 hover:bg-cyan-900/40 transition-all duration-300 px-4 py-2 rounded-full text-white cursor-pointer border border-slate-700 hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1"
             >𝐒𝐚𝐡𝐚𝐫𝐚, 𝐒𝐚𝐛𝐫𝐲𝐚 𝐂𝐚𝐦𝐩</span
           >
         </div>
       </div>
     </div>
-  </div>
-</section>
-  
+  </section>
+
   <!-- About Section -->
-  <section  class="w-full py-20 bg-white" id="about">
+  <section class="w-full py-20 bg-white" id="about">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Image Column -->
@@ -98,14 +116,18 @@
             class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-8"
           >
             <h3 class="text-white text-2xl font-bold">خبرة أكثر من 15 عاماً</h3>
-            <p class="text-white/80 mt-2">في تنظيم رحلات السفر حول العالم</p>
+            <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-white/80 mt-2">في تنظيم رحلات السفر حول العالم</p>
           </div>
         </div>
 
         <!-- Content Column -->
         <div class="pt-4">
           <div class="inline-block relative mb-6">
-            <h6 class="text-primary font-bold text-xl mb-2" id="about">من نحن</h6>
+            <h6 class="text-primary font-bold text-xl mb-2" id="about">
+              من نحن
+            </h6>
             <div
               class="w-20 h-1 bg-gradient-to-r from-primary to-secondary rounded-full"
             ></div>
@@ -115,7 +137,9 @@
             مرحباً بك في <span class="text-primary">ساكادو</span>
           </h1>
 
-          <p class="mb-5 text-gray-600 leading-relaxed">
+          <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left"class="mb-5 text-gray-600 leading-relaxed">
             نوفر لكم تجربة سفر فريدة تتناسب مع أذواقكم وتطلعاتكم. نؤمن بأن كل
             رحلة هي قصة جديدة ترويها، ونسعى جاهدين لجعل قصصكم لا تنسى.
           </p>
@@ -181,7 +205,7 @@
             class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-full transition"
             routerLink="/about"
           >
-              المزيد عنا
+            المزيد عنا
           </a>
         </div>
       </div>
@@ -200,7 +224,9 @@
           ></div>
         </div>
         <h1 class="text-4xl font-bold mb-6">خدماتنا المميزة</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">
+        <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600 max-w-2xl mx-auto">
           نقدم مجموعة واسعة من الخدمات السياحية المصممة خصيصاً لتلبية جميع
           احتياجات المسافرين
         </p>
@@ -218,7 +244,9 @@
             <i class="fas fa-globe-asia"></i>
           </div>
           <h5 class="text-xl font-bold mb-4">جولات حول العالم</h5>
-          <p class="text-gray-600">
+          <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600">
             اكتشف وجهات جديدة مع جولاتنا المصممة بعناية لتجربة ثقافية فريدة
           </p>
         </div>
@@ -234,7 +262,9 @@
             <i class="fas fa-hotel"></i>
           </div>
           <h5 class="text-xl font-bold mb-4">حجوزات الفنادق</h5>
-          <p class="text-gray-600">
+          <p  appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left"  class="text-gray-600">
             احجز فنادق فاخرة تناسب ميزانيتك مع خيارات متنوعة في جميع الوجهات
           </p>
         </div>
@@ -250,7 +280,9 @@
             <i class="fas fa-user-tie"></i>
           </div>
           <h5 class="text-xl font-bold mb-4">مرشدون سياحيون</h5>
-          <p class="text-gray-600">
+          <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600">
             مرشدون محترفون يتحدثون العربية لمساعدتك في اكتشاف الوجهات بسهولة
           </p>
         </div>
@@ -266,7 +298,9 @@
             <i class="fas fa-calendar-check"></i>
           </div>
           <h5 class="text-xl font-bold mb-4">تنظيم الفعاليات</h5>
-          <p class="text-gray-600">
+          <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600">
             ننظم فعاليات خاصة وحفلات ومناسبات في أي مكان حول العالم
           </p>
         </div>
@@ -286,7 +320,9 @@
           ></div>
         </div>
         <h1 class="text-4xl font-bold mb-6">أشهر الوجهات السياحية</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">
+        <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600 max-w-2xl mx-auto">
           اكتشف أفضل الوجهات التي يفضلها المسافرون العرب حول العالم
         </p>
       </div>
@@ -314,13 +350,14 @@
             </div>
           </div>
           <div class="p-6">
-            <p class="text-gray-600 mb-5">
+            <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600 mb-5">
               استمتع بمزيج فريد من الشواطئ البكر والمعابد القديمة والثقافة
               الغنية في جزيرة الآلهة
             </p>
             <div class="flex justify-between items-center">
               <span class="text-primary font-bold text-xl">$899</span>
-
             </div>
           </div>
         </div>
@@ -348,7 +385,6 @@
             </p>
             <div class="flex justify-between items-center">
               <span class="text-primary font-bold text-xl">$1,299</span>
-
             </div>
           </div>
         </div>
@@ -376,7 +412,6 @@
             </p>
             <div class="flex justify-between items-center">
               <span class="text-primary font-bold text-xl">$1,499</span>
-
             </div>
           </div>
         </div>
@@ -385,20 +420,22 @@
   </section>
 
   <!-- Packages Section -->
-  <section 
-    class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50"
-  >
+  <section class="w-full py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
     <div class="container mx-auto px-4">
       <!-- Heading -->
       <div class="text-center mb-16">
         <div class="relative inline-block mb-6">
-          <h6 class="text-primary font-bold text-xl mb-2" id="booking">الباقات</h6>
+          <h6 class="text-primary font-bold text-xl mb-2" id="booking">
+            الباقات
+          </h6>
           <div
             class="w-24 h-1 bg-gradient-to-r from-primary to-secondary rounded-full mx-auto"
           ></div>
         </div>
         <h1 class="text-4xl font-bold mb-6">باقاتنا السياحية المميزة</h1>
-        <p class="text-gray-600 max-w-2xl mx-auto">
+        <p   appScrollAnimation
+        [animationDelay]="200"
+        data-animation="fade-in-left" class="text-gray-600 max-w-2xl mx-auto">
           اختر من بين مجموعة واسعة من الباقات المصممة لتلبي جميع توقعاتك
           وتفضيلاتك
         </p>
@@ -451,8 +488,7 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-           
-                class="bg-[#253808]   text-white font-medium py-2 px-5 rounded-full transition"
+                class="bg-[#253808] text-white font-medium py-2 px-5 rounded-full transition"
               >
                 احجز الآن
               </a>
@@ -505,13 +541,12 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-           
                 class="bg-[#253808] text-white font-medium py-2 px-5 rounded-full transition"
               >
                 احجز الآن
               </a>
               <a
-                 routerLink="/details"
+                routerLink="/details"
                 class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
               >
                 التفاصيل
@@ -559,13 +594,12 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
               <a
-      
                 class="bg-[#253808] text-white font-medium py-2 px-5 rounded-full transition"
               >
                 احجز الآن
               </a>
               <a
-            routerLink="/details"
+                routerLink="/details"
                 class="bg-white border border-primary text-primary hover:bg-blue-50 font-medium py-2 px-5 rounded-full transition"
               >
                 التفاصيل
@@ -578,7 +612,7 @@
   </section>
 
   <!-- Booking Section -->
-  <section id="booking" class="  py-20">
+  <section id="booking" class="py-20">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <!-- Left Content -->
@@ -698,163 +732,161 @@
     </div>
   </section>
 
-<div class="contact-container" dir="rtl" >
-  <!-- Floating background elements -->
-  <div class="floating-element floating-1"></div>
-  <div class="floating-element floating-2"></div>
-  <div class="floating-element floating-3"></div>
+  <div class="contact-container" dir="rtl">
+    <!-- Floating background elements -->
+    <div class="floating-element floating-1"></div>
+    <div class="floating-element floating-2"></div>
+    <div class="floating-element floating-3"></div>
 
-  <!-- Section header -->
-  <div class="section-header" id="contact-us">
-    <div class="section-subtitle"  >تواصل معنا</div>
-    <h1 class="section-title">نحن هنا للإجابة على استفساراتك</h1>
-    <p class="section-description">
-      فريق الدعم لدينا جاهز لمساعدتك في أي استفسار أو طلب. لا تتردد في التواصل
-      معنا عبر أي من القنوات المتاحة أدناه، وسنكون سعداء بخدمتك.
-    </p>
+    <!-- Section header -->
+    <div class="section-header" id="contact-us">
+      <div class="section-subtitle">تواصل معنا</div>
+      <h1 class="section-title">نحن هنا للإجابة على استفساراتك</h1>
+      <p class="section-description">
+        فريق الدعم لدينا جاهز لمساعدتك في أي استفسار أو طلب. لا تتردد في التواصل
+        معنا عبر أي من القنوات المتاحة أدناه، وسنكون سعداء بخدمتك.
+      </p>
+    </div>
+
+    <!-- Contact grid -->
+    <div class="contact-grid">
+      <!-- Contact info -->
+      <div class="contact-info animate-card">
+        <div class="info-header">
+          <h2 class="info-title">معلومات التواصل</h2>
+          <p class="info-description">
+            يمكنك التواصل معنا عبر المعلومات التالية أو تعبئة نموذج الاتصال
+            وسنرد عليك في أسرع وقت ممكن.
+          </p>
+        </div>
+
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="method-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="method-details">
+              <div class="method-title">العنوان</div>
+              <div class="method-value">الرياض، المملكة العربية السعودية</div>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="method-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="method-details">
+              <div class="method-title">الهاتف</div>
+              <div class="method-value">+966 55 123 4567</div>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="method-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="method-details">
+              <div class="method-title">البريد الإلكتروني</div>
+              <div class="method-value">info sakado.com</div>
+            </div>
+          </div>
+
+          <div class="contact-method">
+            <div class="method-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="method-details">
+              <div class="method-title">ساعات العمل</div>
+              <div class="method-value">الأحد - الخميس: 8 صباحاً - 5 مساءً</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-container animate-card">
+        <div class="map-placeholder">
+          <div class="map-icon">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <h3 class="map-title">موقعنا في الرياض</h3>
+          <p class="map-description">
+            يمكنك زيارتنا في مكتبنا الرئيسي بالرياض، المملكة العربية السعودية
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="contact-form animate-card">
+        <h2 class="form-title">أرسل رسالة</h2>
+        <form (ngSubmit)="onAddFedback()">
+          <div class="form-group">
+            <label class="form-label">الاسم الكامل</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="أدخل اسمك الكامل"
+              [(ngModel)]="messageData.fullName"
+              name="fullName"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">البريد الإلكتروني</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="أدخل بريدك الإلكتروني"
+              [(ngModel)]="messageData.email"
+              name="email"
+              required
+            />
+          </div>
+
+          <div class="form-group" dir="rtl">
+            <label class="form-label">رقم الجوال</label>
+            <input
+              type="tel"
+              class="form-input"
+              placeholder="أدخل رقم جوالك"
+              [(ngModel)]="messageData.phone"
+              name="phone"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الموضوع</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="موضوع الرسالة"
+              [(ngModel)]="messageData.subject"
+              name="subject"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">الرسالة</label>
+            <textarea
+              class="form-input form-textarea"
+              placeholder="اكتب رسالتك هنا..."
+              [(ngModel)]="messageData.message"
+              name="message"
+              required
+              maxlength="500"
+            ></textarea>
+            <div class="text-right text-sm text-gray-500">
+              {{ messageData.message.length }}/500
+            </div>
+          </div>
+
+          <button type="submit" class="form-button" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting">إرسال الرسالة</span>
+            <span *ngIf="isSubmitting">جاري الإرسال...</span>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-
-  <!-- Contact grid -->
-  <div class="contact-grid">
-    <!-- Contact info -->
-    <div class="contact-info animate-card">
-      <div class="info-header">
-        <h2 class="info-title">معلومات التواصل</h2>
-        <p class="info-description">
-          يمكنك التواصل معنا عبر المعلومات التالية أو تعبئة نموذج الاتصال وسنرد
-          عليك في أسرع وقت ممكن.
-        </p>
-      </div>
-
-      <div class="contact-methods">
-        <div class="contact-method">
-          <div class="method-icon">
-            <i class="fas fa-map-marker-alt"></i>
-          </div>
-          <div class="method-details">
-            <div class="method-title">العنوان</div>
-            <div class="method-value">الرياض، المملكة العربية السعودية</div>
-          </div>
-        </div>
-
-        <div class="contact-method">
-          <div class="method-icon">
-            <i class="fas fa-phone-alt"></i>
-          </div>
-          <div class="method-details">
-            <div class="method-title">الهاتف</div>
-            <div class="method-value">+966 55 123 4567</div>
-          </div>
-        </div>
-
-        <div class="contact-method">
-          <div class="method-icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <div class="method-details">
-            <div class="method-title">البريد الإلكتروني</div>
-            <div class="method-value">info sakado.com</div>
-          </div>
-        </div>
-
-        <div class="contact-method">
-          <div class="method-icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <div class="method-details">
-            <div class="method-title">ساعات العمل</div>
-            <div class="method-value">الأحد - الخميس: 8 صباحاً - 5 مساءً</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Map -->
-    <div class="map-container animate-card">
-      <div class="map-placeholder">
-        <div class="map-icon">
-          <i class="fas fa-map-marked-alt"></i>
-        </div>
-        <h3 class="map-title">موقعنا في الرياض</h3>
-        <p class="map-description">
-          يمكنك زيارتنا في مكتبنا الرئيسي بالرياض، المملكة العربية السعودية
-        </p>
-      </div>
-    </div>
-
-    <!-- Contact form -->
-    <div class="contact-form animate-card">
-      <h2 class="form-title">أرسل رسالة</h2>
-      <form (ngSubmit)="onAddFedback()">
-        <div class="form-group">
-          <label class="form-label">الاسم الكامل</label>
-          <input
-            type="text"
-            class="form-input"
-            placeholder="أدخل اسمك الكامل"
-            [(ngModel)]="messageData.fullName"
-            name="fullName"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">البريد الإلكتروني</label>
-          <input
-            type="email"
-            class="form-input"
-            placeholder="أدخل بريدك الإلكتروني"
-            [(ngModel)]="messageData.email"
-            name="email"
-            required
-          />
-        </div>
-
-        <div class="form-group" dir="rtl">
-          <label class="form-label">رقم الجوال</label>
-          <input
-            type="tel"
-            class="form-input"
-            placeholder="أدخل رقم جوالك"
-            [(ngModel)]="messageData.phone"
-            name="phone"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">الموضوع</label>
-          <input
-            type="text"
-            class="form-input"
-            placeholder="موضوع الرسالة"
-            [(ngModel)]="messageData.subject"
-            name="subject"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">الرسالة</label>
-          <textarea
-            class="form-input form-textarea"
-            placeholder="اكتب رسالتك هنا..."
-            [(ngModel)]="messageData.message"
-            name="message"
-            required
-            maxlength="500"
-          ></textarea>
-          <div class="text-right text-sm text-gray-500">
-            {{ messageData.message.length }}/500
-          </div>
-        </div>
-
-        <button type="submit" class="form-button" [disabled]="isSubmitting">
-          <span *ngIf="!isSubmitting">إرسال الرسالة</span>
-          <span *ngIf="isSubmitting">جاري الإرسال...</span>
-        </button>
-      </form>
-    </div>
-  </div>
-</div>
-
- 
 </div>
